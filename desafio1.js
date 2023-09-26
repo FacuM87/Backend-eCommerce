@@ -13,6 +13,22 @@ class ProductManager {
         return product.id + 1
     }
 
+    validations(product){
+        const productFields = Object.values(product)
+        const checkFields = productFields.includes(undefined)
+
+        if (checkFields) {
+            console.log("ERROR 1: All fields must be filled");
+            return
+        } 
+        
+        const checkCode = this.products.find(p => p.code === product.code)
+        if (checkCode) {
+            console.log("ERROR 2: Product Code is already in use")
+            return
+        }
+    }
+
     getProductsById(id){
         const productById = this.products.find(p => p.id === id)
         productById? console.log(productById) : console.log("Not Found")
@@ -22,8 +38,7 @@ class ProductManager {
         const productsAdded=this.products
         console.log(productsAdded) }
 
-    addProduct(title, description, price, thumbnail, code, stock){
-        
+    addProduct(title, description, price, thumbnail, code, stock){ 
         const id= this.createId()
         
         const product = {
@@ -36,21 +51,7 @@ class ProductManager {
             stock: stock
         }
     
-        const productFields = Object.values(product)
-        const checkFields = productFields.includes(undefined)
-
-        if (checkFields) {
-            console.log("ERROR 1: All fields must be filled");
-            return
-        } 
-        
-    
-        const checkCode = this.products.find(p => p.code === product.code)
-        if (checkCode) {
-            console.log("ERROR 2: Product Code is already in use")
-            return
-        }
-       
+        this.validations(product)
         this.products.push(product)
     }
 }
