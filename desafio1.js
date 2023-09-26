@@ -9,7 +9,6 @@ class ProductManager {
         if (count === 0) return 1
 
         const product = this.products[count-1]
-        console.log(product);
         
         return product.id + 1
     }
@@ -19,7 +18,9 @@ class ProductManager {
         productById? console.log(productById) : console.log("Not Found")
     }
 
-    getProducts(){ console.log(this.products) }
+    getProducts(){ 
+        const productsAdded=this.products
+        console.log(productsAdded) }
 
     addProduct(title, description, price, thumbnail, code, stock){
         
