@@ -13,7 +13,7 @@ class ProductManager {
         return product.id + 1
     }
 
-    validations(product){
+    validate(product){
         const productFields = Object.values(product)
         const checkFields = productFields.includes(undefined)
 
@@ -51,9 +51,20 @@ class ProductManager {
             stock: stock
         }
     
-        this.validations(product)
+        this.validate(product)
         this.products.push(product)
     }
+
+    deleteProduct(id){
+        const productById = this.products.find(p => p.id === id)
+        const newProductsArray = this.products.filter(p => p.id != id)
+        productById? (this.products = newProductsArray) : console.log("Wrong ID number");    
+    }
+    
+    updateProduct(id, fieldToUpdate){
+       productToUpdate=this.getProductsById(id)
+
+    }    
 }
 
 
@@ -61,16 +72,12 @@ class ProductManager {
 
 const juan = new ProductManager()
 
-// Get y Add Products
-juan.getProducts()
 juan.addProduct("producto prueba", "Este es un producto prueba", 200, "Sin imagen", "abc123", 25)
+juan.addProduct("producto prueba1", "Este es un producto prueba1", 6500, "Sin imagen", "asdd15945", 38)
+console.log("\n");
+
 juan.getProducts()
-console.log("\n")
 
-// Prueba de agregar el mismo producto
-juan.addProduct("producto prueba", "Este es un producto prueba", 200, "Sin imagen", "abc123", 25)
-console.log("\n")
+juan.deleteProduct(3)
 
-// Products By ID
-juan.getProductsById(1)
-juan.getProductsById(3)
+juan.getProducts()
