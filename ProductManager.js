@@ -62,7 +62,6 @@ class ProductManager {
     }
     
     updateProduct(id, fieldToUpdate){
-       productToUpdate=this.getProductsById(id)
 
     }    
 }
