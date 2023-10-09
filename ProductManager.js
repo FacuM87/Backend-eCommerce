@@ -134,7 +134,9 @@ class ProductManager {
                     const index = db.findIndex(p => p.id === id);
                     db[index] = productToUpdate
                     await fs.promises.writeFile(this.path,JSON.stringify(db))
+
                     return console.log(JSON.parse(await fs.promises.readFile(this.path,"utf-8")));
+                    
                 }else{ return console.log("Wrong Key") }
 
             }else{return console.log("Wrong Id") }
