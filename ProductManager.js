@@ -1,9 +1,9 @@
 const fs = require("fs")
 
 class ProductManager {    
-    constructor(){
+    constructor(path){
         this.products = []
-        this.path = "./db.json"
+        this.path = path
     }
 
     validate = async(product) => {
@@ -136,7 +136,7 @@ class ProductManager {
                     await fs.promises.writeFile(this.path,JSON.stringify(db))
 
                     return console.log(JSON.parse(await fs.promises.readFile(this.path,"utf-8")));
-                    
+
                 }else{ return console.log("Wrong Key") }
 
             }else{return console.log("Wrong Id") }
@@ -150,7 +150,7 @@ class ProductManager {
 
 // --- TESTING --- //
 
-const juan = new ProductManager()
+const juan = new ProductManager("./db.json")
 
 juan.getProducts()
 //juan.addProduct("Producto Prueba", "Este es un producto prueba", 200, "Sin imagen", "abc123", 25)
