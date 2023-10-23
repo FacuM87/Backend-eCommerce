@@ -7,10 +7,11 @@ class ProductManager {
     }
 
     validate = async(product) => {
-        const productFields = Object.values(product)
+  /*       const productFields = Object.values(product)
         const checkFields = productFields.includes(undefined)
 
-        if (checkFields) {return "ERROR 1: All fields must be filled"} 
+        if (checkFields) {return "ERROR 1: All fields must be filled"}  */
+
         
         try {
             if( fs.existsSync(this.path) ){
@@ -69,15 +70,17 @@ class ProductManager {
         }
     }
 
-    addProduct = async (title, description, price, thumbnail, code, stock)=>{
+    addProduct = async (title, category, description, price, thumbnail, code, stock)=>{
         const product = {
             id: await this.createId(),
-            title: title,
-            description: description,
-            price: price,
-            thumbnail: thumbnail, 
-            code: code, 
-            stock: stock
+            title: String(title),
+            category: String(category),
+            description: String(description),
+            price: Number(price),
+            thumbnail, 
+            code: String(code), 
+            stock: parseInt(stock),
+            status: true
         }
 
         try {
@@ -90,14 +93,12 @@ class ProductManager {
                 this.products.push(product)
                 const db = JSON.stringify(this.products)
                 await fs.promises.writeFile(this.path, db)
-                console.log("DB file has been successfully created and product Id 1 has been added");
-                return            
+                return "DB file has been successfully created and product Id 1 has been added"           
             }else{
                 const db = JSON.parse(await fs.promises.readFile(this.path,"utf-8"))
                 const newDB= [...db, product]             
                 await fs.promises.writeFile(this.path, JSON.stringify(newDB))
-                console.log("Product added to DB");
-                return
+                return "Product added to DB"
             }
         } catch (error) {
             console.log("Error: "+error);
@@ -113,8 +114,8 @@ class ProductManager {
             
             if (productById) {
                 await fs.promises.writeFile(this.path, newDBString)
-                return console.log("Product Id number "+id+ " has been deleted");
-            } else{ return console.log("Wrong ID number"); }
+                return "Product Id number "+id+ " has been deleted"
+            } else{ return "Wrong ID number" }
     
         } catch (error) {
             console.log("Deleting Error: "+error);
@@ -135,18 +136,17 @@ class ProductManager {
                     db[index] = productToUpdate
                     await fs.promises.writeFile(this.path,JSON.stringify(db))
 
-                    return console.log(JSON.parse(await fs.promises.readFile(this.path,"utf-8")));
+                    return "Product has been updated"
 
-                }else{ return console.log("Wrong Key") }
+                }else{ return "Wrong Key" }
 
-            }else{return console.log("Wrong Id") }
+            }else{return "Wrong Id" }
 
         } catch (error) {
             console.log("Updating Error: "+error)
         }        
     }    
 }
-
 
 
 export default ProductManager
