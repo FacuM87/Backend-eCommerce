@@ -7,12 +7,11 @@ class ProductManager {
     }
 
     validate = async(product) => {
-  /*       const productFields = Object.values(product)
-        const checkFields = productFields.includes(undefined)
-
-        if (checkFields) {return "ERROR 1: All fields must be filled"}  */
-
-        
+        const { title, category, description, price, code, stock } = product
+        if (!title || !category || !description || !price || !code || !stock) {
+           return "ERROR 1: All fields, except thumbnail, are required"
+        }
+    
         try {
             if( fs.existsSync(this.path) ){
                 const db = JSON.parse(await fs.promises.readFile(this.path, "utf-8"))
@@ -86,7 +85,7 @@ class ProductManager {
         try {
             const validationErrorMessage = await this.validate(product) 
             if (validationErrorMessage) {
-                return console.log(validationErrorMessage)
+                return validationErrorMessage
             }
 
             if( !fs.existsSync(this.path) ){

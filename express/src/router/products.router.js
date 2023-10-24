@@ -27,17 +27,7 @@ router.get("/:pid", async (req, res) => {
     }
 })
 
-const validate = (req, res, next) => {
-    const product = req.body
-    const { title, category, description, price, code, stock } = product
-    if (!title || !category || !description || !price || !code || !stock) {
-       return res.send("ERROR 1: All fields, except thumbnail, are required)")
-    }
-
-    next()
-}
-
-router.post("/", validate, async (req,res) => {
+router.post("/", async (req,res) => {
     try {
         const product = req.body
         const { title, category, description, price, thumbnail, code, stock } = product
