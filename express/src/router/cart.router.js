@@ -28,12 +28,11 @@ router.get("/:cid", async (req, res) => {
     }
 })
 
-router.get("/:cid/product/:pid", async (req,res) => {
+router.post("/:cid/product/:pid", async (req,res) => {
     try {
         const cartId = parseInt(req.params.cid)
         const productId = parseInt(req.params.pid)
-        await cartManager.addProductToCart(productId,cartId)
-
+        res.send(await cartManager.addProductToCart(productId,cartId))
     } catch (error) {
         console.log(error);
         res.send("Something went wrong while adding products to cart")
