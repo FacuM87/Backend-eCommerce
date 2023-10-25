@@ -3,7 +3,7 @@ import ProductManager from "../ProductManager.js"
 
 const router = Router()
 
-const juan = new ProductManager("../db.json")
+const juan = new ProductManager("./db.json")
 
 router.get("/", async (req, res)=> {
     try {
