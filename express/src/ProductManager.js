@@ -70,6 +70,11 @@ class ProductManager {
     }
 
     addProduct = async (title, category, description, price, thumbnail, code, stock)=>{
+        const validationErrorMessage = await this.validate({title, category, description, price, thumbnail, code, stock}) 
+        if (validationErrorMessage) {
+            return validationErrorMessage
+        }
+       
         const product = {
             id: await this.createId(),
             title: String(title),
@@ -83,10 +88,6 @@ class ProductManager {
         }
 
         try {
-            const validationErrorMessage = await this.validate(product) 
-            if (validationErrorMessage) {
-                return validationErrorMessage
-            }
 
             if( !fs.existsSync(this.path) ){
                 this.products.push(product)

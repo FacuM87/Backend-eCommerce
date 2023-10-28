@@ -90,7 +90,7 @@ class CartManager{
                 console.log(this.carts);
                 await fs.promises.writeFile(this.path,JSON.stringify(this.carts))
                 
-                return "Product + 1"
+                return "Product has been added"
             }else{ 
                 const productToAdd = {
                     product:productId,
