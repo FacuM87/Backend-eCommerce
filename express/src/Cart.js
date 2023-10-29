@@ -43,9 +43,9 @@ class CartManager{
     getCartByID = async (id) => {
         try {
             const carts = JSON.parse(await fs.promises.readFile(this.path, "utf-8"))
-            const cart = carts.find(c => c.id === id)
-            if (cart) {
-                return cart
+            const cartById = carts.find(c => c.id === id)
+            if (cartById) {
+                return cartById
             }else{undefined}
             
         } catch (error) {
@@ -76,7 +76,7 @@ class CartManager{
             
             if (!cart) {return "Wrong Cart ID" }
 
-            const productInCart = cart.products.find(p => p.product = productId)
+            const productInCart = cart.products.find(p => p.product === productId)
             
             if (productInCart) {
                 productInCart.quantity+=1
@@ -87,7 +87,6 @@ class CartManager{
                 const cartIndex = carts.findIndex(c => c.id === cartId)
                 carts[cartIndex]=cart
                 this.carts=carts
-                console.log(this.carts);
                 await fs.promises.writeFile(this.path,JSON.stringify(this.carts))
                 
                 return "Product has been added"
@@ -102,7 +101,6 @@ class CartManager{
                 const cartIndex = carts.findIndex(c => c.id === cartId)
                 carts[cartIndex]=cart
                 this.carts=carts
-                console.log(this.carts);
                 await fs.promises.writeFile(this.path,JSON.stringify(this.carts))
                 
                 return "Product has been added to cart"
