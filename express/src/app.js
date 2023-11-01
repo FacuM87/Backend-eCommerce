@@ -27,12 +27,23 @@ socketServer.on("connection", async socket => {
     const juan = new ProductManager("../db.json")
     const products = await juan.getProducts()
     socket.emit("products", products)
-
+    
     socket.on("newProduct", async data =>{
         console.log(data);
         const {title, category, description, price, code, stock} = data
         const message = await juan.addProduct(title, category, description, price, code, stock)
         if (message) {console.log(message)}
+
+        const products = await juan.getProducts()
+        socket.emit("products", products)
+    })
+
+    socket.on("deleteProduct", async id => {
+        console.log(id);
+        const message = await juan.deleteProduct(Number(id))
+        if (message) { console.log(message); }
+        const products = await juan.getProducts()
+        socket.emit("products", products)
     })
     
 })

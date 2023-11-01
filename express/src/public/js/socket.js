@@ -33,8 +33,25 @@ form.addEventListener("submit", (e) => {
         stock: Number(document.querySelector("#stock").value)
     }
     socket.emit("newProduct", product)
-    console.log("producto enviado");
+    console.log("product has been sent");
+
+    document.querySelector("#title").value=""
+    document.querySelector("#category").value=""
+    document.querySelector("#description").value=""
+    document.querySelector("#price").value=""
+    document.querySelector("#code").value=""
+    document.querySelector("#stock").value=""
+
 })
 
+const deleteForm = document.getElementById("deleteProduct")
+deleteForm.addEventListener("submit", (e) => {
+    e.preventDefault()
 
+    const productId = document.querySelector("#productId").value
+    socket.emit("deleteProduct", productId)
+    console.log("product Id number "+productId+ " has been deleted");
+
+    document.querySelector("#productId").value=""
+})
    
