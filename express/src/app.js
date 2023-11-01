@@ -23,8 +23,8 @@ app.use("/", viewsRouter)
 const httpServer = app.listen(8080, () => console.log("Listening in 8080"))
 const socketServer = new Server(httpServer) 
 socketServer.on("connection", async socket => {
-    console.log("connected")
-    const juan = new ProductManager("../db.json")
+    console.log("client connected")
+    const juan = new ProductManager("./db.json")
     const products = await juan.getProducts()
     socket.emit("products", products)
     
