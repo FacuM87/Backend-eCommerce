@@ -24,7 +24,7 @@ const form = document.getElementById("form")
 form.addEventListener("submit", (e) => {
     e.preventDefault()
 
-    let product = {
+    const product = {
         title: document.querySelector("#title").value,
         category: document.querySelector("#category").value,
         description: document.querySelector("#description").value,
