@@ -69,22 +69,21 @@ class ProductManager {
         }
     }
 
-    addProduct = async (title, category, description, price, thumbnail, code, stock)=>{
-        const validationErrorMessage = await this.validate({title, category, description, price, thumbnail, code, stock}) 
-        if (validationErrorMessage) {
-            return validationErrorMessage
-        }
-       
+    addProduct = async (title, category, description, price, code, stock)=>{
         const product = {
             id: await this.createId(),
             title: String(title),
             category: String(category),
             description: String(description),
             price: Number(price),
-            thumbnail, 
+            thumbnail: [], 
             code: String(code), 
             stock: parseInt(stock),
             status: true
+        }
+        const validationErrorMessage = await this.validate(product) 
+        if (validationErrorMessage) {
+            return validationErrorMessage
         }
 
         try {
