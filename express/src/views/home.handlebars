@@ -1,13 +1,15 @@
-<div>
-    {{#each db}}
-    <h3> {{this.title}} </h3>
-    <ul>
-        <li> Category: {{this.category}} </li>
-        <li> Description: {{this.description}} </li>
-        <li> ${{this.price}} </li>
-        <li> Stock: {{this.stock}} </li>
-    </ul>
-    {{else}}
-    <p>No Products in Data Base yet</p>
-    {{/each}}
-</div>
+<main class="d-flex justify-content-center">
+    <div class="mt-4">
+        {{#each db}}
+        <h3> {{this.title}} </h3>
+        <ul>
+            <li> Category: {{this.category}} </li>
+            <li> Description: {{this.description}} </li>
+            <li> ${{this.price}} </li>
+            <li> Stock: {{this.stock}} </li>
+        </ul>
+        {{else}}
+        <p>No Products in Data Base yet</p>
+        {{/each}}
+    </div>
+</main>
