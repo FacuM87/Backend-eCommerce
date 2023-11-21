@@ -1,6 +1,7 @@
 import { Router } from "express";
 //import CartManager from "../dao/fsManagers/CartsManager.js";
 import CartsModel from "../dao/mongo/models/carts.model.js"
+import ProductsModel from "../dao/mongo/models/products.model.js";
 
 const router = Router()
 
@@ -39,10 +40,33 @@ router.post("/:cid/product/:pid", async (req,res) => {
         const productId = req.params.pid
         //res.send(await cartManager.addProductToCart(productId,cartId))
         const cart = await CartsModel.findById(cartId)
-        cart.products.push({product: productId})
-        const result = await CartsModel.updateOne({_id: cartId}, cart)
-        console.log({result});
-        res.send("Product has been added to cart")
+        const product = await ProductsModel.findById(productId)
+
+        if (!product) {
+            console.log("Wrong Product ID");
+            return
+        }
+
+        if (!cart) {
+            console.log("Wrong Cart ID");
+            return   
+        }
+
+        const productIndex = cart.products.findIndex(p => p.product.equals(productId))
+        console.log(productIndex);
+        if (productIndex !== -1) {
+            cart.products[productIndex].quantity += 1
+        } else {
+            const newProduct = {
+                product: productId,
+                quantity: 1
+            }
+            cart.products.push(newProduct)
+        }
+        const result = await cart.save() 
+        console.log(result);
+        res.send(result)
+         
     } catch (error) {
         console.log(error);
         res.send("Something went wrong while adding products to cart")
