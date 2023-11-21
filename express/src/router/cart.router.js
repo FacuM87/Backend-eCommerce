@@ -11,9 +11,9 @@ router.post("/", async (req,res) => {
     try {
         //const message = await cartManager.createNewCart()
         const cartCreated = await CartsModel.create({products:[]})
-        console.log(cartCreated);
+        console.log(JSON.stringify(cartCreated));
         const carts = await CartsModel.find().lean().exec()
-        console.log(carts);
+        console.log(JSON.stringify(carts));
         res.send("New cart has been created")
         
     } catch (error) {
