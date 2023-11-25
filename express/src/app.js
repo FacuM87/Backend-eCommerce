@@ -31,6 +31,7 @@ mongoose.connect(mongoURL, {dbName: mongoDB})
     })
     .catch(e => {
         console.log(e);
+        res.send(e)
     })
 
 /* -- WebSocket -- */
@@ -45,6 +46,7 @@ socketServer.on("connection", async socket => {
         socket.emit("products", products)
     } catch (error) {
         console.log(error);
+        res.send(error)
     }
     
     socket.on("newProduct", async data =>{
@@ -61,6 +63,7 @@ socketServer.on("connection", async socket => {
             socket.emit("products", products)
         } catch (error) {
             console.log(error);
+            res.send(error)
         }
     })
 
@@ -74,6 +77,7 @@ socketServer.on("connection", async socket => {
             socket.emit("products", products)
         } catch (error) {
             console.log(error);
+            res.send(error)
         }
     })
     
@@ -85,6 +89,7 @@ socketServer.on("connection", async socket => {
             socketServer.emit("logs", logs)
         } catch (error) {
             console.log("Server couldnt redirect chat log to users");
+            res.send(error)
         }
     })
 })

@@ -6,13 +6,13 @@ socket.on("products", (products) => {
             products.forEach(p => {
                 table[0].innerHTML+= `
                 <tr>
-                <td>${p._id}</td>
-                <td>${p.title}</td>
-                <td>${p.description}</td>
-                <td>${p.code}</td>
-                <td>${p.price}</td>
-                <td>${p.stock}</td>
-                <td>${p.category}</td>
+                    <td>${p._id}</td>
+                    <td>${p.title}</td>
+                    <td>${p.description}</td>
+                    <td>${p.code}</td>
+                    <td>${p.price}</td>
+                    <td>${p.stock}</td>
+                    <td>${p.category}</td>
                 </tr>
                 `
             })

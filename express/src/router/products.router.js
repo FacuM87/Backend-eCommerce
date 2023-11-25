@@ -15,6 +15,7 @@ router.get("/", async (req, res)=> {
         
     } catch (error) {
         console.log("Error: " + error);
+        res.send(error)
     }
 })
 
@@ -26,7 +27,8 @@ router.get("/:pid", async (req, res) => {
         productRequired? res.json( { productRequired } ) : res.json("Not Found")
         
     } catch (error) {
-        console.log("Error " + error);    
+        console.log("Error " + error);
+        res.send(error)    
     }
 })
 
@@ -42,6 +44,7 @@ router.post("/", async (req,res) => {
 
     } catch (error) {
         console.log(error);
+        res.send(error)
     }
 })
 
@@ -61,6 +64,7 @@ router.put("/:pid", async (req,res) =>{
         */
     } catch (error) {
         console.log(error);
+        res.send(error)
     }
 })
 
@@ -72,6 +76,7 @@ router.delete("/:pid", async (req,res) => {
         res.send("Product ID "+id+" has been deleted")
     } catch (error) {
         console.log(error);
+        res.send(error)
     }
     
 })
