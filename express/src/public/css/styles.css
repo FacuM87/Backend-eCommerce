@@ -1,0 +1,19 @@
+
+body{
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+footer{
+    margin-top: auto;
+    background-color: lightgrey;
+}
+
+.productsCards{
+    border: 1px solid;
+    border-radius: 10px;
+    transform: scale(.9);
+    min-width: 220px;
+}
+

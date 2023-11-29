@@ -22,17 +22,7 @@ router.post("/", async (req,res) => {
     }
 })
 
-router.get("/:cid", async (req, res) => {
-    try {
-        const cartId = req.params.cid
-        //const productsInCart = await cartManager.productsInCart(cartId)
-        const productsInCart = await CartsModel.findById(cartId)
-        res.send(productsInCart)
-    } catch (error) {
-        console.log(error);
-        res.send("Something went wrong while getting products from cart")
-    }
-})
+
 
 router.post("/:cid/product/:pid", async (req,res) => {
     try {
@@ -70,6 +60,111 @@ router.post("/:cid/product/:pid", async (req,res) => {
     } catch (error) {
         console.log(error);
         res.send("Something went wrong while adding products to cart")
+    }
+})
+
+router.delete("/:cid/products/:pid", async (req,res) =>{
+    try {
+        const cartId = req.params.cid
+        const productId = req.params.pid
+
+        const cart = await CartsModel.findById(cartId)
+        
+        const newCart = cart.products.filter(product => product.product != productId);
+
+        const deletingDocument = await CartsModel.updateOne(
+        {_id: cartId}, 
+        { $set: { products: newCart } })
+        
+        res.send(deletingDocument)         
+        
+    } catch (error) {
+        console.log(error);
+        res.send(error)
+    }
+})
+
+router.delete("/:cid", async (req,res) =>{
+    try {
+        const cartId = req.params.cid
+        const cart = await CartsModel.findById(cartId)
+        const emptyCart = cart.products = []
+
+        const emptyingCart = await CartsModel.updateOne(
+            {_id: cartId}, 
+            { $set: { products: emptyCart } }
+        )
+
+        console.log(emptyingCart)
+        res.send(emptyingCart)
+
+    } catch (error) {
+        console.log(error);
+        res.send(error)
+    }
+})
+
+router.put("/:cid/products/:pid", async (req,res) =>{
+    try {
+        const quantityToAdd = parseInt(req.body.quantity)
+        const cartId = req.params.cid
+        const productId = req.params.pid
+    
+        const cart = await CartsModel.findById(cartId)
+
+        const productToUpdate = cart.products.find(p => p.product == productId)
+
+        productToUpdate.quantity += quantityToAdd
+        console.log(productToUpdate);
+
+        console.log(cart);
+
+        const updatingCart = await CartsModel.updateOne(
+            {_id: cartId}, 
+            { $set: {products: cart.products } }
+        )
+        console.log(updatingCart);
+        res.send(updatingCart)
+
+    } catch (error) {
+        console.log(error);
+        res.send(error)
+    }
+})
+
+/* 
+
+Para verificar la ruta siguiente dejo un id a un carrito vacío y un array de productos para postman
+
+cid: 6563bb7e38fe3f2035a87c54
+
+[
+    {
+        "quantity":2,
+        "product": "6562b12c1552b1e892e6f33b"
+    },
+    {
+        "quantity":6,
+        "product":"6562b12c1552b1e892e6f343"
+    }
+]
+
+*/
+router.put("/:cid", async (req,res) =>{
+    try {
+        const cartId = req.params.cid
+        const newProducts = req.body
+
+        const updateCart = await CartsModel.updateOne(
+            {_id: cartId}, 
+            { $set: {products: newProducts } }
+        )
+        console.log(updateCart);
+        res.send(updateCart)
+
+    } catch (error) {
+        console.log(error);
+        res.send(error)
     }
 })
 

@@ -1,0 +1,14 @@
+
+<main class="d-flex justify-content-center">
+    {{#if cart.products}}
+        <ul class="mt-4">
+            {{#each cart.products}}
+                <li>
+                    {{this.quantity}}x {{this.product.title}} - ${{this.product.price}}
+                </li>
+            {{/each}}
+        </ul>
+    {{else}}
+        <p>Your cart is empty</p>
+    {{/if}}
+</main>

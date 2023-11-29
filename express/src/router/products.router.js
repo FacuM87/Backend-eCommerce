@@ -9,10 +9,35 @@ const router = Router()
 router.get("/", async (req, res)=> {
     try {
         /* const products = await juan.getProducts() */
-        const products = await ProductsModel.find().lean().exec()
-        const limit=req.query.limit
-        limit? res.send(products.slice(0, limit)): res.json( { products } )
-        
+        const limit = parseInt(req.query.limit) || 3
+        const page = parseInt(req.query.page) || 1
+        const query = req.query.query || ""
+        const order = req.query.sort === "Desc" ? -1 : 1
+        const sortValue = req.query.sort? {price: order} :'-createdAt'
+ 
+        const search = {}
+        if (query) {
+            search.title= { "$regex": query, "$options": "i" } 
+            search.category= { "$regex": query, "$options": "i" }
+        }
+
+        const result = await ProductsModel.paginate(search
+        , {
+            page: query? 1: page,
+            limit,
+            sort: sortValue,
+            lean: true
+        })
+
+        result.payload = result.docs
+        result.query = query
+        result.sortOrder = sortValue
+        result.status = "succes"
+        delete result.docs
+
+        console.log(result);
+
+        res.send(result)
     } catch (error) {
         console.log("Error: " + error);
         res.send(error)
@@ -52,13 +77,11 @@ router.put("/:pid", async (req,res) =>{
     try {
         const id = req.params.pid
         const updateRequest = req.body
-        const { keyToUpdate, newValue } = updateRequest 
-        
-        const productUpdated = await ProductsModel.updateOne({_id: id }, {$set: { [keyToUpdate]: newValue }})
-        console.log({productUpdated});
+
+        const productUpdated = await ProductsModel.updateOne({ _id: id },{ $set: updateRequest });
         
         res.send({productUpdated})
-        
+
         /*
         const updateMessage = await juan.updateProduct(parseInt(req.params.pid),keyToUpdate,newValue) 
         */
@@ -70,9 +93,9 @@ router.put("/:pid", async (req,res) =>{
 
 router.delete("/:pid", async (req,res) => {
     try {
-        const id=parseInt(req.params.pid)
+        const id=req.params.pid
         //const deletionMessage = await juan.deleteProduct(id)
-        await ProductsModel.deleteOne(id)
+        await ProductsModel.deleteOne({ _id: id });
         res.send("Product ID "+id+" has been deleted")
     } catch (error) {
         console.log(error);

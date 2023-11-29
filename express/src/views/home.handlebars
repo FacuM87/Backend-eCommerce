@@ -1,15 +1,119 @@
 <main class="d-flex justify-content-center">
     <div class="mt-4">
-        {{#each db}}
-        <h3> {{this.title}} </h3>
-        <ul>
-            <li> Category: {{this.category}} </li>
-            <li> Description: {{this.description}} </li>
-            <li> ${{this.price}} </li>
-            <li> Stock: {{this.stock}} </li>
-        </ul>
+        <div>
+            <div class="input-group mb-2">
+                <button class="btn btn-outline-secondary" type="button" id="button-addon1">Search</button>
+                <input id="query" type="text" class="form-control" placeholder="" aria-label="Example text with button addon"
+                    aria-describedby="button-addon1" value={{query}}>
+            </div>
+            <div class="d-flex justify-content-between mb-2">
+                <div class="d-flex align-items-end">
+                    <input id="prevPageValue" class="d-none" value={{prevPage}}>
+                    <button id="prevPageBtn" {{#unless prevPage}}disabled{{/unless}}> < </button>
+
+                    <span class="mx-1">{{page}}/{{totalPages}}</span>
+                    
+                    <input id="nextPageValue" class="d-none" value={{nextPage}}>
+                    <button id="nextPageBtn" {{#unless nextPage}}disabled{{/unless}}> > </button>
+                </div>
+
+                <div class="mt-2 d-flex align-items-center">
+                    <span class="me-2">Go to Page: </span> 
+                    <input id="toPage" type="text" size="5" value={{page}}>
+                </div> 
+            </div >
+            <div class="mb-4 d-flex justify-content-between">
+                <input id="currentLimit" class="d-none" value={{limit}}>
+                <p class="text-end">Limit: <input id="limit" type="text" size="2"></p>
+                <div>
+                <span>Order: </span> 
+                <input id="currentOrder" class="d-none" value={{sortOrder}}>  
+                <select id="sort" class="h-75">
+                    <option>Asc</option>
+                    <option>Desc</option>
+                </select>
+                </div>
+            </div> 
+
+
+        </div>
+
+        {{#each products}}
+            <h5> {{this.title}} </h5>
+            <ul>
+                <li> Category: {{this.category}} </li>
+                <li> Description: {{this.description}} </li>
+                <li> ${{this.price}} </li>
+                <li> Stock: {{this.stock}} </li>
+            </ul>
         {{else}}
-        <p>No Products in Data Base yet</p>
+            <p>No Products in Data Base yet</p>
         {{/each}}
+ 
     </div>
 </main>
+
+
+<script>
+
+document.getElementById("nextPageBtn").onclick = () =>{
+    const nextPageValue = document.getElementById("nextPageValue").value
+    const query = document.getElementById("query").value
+    const currentLimit = document.getElementById("currentLimit").value
+
+    const url = `/api/products/?page=${nextPageValue}&limit=${limit}&query=${query}`
+    document.location.href = url 
+}
+
+document.getElementById("prevPageBtn").onclick = () =>{
+    const prevPageValue = document.getElementById("prevPageValue").value
+    const query = document.getElementById("query").value
+    const limit = document.getElementById("limit").value
+
+    const url = `/api/products/?page=${prevPageValue}&limit=${limit}&query=${query}`
+    document.location.href = url 
+}
+
+document.getElementById("toPage").addEventListener("keyup", e => {
+    if(e.key === "Enter"){
+        const page = document.getElementById("toPage").value
+        const query = document.getElementById("query").value 
+        const limit = document.getElementById("limit").value
+
+        const url = `/api/products/?page=${page}&limit=${limit}&query=${query}`
+        document.location.href = url 
+    } 
+    }
+)
+
+document.getElementById("limit").addEventListener("keyup", e => {
+    if(e.key === "Enter"){
+        const page = document.getElementById("toPage").value
+        const query = document.getElementById("query").value
+        const limit = document.getElementById("limit").value
+        
+        const url = `/api/products/?page=${page}&limit=${limit}&query=${query}`
+        document.location.href = url 
+    }
+})
+
+document.getElementById("button-addon1").onclick = () => {
+    const page = document.getElementById("toPage").value
+    const query = document.getElementById("query").value 
+    const limit = document.getElementById("limit").value
+
+    const url = `/api/products/?page=${page}&limit=${limit}&query=${query}`
+    document.location.href = url 
+}
+
+document.getElementById("sort").addEventListener("change", () => {
+    const sort = document.getElementById("sort").value;
+    const page = document.getElementById("toPage").value;
+    const query = document.getElementById("query").value;
+    const limit = document.getElementById("limit").value;
+
+    const url = `/api/products/?page=${page}&limit=${limit}&query=${query}&sort=${sort}`;
+    document.location.href = url;
+});
+
+</script>
