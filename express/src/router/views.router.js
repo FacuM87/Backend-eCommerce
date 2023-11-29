@@ -10,12 +10,6 @@ router.get("/", (req,res) => {
     res.render("index", {})
 })
 
-router.get("/home", async (req, res) => {
-    res.render("home", {
-        db: /*db*/await ProductsModel.find().lean().exec()
-    })
-})
-
 router.get("/realtimeproducts", async (req, res) => {
     res.render("realTimeProducts", {
         db: /*db*/await ProductsModel.find().lean().exec()

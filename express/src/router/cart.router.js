@@ -134,7 +134,7 @@ router.put("/:cid/products/:pid", async (req,res) =>{
 
 /* 
 
-Para verificar la ruta siguiente dejo un id a un carrito vacío y un array de productos para postman
+Para verificar la ruta siguiente dejo un id de un carrito vacío y un array de productos para postman
 
 cid: 6563bb7e38fe3f2035a87c54
 
