@@ -65,16 +65,20 @@ router.post("/:cid/product/:pid", async (req,res) => {
 
 router.delete("/:cid/products/:pid", async (req,res) =>{
     try {
-        const cartId = req.params.cid
-        const productId = req.params.pid
+        const cartId = req.params.cid.toString()
+        console.log(cartId);
+        const productId = req.params.pid.toString()
+        console.log(productId);
 
         const cart = await CartsModel.findById(cartId)
+        console.log("Carrito"+cart);
         
-        const newCart = cart.products.filter(product => product.product != productId);
+        const newProducts = cart.products.filter(product => product.product != productId);
+        console.log("Nuevo array de productos"+newProducts);
 
         const deletingDocument = await CartsModel.updateOne(
         {_id: cartId}, 
-        { $set: { products: newCart } })
+        { $set: { products: newProducts } })
         
         res.send(deletingDocument)         
         

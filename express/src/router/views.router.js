@@ -7,7 +7,7 @@ import CartsModel from "../dao/mongo/models/carts.model.js";
 const router = Router ()
 
 router.get("/", (req,res) => {
-    res.render("index", {})
+    res.render("login", {})
 })
 
 router.get("/realtimeproducts", async (req, res) => {

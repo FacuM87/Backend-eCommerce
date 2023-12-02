@@ -1,5 +1,7 @@
-import express, { json } from "express"
+import express from "express"
 import handlebars from "express-handlebars"
+import session from "express-session"
+import MongoStore from "connect-mongo"
 import viewsRouter from "./router/views.router.js"
 import __dirname from "./utils.js"
 import { Server } from "socket.io"
@@ -32,7 +34,18 @@ mongoose.connect(mongoURL, {dbName: mongoDB})
     .catch(e => {
         console.log(e);
         res.send(e)
-    })
+    })  
+
+/* -- Sessions -- */
+app.use(session({
+    store: MongoStore.create({
+        mongoUrl: mongoURL,
+        dbName: mongoDB
+    }),
+    secret: "secret",
+    resave: true,
+    saveUninitialized: true
+}))
 
 /* -- WebSocket -- */
 const httpServer = app.listen(8080, () => console.log("Listening in 8080"))
