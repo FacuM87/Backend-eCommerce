@@ -54,7 +54,8 @@
                     <li> ${{this.price}} </li>
                     <li> Stock: {{this.stock}} </li>
                 </ul>
-                <button class="mx-auto mt-auto w-50"> Add to Cart </button>
+                <input class="productId d-none" value={{this._id}}>
+                <button class="addToCartBtn mx-auto mt-auto w-50 cartBtn"> Add to Cart </button>
             </div>
             {{else}}
                 <p class="text-center">No Products to show</p>            

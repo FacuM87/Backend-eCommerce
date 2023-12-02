@@ -5,6 +5,11 @@ body{
     min-height: 100vh;
 }
 
+i{
+    font-size:xx-large;
+    cursor: pointer;
+}
+
 footer{
     margin-top: auto;
     background-color: lightgrey;
@@ -15,5 +20,20 @@ footer{
     border-radius: 10px;
     transform: scale(.9);
     min-width: 220px;
+}
+
+.cartBtn{
+    width: 100px;
+    height: 40px;
+    background-color: #4CAF50; 
+    border: none;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    transform: skew(-20deg);
 }
 
