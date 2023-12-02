@@ -1,13 +1,30 @@
 
 <main class="d-flex justify-content-center">
     {{#if cart.products}}
-        <ul class="mt-4">
+        <div class="mt-4 cartProductsContainer">
             {{#each cart.products}}
-                <li>
-                    {{this.quantity}}x {{this.product.title}} - ${{this.product.price}}
-                </li>
+                <div class="cartProducts d-flex justify-content-between">
+                    <div class="me-4">
+                        <h5>{{this.product.title}}</h5>
+                        <p>Quantity: {{this.quantity}}</p> 
+                    </div>
+                    <div>
+                        <p>Price per Unit: ${{this.product.price}}</p> 
+                        <p>Total: $</p>  
+                    </div>
+                    <i class="bi bi-x-lg delProdIcon"></i>
+                </div>
             {{/each}}
-        </ul>
+        </div>
+        <div>
+            <div class="ms-5 mt-5">
+                <h5>Total: $</h6>
+            </div>
+            <div class="d-flex justify-content-around ms-4">
+                <button> Buy! </button>
+                <i class="bi bi-trash3 trashIcon"></i>
+            </div>
+        </div>
     {{else}}
         <p>Your cart is empty</p>
     {{/if}}

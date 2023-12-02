@@ -5,7 +5,7 @@ body{
     min-height: 100vh;
 }
 
-i{
+.cartIcon{
     font-size:xx-large;
     cursor: pointer;
 }
@@ -35,5 +35,20 @@ footer{
     margin: 4px 2px;
     cursor: pointer;
     transform: skew(-20deg);
+}
+
+.cartProducts{
+    border: 1px solid;
+    border-radius: 10px;
+    margin: 10px;
+    padding: 10px;
+}
+
+.delProdIcon{
+    font-size: x-large;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: 20px;
+    cursor: pointer;
 }
 
