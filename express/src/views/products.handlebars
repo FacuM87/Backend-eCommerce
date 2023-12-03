@@ -1,7 +1,10 @@
 <main class="d-flex justify-content-center productsView container mb-5">
     
     {{#if user}}
+    <div class="d-flex flex-column">
         <p>Bienvenido {{user.name}}!</p>
+        <a href="/api/session/logout">Logout</a>
+    </div>
     {{/if}}
     
     <div class="mt-4">
