@@ -6,6 +6,19 @@ const router = Router()
 router.post("/login", async(req, res) => {
     const { email, password } = req.body
     console.log(req.body);
+
+    if (email === "adminCoder@coder.com" && password === "adminCod3r123") {
+        const adminUser = {
+            name: "admin",
+            last_name: "",
+            email: "adminCoder@coder.com",
+            password: "adminCod3r123",
+            role: "admin"
+        };
+        req.session.user = adminUser;
+        return res.redirect("/products");
+    }
+
     const user = await UserModel.findOne({ email, password })
 
     if(!user) return res.status(404).send('User Not Found')
