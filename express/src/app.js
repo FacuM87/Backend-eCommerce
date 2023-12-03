@@ -18,13 +18,6 @@ const app = express()
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 
-/* -- HandleBars -- */
-app.engine('handlebars', handlebars.engine())
-app.use("/static", express.static(__dirname + "/public"))
-app.set("views", __dirname+"/views")
-app.set("view engine", "handlebars")
-app.use("/", viewsRouter)
-
 /* -- Mongo DB -- */
 const mongoURL = "mongodb+srv://Facu1987:x1oJKy30EFuwzMzd@clusterfacu.ehmj1ig.mongodb.net/"
 const mongoDB = "ecommerce"
@@ -42,11 +35,19 @@ app.use(session({
     store: MongoStore.create({
         mongoUrl: mongoURL,
         dbName: mongoDB
-    }),
+    }),    
     secret: "secret",
     resave: true,
     saveUninitialized: true
-}))
+}))    
+
+/* -- HandleBars -- */
+app.engine('handlebars', handlebars.engine())
+app.use("/static", express.static(__dirname + "/public"))
+app.set("views", __dirname+"/views")
+app.set("view engine", "handlebars")
+app.use("/", viewsRouter)
+
 
 /* -- WebSocket -- */
 const httpServer = app.listen(8080, () => console.log("Listening in 8080"))
