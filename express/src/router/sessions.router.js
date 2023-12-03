@@ -10,7 +10,7 @@ router.post("/login", async(req, res) => {
     if (email === "adminCoder@coder.com" && password === "adminCod3r123") {
         const adminUser = {
             name: "admin",
-            last_name: "",
+            last_name: "admin",
             email: "adminCoder@coder.com",
             password: "adminCod3r123",
             role: "admin"
