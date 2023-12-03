@@ -73,9 +73,8 @@ router.get("/products", async (req, res)=> {
         const page = parseInt(req.query.page) || 1
         const query = req.query.query || ""
         const sort = req.query.sort
-
         const sortValue= sort === "Desc" ? { price: -1 } : (sort === "Asc" ? { price: 1 } : {})
- 
+
         const search = {}
        // if (query) {search.title= { "$regex": query, "$options": "i" }}
 
@@ -98,6 +97,7 @@ router.get("/products", async (req, res)=> {
         result.query = query
         result.sortOrder = sortValue
         result.status = "succes"
+        result.user = req.session.user
         delete result.docs
 
         console.log(result);
@@ -107,6 +107,10 @@ router.get("/products", async (req, res)=> {
         console.log("Error: " + error);
         res.send(error)
     }
+})
+
+router.get("/index", (req, res) => {
+    res.render("index")
 })
 
 

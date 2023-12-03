@@ -13,7 +13,7 @@ router.post("/login", async(req, res) => {
     req.session.user = user
     console.log(user);
 
-    return res.redirect("/profile")
+    return res.redirect("/products")
 })
 
 router.post("/register", async(req, res) => {
@@ -23,4 +23,13 @@ router.post("/register", async(req, res) => {
 
     return res.redirect("/")
 })
+
+router.get("/logout", (req, res) => {
+    req.session.destroy(err => {
+        if(err) return res.send("Logout error")
+
+        return res.redirect("/")
+    })
+})
+
 export default router
