@@ -21,7 +21,7 @@ router.post("/login", async(req, res) => {
 
     const user = await UserModel.findOne({ email, password })
 
-    if(!user) return res.status(404).send('User Not Found')
+    if(!user) return res.status(404).send("User Not Found")
 
     req.session.user = user
     console.log(user);
