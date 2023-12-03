@@ -7,6 +7,7 @@ import __dirname from "./utils.js"
 import { Server } from "socket.io"
 import cartRouter from "./router/cart.router.js"
 import productsRouter from "./router/products.router.js"
+import sessionRouter from "./router/sessions.router.js"
 //import ProductManager from "./dao/fsManagers/ProductManager.js"
 import mongoose from "mongoose"
 import ProductModel from "./dao/mongo/models/products.model.js"
@@ -111,3 +112,4 @@ socketServer.on("connection", async socket => {
 /* -- API routes -- */
 app.use("/api/products", productsRouter)
 app.use("/api/carts", cartRouter)
+app.use("/api/session", sessionRouter)

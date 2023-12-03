@@ -57,3 +57,10 @@ footer{
     font-size: larger;
 }
 
+.loginForm{
+    border: 1px;
+    border-radius: 10px;
+    padding: 20px;
+    background-color: rgb(214, 230, 235);
+}
+

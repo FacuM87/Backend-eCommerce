@@ -1,7 +1,8 @@
+const cartId = document.querySelector(".cartId").value
+console.log(cartId);
+
 document.querySelectorAll(".delProdIcon").forEach(icon => {
     icon.onclick = () => {
-        const cartId = document.querySelector(".cartId").value
-        console.log(cartId);
 
        document.querySelectorAll(".cartProductId").forEach(prodId => {
         const productId = prodId.value;
@@ -23,12 +24,8 @@ document.querySelectorAll(".delProdIcon").forEach(icon => {
 
 
 const trashIcon = document.querySelector(".trashIcon")
-
 if (trashIcon) {
     trashIcon.onclick = () => {
-    
-        const cartId = document.querySelector(".cartId").value
-            console.log(cartId)
         
         fetch(`/api/carts/${cartId}`, { method: "delete" })
         .then(response => {return response.json();})
