@@ -1,6 +1,6 @@
 # Backend eCommerce Project
 
-A backend ecommerce project in currently in process, developed in Node JS with Express JS, using Mongo DB as no relational data base, and Handlebars for screen renders. 
+A backend ecommerce project currently in process, developed in Node JS with Express JS, using Mongo DB as no relational data base, and Handlebars for screen renders. 
 
 It also implements users login/logout using express-session libraries to manage cookies, and a chat developed using Web Sockets through sockets.io library.
 
