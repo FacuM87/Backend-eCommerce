@@ -34,7 +34,8 @@ mongoose.connect(mongoURL, {dbName: mongoDB})
 app.use(session({
     store: MongoStore.create({
         mongoUrl: mongoURL,
-        dbName: mongoDB
+        dbName: mongoDB,
+        ttl: 100
     }),    
     secret: "secret",
     resave: true,

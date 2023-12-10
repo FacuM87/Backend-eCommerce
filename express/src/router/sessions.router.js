@@ -1,5 +1,6 @@
 import { Router } from "express"
 import UserModel from "../dao/mongo/models/user.model.js"
+import { createHash, validatePassword } from "../utils.js"
 
 const router = Router() 
 
@@ -19,9 +20,10 @@ router.post("/login", async(req, res) => {
         return res.redirect("/products");
     }
 
-    const user = await UserModel.findOne({ email, password })
+    const user = await UserModel.findOne({ email })
 
-    if(!user) return res.status(404).send("User Not Found")
+    if(!user) return res.status(401).send("User Not Found")
+    if(!validatePassword(password, user)) return res.status(403).send("Invalid Credentials")
 
     req.session.user = user
     console.log(user);
@@ -32,6 +34,7 @@ router.post("/login", async(req, res) => {
 router.post("/register", async(req, res) => {
     const user = req.body
     console.log(user);
+    user.password = createHash(user.password)
     await UserModel.create(user)
 
     return res.redirect("/")
