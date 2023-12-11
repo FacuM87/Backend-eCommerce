@@ -1,11 +1,12 @@
 import { Router } from "express"
+import passport from "passport"
 import UserModel from "../dao/mongo/models/user.model.js"
 import { createHash, validatePassword } from "../utils.js"
 
 const router = Router() 
 
-router.post("/login", async(req, res) => {
-    const { email, password } = req.body
+router.post("/login", passport.authenticate("login", {failureRedirect:"/"}) , async(req, res) => {
+    /* const { email, password } = req.body
     console.log(req.body);
 
     if (email === "adminCoder@coder.com" && password === "adminCod3r123") {
@@ -24,19 +25,17 @@ router.post("/login", async(req, res) => {
 
     if(!user) return res.status(401).send("User Not Found")
     if(!validatePassword(password, user)) return res.status(403).send("Invalid Credentials")
+ */
+    if (!req.user) return res.status(401).send("Invalid Credentials")
 
-    req.session.user = user
-    console.log(user);
+    req.session.user = req.user
+    console.log(req.user);
 
     return res.redirect("/products")
 })
 
-router.post("/register", async(req, res) => {
-    const user = req.body
-    console.log(user);
-    user.password = createHash(user.password)
-    await UserModel.create(user)
-
+router.post("/register", passport.authenticate("register", {failureRedirect:"/register"}),async(req, res) => {
+    
     return res.redirect("/")
 })
 

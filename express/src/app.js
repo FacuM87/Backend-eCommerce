@@ -12,6 +12,8 @@ import sessionRouter from "./router/sessions.router.js"
 import mongoose from "mongoose"
 import ProductModel from "./dao/mongo/models/products.model.js"
 import MessagesModel from "./dao/mongo/models/messages.model.js"
+import passport from "passport"
+import initializePassport from "./config.js"
 
 /* -- Express -- */
 const app = express()
@@ -114,4 +116,9 @@ socketServer.on("connection", async socket => {
 /* -- API routes -- */
 app.use("/api/products", productsRouter)
 app.use("/api/carts", cartRouter)
+
+/* -- Passport -- */
+initializePassport()
+app.use(passport.initialize())
+app.use(passport.session())
 app.use("/api/session", sessionRouter)
