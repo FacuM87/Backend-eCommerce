@@ -30,7 +30,7 @@ mongoose.connect(mongoURL, {dbName: mongoDB})
     .catch(e => {
         console.log(e);
         res.send(e)
-    })  
+    })   
 
 /* -- Sessions -- */
 app.use(session({
@@ -42,7 +42,7 @@ app.use(session({
     secret: "secret",
     resave: true,
     saveUninitialized: true
-}))    
+}))  
 
 /* -- HandleBars -- */
 app.engine('handlebars', handlebars.engine())
@@ -116,9 +116,10 @@ socketServer.on("connection", async socket => {
 /* -- API routes -- */
 app.use("/api/products", productsRouter)
 app.use("/api/carts", cartRouter)
+app.use("/api/session", sessionRouter)
+
 
 /* -- Passport -- */
 initializePassport()
 app.use(passport.initialize())
-app.use(passport.session())
-app.use("/api/session", sessionRouter)
+app.use(passport.session()) 
