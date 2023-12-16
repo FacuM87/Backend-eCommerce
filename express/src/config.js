@@ -47,14 +47,15 @@ const initializePassport = () => {
     passport.use("github", new GitHubStrategy({
         clientID: "Iv1.72fde9aad825e610",
         clientSecret: "06e6ea52f4385556769f93dd99ef6fb5c51f6dd7",
-        callbackURL: "http://127.0.0.1:8080/api/session/githubcallback"
-    }, async (profile, accessToken, refreshToken, done) =>{
+        callbackURL: "http://127.0.0.1:8080/api/session/githubcallback",
+        scope: ["user:email"]
+    }, async (accessToken, refreshToken, profile, done) =>{
         console.log(profile);
-
         try {
             const user = await UserModel.findOne({email: profile._json.email})
+            console.log(user);
             if(user){
-                console.log("User is already logged in")
+                console.log("User is logged in")
                 return done(null, user);
             }
 

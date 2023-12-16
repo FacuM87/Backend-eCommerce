@@ -49,7 +49,7 @@ app.engine('handlebars', handlebars.engine())
 app.use("/static", express.static(__dirname + "/public"))
 app.set("views", __dirname+"/views")
 app.set("view engine", "handlebars")
-app.use("/", viewsRouter)
+
 
 
 /* -- WebSocket -- */
@@ -113,13 +113,13 @@ socketServer.on("connection", async socket => {
 })
 
 
-/* -- API routes -- */
-app.use("/api/products", productsRouter)
-app.use("/api/carts", cartRouter)
-app.use("/api/session", sessionRouter)
-
-
 /* -- Passport -- */
 initializePassport()
 app.use(passport.initialize())
 app.use(passport.session()) 
+
+/* -- API routes -- */
+app.use("/", viewsRouter)
+app.use("/api/products", productsRouter)
+app.use("/api/carts", cartRouter)
+app.use("/api/session", sessionRouter)
