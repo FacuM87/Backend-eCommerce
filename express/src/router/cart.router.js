@@ -136,24 +136,6 @@ router.put("/:cid/products/:pid", async (req,res) =>{
     }
 })
 
-/* 
-
-Para verificar la ruta siguiente dejo un id de un carrito vacío y un array de productos para postman
-
-cid: 6563bb7e38fe3f2035a87c54
-
-[
-    {
-        "quantity":2,
-        "product": "6562b12c1552b1e892e6f33b"
-    },
-    {
-        "quantity":6,
-        "product":"6562b12c1552b1e892e6f343"
-    }
-]
-
-*/
 router.put("/:cid", async (req,res) =>{
     try {
         const cartId = req.params.cid

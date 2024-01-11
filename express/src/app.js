@@ -14,6 +14,9 @@ import ProductModel from "./dao/mongo/models/products.model.js"
 import MessagesModel from "./dao/mongo/models/messages.model.js"
 import passport from "passport"
 import initializePassport from "./config.js"
+import dotenv from "dotenv"
+
+dotenv.config()
 
 /* -- Express -- */
 const app = express()
@@ -21,8 +24,10 @@ app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 
 /* -- Mongo DB -- */
-const mongoURL = "mongodb+srv://Facu1987:x1oJKy30EFuwzMzd@clusterfacu.ehmj1ig.mongodb.net/"
-const mongoDB = "ecommerce"
+
+const mongoURL = process.env.MONGO_URL
+const mongoDB = process.env.MONGO_DB
+
 mongoose.connect(mongoURL, {dbName: mongoDB})
     .then(() => {
         console.log("Mongo DB connected")
