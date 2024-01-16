@@ -1,4 +1,4 @@
-import CartsModel from "../models/carts.model";
+import CartsModel from "../models/carts.model.js";
 
 export const getCarts = async () =>{
     return await CartsModel.find().lean().exec()

@@ -3,7 +3,7 @@ import ProductsModel from "../dao/mongo/models/products.model.js";
 
 export const cartView = async (req, res) => {
     try {
-        const cartId = req.params.cid
+        const cartId = req.session.user.cart
         const populatedCart = await CartsModel.findById(cartId).populate("products.product").lean().exec();
 
         console.log({populatedCart});

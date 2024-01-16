@@ -10,14 +10,11 @@ const UserModel = mongoose.model("users", new mongoose.Schema({
         enum: ["admin", "user"],
         default: "user"
     },
-    cart: {
-		type: [
+    cart:
 			{
 				type: mongoose.Schema.Types.ObjectId,
 				ref: 'carts',
-			},
-		],
-	},
+			}
 }))
 
 export default UserModel

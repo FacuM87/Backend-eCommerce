@@ -113,7 +113,7 @@ export const changeProductQuantityInCart = async (req,res) =>{
 
         productToUpdate.quantity += quantityToAdd
         console.log(productToUpdate);
-
+        
         console.log(cart);
 
         const updatingCart = await CartsModel.updateOne(

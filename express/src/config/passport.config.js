@@ -4,14 +4,12 @@ import GitHubStrategy from "passport-github2"
 import UserModel from "../dao/mongo/models/user.model.js"
 import { createHash, validatePassword } from "../utils.js"
 import config from "./config.js"
+import CartsModel from "../dao/mongo/models/carts.model.js"
+import { createNewCart } from "../dao/mongo/managers/mongo.cart.manager.js"
 
-const gitclientID="Iv1.72fde9aad825e610"
-const gitclientSecret="06e6ea52f4385556769f93dd99ef6fb5c51f6dd7"
-const gitcallbackURL="http://127.0.0.1:8080/api/session/githubcallback"
-
-/* const gitclientID=config.githubClientId
+const gitclientID=config.githubClientId
 const gitclientSecret=config.githubClientSecret
-const gitcallbackURL=config.githubClientCallback */
+const gitcallbackURL=config.githubClientCallback
 
 const LocalStrategy = local.Strategy
 
@@ -94,10 +92,13 @@ const initializePassport = () => {
                 return done(null, false)
             }
             
+            const newCart = await createNewCart()
+            console.log(newCart)
             const newUser = {
                 name,
                 email,
-                password: createHash(password)
+                password: createHash(password),
+                cart: newCart._id
             }
     
             const result = await UserModel.create(newUser)
