@@ -4,7 +4,7 @@ import { createNewCart, getCartByID } from "../dao/mongo/managers/mongo.cart.man
 
 export const addProductToCart = async (req,res) => {
     try {
-        const cartId = req.params.cid
+        const cartId = req.session.user.cart
         const productId = req.params.pid
         //res.send(await cartManager.addProductToCart(productId,cartId))
         const cart = await getCartByID(cartId) /* await CartsModel.findById(cartId) */ 
