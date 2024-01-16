@@ -1,12 +1,13 @@
 import CartsModel from "../dao/mongo/models/carts.model.js"
 import ProductsModel from "../dao/mongo/models/products.model.js";
+import { createNewCart, getCartByID } from "../dao/mongo/managers/mongo.cart.manager.js";
 
 export const addProductToCart = async (req,res) => {
     try {
         const cartId = req.params.cid
         const productId = req.params.pid
         //res.send(await cartManager.addProductToCart(productId,cartId))
-        const cart = await CartsModel.findById(cartId)
+        const cart = await getCartByID(cartId) /* await CartsModel.findById(cartId) */ 
         const product = await ProductsModel.findById(productId)
 
         if (!product) {
@@ -47,7 +48,7 @@ export const deleteProductFromCart = async (req,res) =>{
         const productId = req.params.pid.toString()
         console.log(productId);
 
-        const cart = await CartsModel.findById(cartId)
+        const cart = await getCartByID(cartId)/* await CartsModel.findById(cartId) */
         console.log("Carrito"+cart);
         
         const newProducts = cart.products.filter(product => product.product != productId);
@@ -68,7 +69,7 @@ export const deleteProductFromCart = async (req,res) =>{
 export const emptyCart = async (req,res) =>{
     try {
         const cartId = req.params.cid
-        const cart = await CartsModel.findById(cartId)
+        const cart = await getCartByID (cartId) /*await CartsModel.findById(cartId)*/
         const emptyCart = cart.products = []
 
         const emptyingCart = await CartsModel.updateOne(
@@ -88,7 +89,7 @@ export const emptyCart = async (req,res) =>{
 export const createCart = async (req,res) => {
     try {
         //const message = await cartManager.createNewCart()
-        const cartCreated = await CartsModel.create({products:[]})
+        const cartCreated = await createNewCart() /*await CartsModel.create({products:[]})*/
         console.log(JSON.stringify(cartCreated));
         const carts = await CartsModel.find().lean().exec()
         console.log(JSON.stringify(carts));
@@ -106,7 +107,7 @@ export const changeProductQuantityInCart = async (req,res) =>{
         const cartId = req.params.cid
         const productId = req.params.pid
     
-        const cart = await CartsModel.findById(cartId)
+        const cart = await getCartByID(cartId)
 
         const productToUpdate = cart.products.find(p => p.product == productId)
 
