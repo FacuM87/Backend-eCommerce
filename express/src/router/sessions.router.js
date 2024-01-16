@@ -1,16 +1,10 @@
 import { Router } from "express"
 import passport from "passport"
+import { login } from "../controllers/sessions.controller"
 
 const router = Router() 
 
-router.post("/login", passport.authenticate("login", {failureRedirect:"/"}) , async(req, res) => {
-    if (!req.user) return res.status(401).send("Invalid Credentials")
-
-    req.session.user = req.user
-    console.log(req.user);
-
-    return res.redirect("/products")
-})
+router.post("/login", passport.authenticate("login", {failureRedirect:"/"}) , login)
 
 router.get("/github", passport.authenticate("github", { scope: ["user:email"] } ), (req,res) => {})
 

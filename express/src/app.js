@@ -13,10 +13,9 @@ import mongoose from "mongoose"
 import ProductModel from "./dao/mongo/models/products.model.js"
 import MessagesModel from "./dao/mongo/models/messages.model.js"
 import passport from "passport"
-import initializePassport from "./config.js"
-import dotenv from "dotenv"
+import initializePassport from "./config/passport.config.js"
+import config from "./config/config.js"
 
-dotenv.config()
 
 /* -- Express -- */
 const app = express()
@@ -25,15 +24,18 @@ app.use(express.urlencoded({extended:true}))
 
 /* -- Mongo DB -- */
 
-const mongoURL = process.env.MONGO_URL
-const mongoDB = process.env.MONGO_DB
+const mongoURL="mongodb+srv://Facu1987:x1oJKy30EFuwzMzd@clusterfacu.ehmj1ig.mongodb.net/"
+const mongoDB="ecommerce" 
+
+/* const mongoURL = config.mongoUrl
+const mongoDB = config.mongoDB */
 
 mongoose.connect(mongoURL, {dbName: mongoDB})
     .then(() => {
         console.log("Mongo DB connected")
     })
     .catch(e => {
-        console.log(e);
+        console.log("Couldnt connect with DB, error message: "+e);
         res.send(e)
     })   
 
@@ -56,9 +58,11 @@ app.set("views", __dirname+"/views")
 app.set("view engine", "handlebars")
 
 
-
 /* -- WebSocket -- */
-const httpServer = app.listen(8080, () => console.log("Listening in 8080"))
+
+const port = config.port || 8080
+
+const httpServer = app.listen( port, () => console.log("Listening in "+port ))
 const socketServer = new Server(httpServer) 
 socketServer.on("connection", async socket => {
     console.log("Client connected")
