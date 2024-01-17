@@ -56,3 +56,12 @@ export const productsView = async (req, res)=> {
         res.send(error)
     }
 }
+
+export const checkCartSession = async (req, res) => {
+    const cartSessionActive = req.session.user
+    console.log(cartSessionActive);
+    if(cartSessionActive != undefined){
+        const cartId = req.session.user.cart
+        return res.redirect(`/cart/${cartId}`)
+    } else { return res.send("Login first!") }
+}

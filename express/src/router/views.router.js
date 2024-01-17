@@ -1,8 +1,7 @@
 import { Router } from "express";
 //import db from "../../db.json" assert { type: "json" };
 import ProductsModel from "../dao/mongo/models/products.model.js";
-import CartsModel from "../dao/mongo/models/carts.model.js";
-import { cartView, productsView } from "../controllers/views.controller.js";
+import { cartView, productsView, checkCartSession } from "../controllers/views.controller.js";
 
 
 const router = Router ()
@@ -50,7 +49,7 @@ router.get("/chat", (req, res) =>{
 })
 
 /* -- Cart -- */
-
+router.get("/cart", checkCartSession)
 router.get("/cart/:cid", cartView)
 
 
