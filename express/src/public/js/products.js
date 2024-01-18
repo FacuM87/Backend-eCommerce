@@ -61,11 +61,10 @@ document.getElementById("sort").onchange = () =>{
 
 document.querySelectorAll(".addToCartBtn").forEach(button => {
     button.onclick = () => {
-        const cartId = "6563ba4238fe3f2035a87c39";
         const productId = button.parentElement.querySelector(".productId").value;
         console.log(productId);
 
-        fetch(`/api/carts/${cartId}/product/${productId}`, { method: "post" })
+        fetch(`/api/carts/cartId/product/${productId}`, { method: "post" })
             .then(response => {
                 return response.json();
             })
