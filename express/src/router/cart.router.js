@@ -1,6 +1,6 @@
 import { Router } from "express";
 //import CartManager from "../dao/fsManagers/CartsManager.js";
-import { addProductToCart, changeProductQuantityInCart, createCart, deleteProductFromCart, emptyCart, insertProductsToCart } from "../controllers/carts.controller.js";
+import { addProductToCart, changeProductQuantityInCart, createCart, deleteProductFromCart, emptyCart, insertProductsToCart, checkOutProcess } from "../controllers/carts.controller.js";
 
 const router = Router()
 
@@ -18,4 +18,5 @@ router.put("/:cid/products/:pid", changeProductQuantityInCart)
 
 router.put("/:cid", insertProductsToCart)
 
+router.post("/:cid/purchase", checkOutProcess)
 export default router

@@ -146,3 +146,7 @@ export const insertProductsToCart = async (req,res) =>{
         res.send(error)
     }
 }
+
+export const checkOutProcess = async (req, res) =>{
+    res.send("just a checkout testing message")
+}
