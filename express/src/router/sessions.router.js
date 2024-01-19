@@ -28,4 +28,13 @@ router.get("/logout", (req, res) => {
     }) 
 })
 
+router.get("/current", (req, res) =>{
+    try {
+		const user = req.session.user;
+		return res.send(user);
+	} catch (error) {
+		res.status(500).send("Error Message: "+error);
+	}
+})
+
 export default router
