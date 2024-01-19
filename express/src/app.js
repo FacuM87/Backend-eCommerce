@@ -26,9 +26,6 @@ app.use(express.urlencoded({extended:true}))
 
 /* -- Mongo DB -- */
 
-/* const mongoURL="mongodb+srv://Facu1987:x1oJKy30EFuwzMzd@clusterfacu.ehmj1ig.mongodb.net/"
-const mongoDB="ecommerce"  */
-
 const mongoURL = config.mongoUrl
 const mongoDB = config.mongoDB 
 

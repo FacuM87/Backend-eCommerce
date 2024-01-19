@@ -1,6 +1,5 @@
 import { Router } from "express" 
 // import ProductManager from "../dao/fsManagers/ProductManager.js"
-import ProductsModel from "../dao/mongo/models/products.model.js" 
 import { createProduct, deleteProduct, getProductById, getProducts, updateProduct } from "../controllers/products.controller.js"
 
 
