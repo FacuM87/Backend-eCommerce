@@ -4,8 +4,9 @@ import GitHubStrategy from "passport-github2"
 import UserModel from "../dao/mongo/models/user.model.js"
 import { createHash, validatePassword } from "../utils.js"
 import config from "./config.js"
-import CartsModel from "../dao/mongo/models/carts.model.js"
-import { createNewCart } from "../dao/mongo/managers/mongo.cart.manager.js"
+import MongoCartManager from "../dao/mongo/managers/mongo.cart.manager.js"
+
+const cartManager = new MongoCartManager()
 
 const gitclientID=config.githubClientId
 const gitclientSecret=config.githubClientSecret
@@ -91,7 +92,7 @@ const initializePassport = () => {
                 return done(null, false)
             }
             
-            const newCart = await createNewCart()
+            const newCart = await cartManager.createNewCart()
             console.log(newCart)
             const newUser = {
                 first_name,

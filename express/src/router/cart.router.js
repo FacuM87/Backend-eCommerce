@@ -19,4 +19,5 @@ router.put("/:cid/products/:pid", changeProductQuantityInCart)
 router.put("/:cid", insertProductsToCart)
 
 router.post("/:cid/purchase", checkOutProcess)
+
 export default router

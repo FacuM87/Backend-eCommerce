@@ -1,10 +1,13 @@
-import CartsModel from "../dao/mongo/models/carts.model.js";
-import ProductsModel from "../dao/mongo/models/products.model.js";
+import MongoCartManager from "../dao/mongo/managers/mongo.cart.manager.js";
+import MongoProductManager from "../dao/mongo/managers/mongo.product.manager.js";
+
+const cartManager = new MongoCartManager()
+const productManager = new MongoProductManager()
 
 export const cartView = async (req, res) => {
     try {
         const cartId = req.session.user.cart
-        const populatedCart = await CartsModel.findById(cartId).populate("products.product").lean().exec();
+        const populatedCart = await cartManager.getPopulatedCart(cartId) 
 
         console.log({populatedCart});
         res.render("cart",{cart: populatedCart})
@@ -33,13 +36,7 @@ export const productsView = async (req, res)=> {
             ];
         }
 
-        const result = await ProductsModel.paginate(search
-        , {
-            page: query? 1: page,
-            limit,
-            sort: sortValue,
-            lean: true
-        })
+        const result = await productManager.getProducts(search, query, page, limit, sortValue)
 
         result.payload = result.docs
         result.query = query
@@ -58,8 +55,10 @@ export const productsView = async (req, res)=> {
 }
 
 export const checkCartSession = async (req, res) => {
+
     const cartSessionActive = req.session.user
     console.log(cartSessionActive);
+
     if(cartSessionActive != undefined){
         const cartId = req.session.user.cart
         return res.redirect(`/cart/${cartId}`)

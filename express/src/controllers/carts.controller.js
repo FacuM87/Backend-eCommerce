@@ -1,14 +1,16 @@
-import CartsModel from "../dao/mongo/models/carts.model.js"
-import ProductsModel from "../dao/mongo/models/products.model.js";
-import { createNewCart, getCartByID } from "../dao/mongo/managers/mongo.cart.manager.js";
+import MongoCartManager from "../dao/mongo/managers/mongo.cart.manager.js";
+import MongoProductManager from "../dao/mongo/managers/mongo.product.manager.js";
+
+const cartManager = new MongoCartManager()
+const productManager = new MongoProductManager()
 
 export const addProductToCart = async (req,res) => {
     try {
         const cartId = req.session.user.cart
         const productId = req.params.pid
-        //res.send(await cartManager.addProductToCart(productId,cartId))
-        const cart = await getCartByID(cartId) /* await CartsModel.findById(cartId) */ 
-        const product = await ProductsModel.findById(productId)
+
+        const cart = await cartManager.getCartByID(cartId) 
+        const product = await productManager.getProductById(productId)
 
         if (!product) {
             console.log("Wrong Product ID");
@@ -48,15 +50,13 @@ export const deleteProductFromCart = async (req,res) =>{
         const productId = req.params.pid.toString()
         console.log(productId);
 
-        const cart = await getCartByID(cartId)/* await CartsModel.findById(cartId) */
-        console.log("Carrito"+cart);
+        const cart = await cartManager.getCartByID(cartId)
+        console.log("Cart: "+cart);
         
         const newProducts = cart.products.filter(product => product.product != productId);
-        console.log("Nuevo array de productos"+newProducts);
+        console.log("New products array: "+newProducts);
 
-        const deletingDocument = await CartsModel.updateOne(
-        {_id: cartId}, 
-        { $set: { products: newProducts } })
+        const deletingDocument = await cartManager.updateCart(cartId, newProducts)
         
         res.send(deletingDocument)         
         
@@ -69,13 +69,10 @@ export const deleteProductFromCart = async (req,res) =>{
 export const emptyCart = async (req,res) =>{
     try {
         const cartId = req.params.cid
-        const cart = await getCartByID (cartId) /*await CartsModel.findById(cartId)*/
+        const cart = await cartManager.getCartByID (cartId) 
+        
         const emptyCart = cart.products = []
-
-        const emptyingCart = await CartsModel.updateOne(
-            {_id: cartId}, 
-            { $set: { products: emptyCart } }
-        )
+        const emptyingCart = await cartManager.updateCart(cartId, emptyCart) 
 
         console.log(emptyingCart)
         res.send(emptyingCart)
@@ -88,10 +85,10 @@ export const emptyCart = async (req,res) =>{
 
 export const createCart = async (req,res) => {
     try {
-        //const message = await cartManager.createNewCart()
-        const cartCreated = await createNewCart() /*await CartsModel.create({products:[]})*/
-        console.log(JSON.stringify(cartCreated));
-        const carts = await CartsModel.find().lean().exec()
+        const cartCreated = await cartManager.createNewCart() 
+        console.log(JSON.stringify(cartCreated))
+
+        const carts = await cartManager.getCarts()
         console.log(JSON.stringify(carts));
         res.send("New cart has been created")
         
@@ -107,7 +104,7 @@ export const changeProductQuantityInCart = async (req,res) =>{
         const cartId = req.params.cid
         const productId = req.params.pid
     
-        const cart = await getCartByID(cartId)
+        const cart = await cartManager.getCartByID(cartId)
 
         const productToUpdate = cart.products.find(p => p.product == productId)
 
@@ -116,10 +113,9 @@ export const changeProductQuantityInCart = async (req,res) =>{
         
         console.log(cart);
 
-        const updatingCart = await CartsModel.updateOne(
-            {_id: cartId}, 
-            { $set: {products: cart.products } }
-        )
+        const newQuantity = cart.products
+
+        const updatingCart = await cartManager.updateCart(cartId, newQuantity)
         console.log(updatingCart);
         res.send(updatingCart)
 
@@ -134,12 +130,10 @@ export const insertProductsToCart = async (req,res) =>{
         const cartId = req.params.cid
         const newProducts = req.body
 
-        const updateCart = await CartsModel.updateOne(
-            {_id: cartId}, 
-            { $set: {products: newProducts } }
-        )
-        console.log(updateCart);
-        res.send(updateCart)
+        const updatedCart = await cartManager.updateCart(cartId, newProducts)
+
+        console.log(updatedCart);
+        res.send(updatedCart)
 
     } catch (error) {
         console.log(error);

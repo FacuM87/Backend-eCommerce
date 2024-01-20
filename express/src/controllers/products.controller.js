@@ -1,5 +1,6 @@
-import ProductsModel from "../dao/mongo/models/products.model.js"
+import MongoProductManager from "../dao/mongo/managers/mongo.product.manager.js"
 
+const productManager = new MongoProductManager()
 
 export const getProducts = async (req, res)=> {
     try {
@@ -16,13 +17,7 @@ export const getProducts = async (req, res)=> {
             search.category= { "$regex": query, "$options": "i" }
         }
 
-        const result = await ProductsModel.paginate(search
-        , {
-            page: query? 1: page,
-            limit,
-            sort: sortValue,
-            lean: true
-        })
+        const result = await productManager.getProducts(search, limit, page, query, sortValue) 
 
         result.payload = result.docs
         result.query = query
@@ -43,7 +38,7 @@ export const getProductById = async (req, res) => {
     try {
         const id=req.params.pid
         //const productRequired = await juan.getProductsById(parseInt(id))
-        const productRequired = await ProductsModel.findById(id)
+        const productRequired = await productManager.getProductById(id)
         productRequired? res.json( { productRequired } ) : res.json("Not Found")
         
     } catch (error) {
@@ -58,7 +53,9 @@ export const createProduct = async (req,res) => {
         const { title, category, description, price, thumbnail, code, stock } = product
 
         //const productAdded = await juan.addProduct(title, category, description, price, thumbnail, code, stock)
-        const productAdded = await ProductsModel.create({title, category, description, price, thumbnail, code, stock})
+        const productAdded = await productManager.createProduct(title, category, description, price, thumbnail, code, stock)
+        
+        /* ProductsModel.create({title, category, description, price, thumbnail, code, stock}) */
 
         res.json(productAdded)
 
@@ -73,7 +70,7 @@ export const updateProduct = async (req,res) =>{
         const id = req.params.pid
         const updateRequest = req.body
 
-        const productUpdated = await ProductsModel.updateOne({ _id: id },{ $set: updateRequest });
+        const productUpdated = await updateProduct(id, updateRequest)/* ProductsModel.updateOne({ _id: id },{ $set: updateRequest }); */
         
         res.send({productUpdated})
 
@@ -90,7 +87,8 @@ export const deleteProduct = async (req,res) => {
     try {
         const id=req.params.pid
         //const deletionMessage = await juan.deleteProduct(id)
-        await ProductsModel.deleteOne({ _id: id });
+        await productManager.deleteProduct(id)
+        /* await ProductsModel.deleteOne({ _id: id }) */;
         res.send("Product ID "+id+" has been deleted")
     } catch (error) {
         console.log(error);
