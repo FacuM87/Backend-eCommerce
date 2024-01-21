@@ -13,8 +13,8 @@ const userManager = new MongoUserManager()
 const gitclientID=config.githubClientId
 const gitclientSecret=config.githubClientSecret
 const gitcallbackURL=config.githubClientCallback
-const amdinUserName=/* config.amdinUserName || */ "adminCoder@coder.com"
-const adminPassword=/* config.adminPassword || */ "adminCod3r123"
+const amdinUserName=config.amdinUserName 
+const adminPassword=config.adminPassword 
 
 const LocalStrategy = local.Strategy
 
@@ -24,14 +24,14 @@ const initializePassport = () => {
         usernameField: "email"
     }, async (username, password, done) => {
 
-        if (username === "adminCoder@coder.com" && password === "adminCod3r123") {
+        if (username === amdinUserName && password === adminPassword) {
             const user = {
                 _id:"admin",
                 first_name:"admin",
                 last_name:"admin",
-                email:username,
+                email:amdinUserName,
                 age:"",
-                password:"adminCod3r123",
+                password:adminPassword,
                 role:"admin",
                 cart:""
             };
@@ -115,6 +115,10 @@ const initializePassport = () => {
         } catch (error) {
             done("Error: " + error)
         }        
+    }) )
+
+    passport.use("current", new LocalStrategy({}, async () =>{
+        
     }) )
 
 
