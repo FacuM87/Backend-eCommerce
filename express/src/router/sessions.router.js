@@ -32,7 +32,6 @@ router.get("/logout", (req, res) => {
 router.get("/current", (req, res) =>{
     try {
 		const user = req.session.user;
-        console.log(user);
         const userDTO = new UserDTO(user)
 		return res.send(userDTO);
 	} catch (error) {
