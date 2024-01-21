@@ -4,6 +4,8 @@ dotenv.config()
 
 export default {
     port: process.env.PORT,
+    amdinUserName: process.env.ADMIN_USER,
+    adminPassword: process.env.ADMIN_PASSWORD,
     mongoUrl: process.env.MONGO_URL,
     mongoDB: process.env.MONGO_DB,
     githubClientId: process.env.GITHUB_CLIENT_ID,

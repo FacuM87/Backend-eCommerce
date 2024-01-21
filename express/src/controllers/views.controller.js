@@ -41,7 +41,7 @@ export const productsView = async (req, res)=> {
         result.payload = result.docs
         result.query = query
         result.sortOrder = sortValue
-        result.status = "succes"
+        result.status = "success"
         result.user = req.session.user
         delete result.docs
 
@@ -52,6 +52,11 @@ export const productsView = async (req, res)=> {
         console.log("Error: " + error);
         res.send(error)
     }
+}
+
+export const checkOutView = async (req, res) => {
+   
+    res.render("checkOut",{})
 }
 
 export const checkCartSession = async (req, res) => {

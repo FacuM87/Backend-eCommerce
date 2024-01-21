@@ -1,8 +1,15 @@
 import mongoose from "mongoose"
+import { nanoid } from "nanoid"
 
 const TicketModel = mongoose.model("tickets", new mongoose.Schema({
-    code: String,
-    putchase_datetime: Date,
+    code: {
+        type: String,
+        default: () => nanoid(6)
+    },
+    purchase_datetime: {
+        type: Date,
+        default: Date.now
+    },
     amount: Number,
     purchaser: String
 }))

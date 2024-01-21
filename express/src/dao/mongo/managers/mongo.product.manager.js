@@ -5,6 +5,10 @@ class MongoProductManager {
         this.model = ProductsModel
     }
 
+    createProduct = async ({title, category, description, price, code, stock}) => {
+       return await ProductsModel.create({title, category, description, price, code, stock})
+    }
+
     getProducts = async (search, query, page, limit, sortValue) => { 
         return await ProductsModel.paginate(search
             , {
@@ -15,18 +19,15 @@ class MongoProductManager {
             })
     }
 
-    getProductById = async (id) => { return await ProductsModel.findById(id) }
+    getAllProducts = async () => { return await ProductsModel.find().lean().exec()}
 
-    createProduct = async (title, category, description, price, thumbnail, code, stock) => {
-       return await ProductsModel.create({title, category, description, price, thumbnail, code, stock})
-    }
+    getProductById = async (id) => { return await ProductsModel.findById(id) }
 
     updateProduct = async (id, changes) => { 
        return await ProductsModel.updateOne({ _id: id },{ $set: changes }) 
     }
 
     deleteProduct = async (id) => { return await ProductsModel.deleteOne({ _id: id }) }
-
 
 }
 

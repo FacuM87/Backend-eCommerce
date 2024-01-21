@@ -1,5 +1,6 @@
 import mongoose from "mongoose"
 import mongoosePaginate from "mongoose-paginate-v2"
+import { nanoid } from "nanoid"
 
 const productsCollection = "products"
 
@@ -8,8 +9,11 @@ const productsSchema = new mongoose.Schema({
     category: String,
     description: String,
     price: Number,
-    thumbnail: [], 
-    code: String, 
+    thumbnail: {
+        type: Array,
+        default:[]
+    }, 
+    code: String,
     stock: Number,
     status: Boolean
 })

@@ -1,23 +1,14 @@
 import { Router } from "express";
 //import db from "../../db.json" assert { type: "json" };
+import { checkRegisteredUser, auth, checkAdminPermissions, checkUserPermissions } from "../middlewares/middlewares.js"
 import ProductsModel from "../dao/mongo/models/products.model.js";
-import { cartView, productsView, checkCartSession } from "../controllers/views.controller.js";
+import { cartView, productsView, checkCartSession, checkOutView } from "../controllers/views.controller.js";
 
 
 const router = Router ()
 
 
 /* -- Session Views -- */
-
-const checkRegisteredUser = (req, res, next) => {
-    if(req.session?.user) return res.redirect("/profile")
-    return next()
-}
-
-const auth = (req, res, next) => {
-    if(req.session?.user) return next()
-    res.redirect('/')
-}
 
 router.get("/", checkRegisteredUser, (req,res) => {
     res.render("login", {})
@@ -36,15 +27,15 @@ router.get("/profile", auth, (req, res) => {
 
 /* -- Admin CRUD -- */
 
-router.get("/realtimeproducts", async (req, res) => {
+router.get("/realtimeproducts", /* checkAdminPermissions, */ async (req, res) => {
     res.render("realTimeProducts", {
-        db: /*db*/await ProductsModel.find().lean().exec()
+        db: await ProductsModel.find().lean().exec()
     })
 })
 
 /* -- Chat --  */
 
-router.get("/chat", (req, res) =>{
+router.get("/chat", /* checkUserPermissions, */(req, res) =>{
     res.render("chat", {})
 })
 
@@ -56,10 +47,12 @@ router.get("/cart/:cid", cartView)
 /* -- Products -- */
 
 router.get("/products", productsView)
-
 router.get("/index", (req, res) => {
     res.render("index")
 })
 
+/* -- CheckOut -- */
+
+router.get("/checkout", checkOutView)
 
 export default router

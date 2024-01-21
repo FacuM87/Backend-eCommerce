@@ -1,6 +1,7 @@
 import { Router } from "express";
 //import CartManager from "../dao/fsManagers/CartsManager.js";
 import { addProductToCart, changeProductQuantityInCart, createCart, deleteProductFromCart, emptyCart, insertProductsToCart, checkOutProcess } from "../controllers/carts.controller.js";
+import { checkUserPermissions } from "../middlewares/middlewares.js";
 
 const router = Router()
 
@@ -8,7 +9,7 @@ const router = Router()
 
 router.post("/", createCart)
 
-router.post("/:cid/product/:pid", addProductToCart)
+router.post("/:cid/product/:pid", checkUserPermissions , addProductToCart)
 
 router.delete("/:cid/products/:pid", deleteProductFromCart)
 

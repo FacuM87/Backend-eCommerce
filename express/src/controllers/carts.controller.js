@@ -1,8 +1,58 @@
 import MongoCartManager from "../dao/mongo/managers/mongo.cart.manager.js";
 import MongoProductManager from "../dao/mongo/managers/mongo.product.manager.js";
+import MongoTicketManager from "../dao/mongo/managers/mongo.ticket.manager.js";
 
 const cartManager = new MongoCartManager()
 const productManager = new MongoProductManager()
+const ticketManager = new MongoTicketManager()
+
+export const checkOutProcess = async (req, res) =>{
+    try {
+        const userEmail = req.session.user.email
+        const cartId = req.session.user.cart
+        const cart = await cartManager.getPopulatedCart(cartId)
+        
+        let totalAmount = 0
+        let productsToBuy = []
+        let otherProducts = []
+        const checkStock = async () =>{
+            for (const product of cart.products) {
+                const productQuantity = product.quantity
+                const productId = product.product
+
+                const productInDB = await productManager.getProductById(productId)
+
+                const productStock = productInDB.stock
+                const productPrice = productInDB.price
+                
+                if (productQuantity<=productStock) {
+                    const newProductStock = productStock-productQuantity
+                    const changes = { stock: newProductStock }
+                    const updatedProduct = await productManager.updateProduct(productId, changes)
+                    console.log(updatedProduct);
+
+                    totalAmount+=productQuantity*productPrice
+                    productsToBuy.push(product)
+                } else { otherProducts.push(product) }
+            }
+        }
+        await checkStock()
+        
+        let ticket
+        if (totalAmount>0) {
+            ticket = await ticketManager.createTicket(totalAmount,userEmail)        
+        } else { ticket = "No operation, no ticket"}
+        
+        const cartUpdated = await cartManager.updateCart(cartId, otherProducts)
+        console.log(cartUpdated);
+
+        const result = [productsToBuy, otherProducts, ticket]
+        console.log(result);
+        res.send(result)
+    } catch (error) {
+        console.log(error);    
+    }
+}
 
 export const addProductToCart = async (req,res) => {
     try {
@@ -134,13 +184,9 @@ export const insertProductsToCart = async (req,res) =>{
 
         console.log(updatedCart);
         res.send(updatedCart)
-
+        
     } catch (error) {
         console.log(error);
         res.send(error)
     }
-}
-
-export const checkOutProcess = async (req, res) =>{
-    res.send("just a checkout testing message")
 }

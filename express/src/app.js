@@ -2,16 +2,16 @@ import express from "express"
 import handlebars from "express-handlebars"
 import session from "express-session"
 import MongoStore from "connect-mongo"
-import viewsRouter from "./router/views.router.js"
 import __dirname from "./utils.js"
 import { Server } from "socket.io"
+import viewsRouter from "./router/views.router.js"
 import cartRouter from "./router/cart.router.js"
 import productsRouter from "./router/products.router.js"
 import sessionRouter from "./router/sessions.router.js"
 //import ProductManager from "./dao/fsManagers/ProductManager.js"
 import mongoose from "mongoose"
-import ProductModel from "./dao/mongo/models/products.model.js"
-import MessagesModel from "./dao/mongo/models/messages.model.js"
+import MongoMessagesManager from "./dao/mongo/managers/mongo.messages.manager.js"
+import MongoProductManager from "./dao/mongo/managers/mongo.product.manager.js"
 import passport from "passport"
 import initializePassport from "./config/passport.config.js"
 import config from "./config/config.js"
@@ -43,7 +43,7 @@ app.use(session({
     store: MongoStore.create({
         mongoUrl: mongoURL,
         dbName: mongoDB,
-        ttl: 100
+        ttl: 300
     }),    
     secret: "secret",
     resave: true,
@@ -59,6 +59,8 @@ app.set("view engine", "handlebars")
 
 /* -- WebSocket -- */
 
+const messagesManager = new MongoMessagesManager()
+const productManager = new MongoProductManager()
 const port = config.port || 8080
 
 const httpServer = app.listen( port, () => console.log("Listening in "+port ))
@@ -68,7 +70,7 @@ socketServer.on("connection", async socket => {
     /* const juan = new ProductManager("./db.json") */
     
     try {
-        const products = await ProductModel.find().lean().exec()
+        const products = await productManager.getAllProducts()
         socket.emit("products", products)
     } catch (error) {
         console.log(error);
@@ -83,9 +85,9 @@ socketServer.on("connection", async socket => {
             if (message) {console.log(message)} 
             const products = await juan.getProducts()*/
     
-            const newProduct = await ProductModel.create({title, category, description, price, code, stock})
+            const newProduct = await productManager.createProduct({title, category, description, price, code, stock}) 
             console.log({newProduct});
-            const products = await ProductModel.find().lean().exec()
+            const products = await productManager.getAllProducts()
             socket.emit("products", products)
         } catch (error) {
             console.log(error);
@@ -98,8 +100,8 @@ socketServer.on("connection", async socket => {
             console.log(id);
     /*         const message = await juan.deleteProduct(Number(id))
             if (message) { console.log(message); } */
-            await ProductModel.deleteOne({ _id: id })
-            const products = await ProductModel.find().lean().exec()
+            await productManager.deleteProduct(id)
+            const products = await productManager.getAllProducts()
             socket.emit("products", products)
         } catch (error) {
             console.log(error);
@@ -110,8 +112,8 @@ socketServer.on("connection", async socket => {
     socket.on("message", async ({user, message}) => {
         try {
             console.log({user, message});
-            await MessagesModel.create({user, message})
-            const logs = await MessagesModel.find().lean().exec()
+            await messagesManager.createMessage(user, message)
+            const logs = await messagesManager.getMessages()
             socketServer.emit("logs", logs)
         } catch (error) {
             console.log("Server couldnt redirect chat log to users");
