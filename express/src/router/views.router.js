@@ -1,8 +1,8 @@
 import { Router } from "express";
 //import db from "../../db.json" assert { type: "json" };
 import { checkRegisteredUser, auth, checkAdminPermissions, checkUserPermissions } from "../middlewares/middlewares.js"
-import ProductsModel from "../dao/mongo/models/products.model.js";
 import { cartView, productsView, checkCartSession, checkOutView } from "../controllers/views.controller.js";
+import MongoProductManager from "../dao/mongo/managers/mongo.product.manager.js";
 
 
 const router = Router ()
@@ -27,9 +27,10 @@ router.get("/profile", auth, (req, res) => {
 
 /* -- Admin CRUD -- */
 
+const productManager = new MongoProductManager()
 router.get("/realtimeproducts", /* checkAdminPermissions, */ async (req, res) => {
     res.render("realTimeProducts", {
-        db: await ProductsModel.find().lean().exec()
+        db: await productManager.getAllProducts()
     })
 })
 
