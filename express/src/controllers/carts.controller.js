@@ -1,9 +1,7 @@
-import MongoCartManager from "../dao/mongo/managers/mongo.cart.manager.js";
 import MongoProductManager from "../dao/mongo/managers/mongo.product.manager.js";
 import MongoTicketManager from "../dao/mongo/managers/mongo.ticket.manager.js";
 import { cartService } from "../services/index.repositories.js";
 
-const cartManager = new MongoCartManager()
 const productManager = new MongoProductManager()
 const ticketManager = new MongoTicketManager()
 
@@ -11,7 +9,7 @@ export const checkOutProcess = async (req, res) =>{
     try {
         const userEmail = req.session.user.email
         const cartId = req.session.user.cart
-        const cart = await cartManager.getPopulatedCart(cartId)
+        const cart = await cartService.getPopulatedCart(cartId)
         
         let totalAmount = 0
         let productsToBuy = []
@@ -44,7 +42,7 @@ export const checkOutProcess = async (req, res) =>{
             ticket = await ticketManager.createTicket(totalAmount,userEmail)        
         } else { ticket = "No operation, no ticket"}
         
-        const cartUpdated = await cartManager.updateCart(cartId, otherProducts)
+        const cartUpdated = await cartService.updateCart(cartId, otherProducts)
         console.log(cartUpdated);
 
         const result = [productsToBuy, otherProducts, ticket]
@@ -60,7 +58,7 @@ export const addProductToCart = async (req,res) => {
         const cartId = req.session.user.cart
         const productId = req.params.pid
 
-        const cart = await cartManager.getCartByID(cartId) 
+        const cart = await cartService.getCartById(cartId) 
         const product = await productManager.getProductById(productId)
 
         if (!product) {
@@ -101,13 +99,13 @@ export const deleteProductFromCart = async (req,res) =>{
         const productId = req.params.pid.toString()
         console.log(productId);
 
-        const cart = await cartManager.getCartByID(cartId)
+        const cart = await cartService.getCartById(cartId)
         console.log("Cart: "+cart);
         
         const newProducts = cart.products.filter(product => product.product != productId);
         console.log("New products array: "+newProducts);
 
-        const deletingDocument = await cartManager.updateCart(cartId, newProducts)
+        const deletingDocument = await cartService.updateCart(cartId, newProducts)
         
         res.send(deletingDocument)         
         
@@ -120,10 +118,10 @@ export const deleteProductFromCart = async (req,res) =>{
 export const emptyCart = async (req,res) =>{
     try {
         const cartId = req.params.cid
-        const cart = await cartManager.getCartByID (cartId) 
+        const cart = await cartService.getCartById (cartId) 
         
         const emptyCart = cart.products = []
-        const emptyingCart = await cartManager.updateCart(cartId, emptyCart) 
+        const emptyingCart = await cartService.updateCart(cartId, emptyCart) 
 
         console.log(emptyingCart)
         res.send(emptyingCart)
@@ -138,8 +136,6 @@ export const createCart = async (req,res) => {
     try {
         const cartCreated = await cartService.createNewCart() 
         console.log(JSON.stringify(cartCreated))
-
-        const carts = await cartManager.getCarts()
         res.send("New cart has been created")
         
     } catch (error) {
@@ -154,7 +150,7 @@ export const changeProductQuantityInCart = async (req,res) =>{
         const cartId = req.params.cid
         const productId = req.params.pid
     
-        const cart = await cartManager.getCartByID(cartId)
+        const cart = await cartService.getCartById(cartId)
 
         const productToUpdate = cart.products.find(p => p.product == productId)
 
@@ -165,7 +161,7 @@ export const changeProductQuantityInCart = async (req,res) =>{
 
         const newQuantity = cart.products
 
-        const updatingCart = await cartManager.updateCart(cartId, newQuantity)
+        const updatingCart = await cartService.updateCart(cartId, newQuantity)
         console.log(updatingCart);
         res.send(updatingCart)
 
@@ -180,7 +176,7 @@ export const insertProductsToCart = async (req,res) =>{
         const cartId = req.params.cid
         const newProducts = req.body
 
-        const updatedCart = await cartManager.updateCart(cartId, newProducts)
+        const updatedCart = await cartService.updateCart(cartId, newProducts)
 
         console.log(updatedCart);
         res.send(updatedCart)

@@ -1,13 +1,12 @@
-import MongoCartManager from "../dao/mongo/managers/mongo.cart.manager.js";
 import MongoProductManager from "../dao/mongo/managers/mongo.product.manager.js";
+import { cartService } from "../services/index.repositories.js";
 
-const cartManager = new MongoCartManager()
 const productManager = new MongoProductManager()
 
 export const cartView = async (req, res) => {
     try {
         const cartId = req.session.user.cart
-        const populatedCart = await cartManager.getPopulatedCart(cartId) 
+        const populatedCart = await cartService.getPopulatedCart(cartId) 
 
         console.log({populatedCart});
         res.render("cart",{cart: populatedCart})
@@ -53,7 +52,6 @@ export const productsView = async (req, res)=> {
         res.send(error)
     }
 }
-
 
 export const realTimeProducts = async (req, res) => {
     res.render("realTimeProducts", {
