@@ -1,9 +1,5 @@
-import MongoProductManager from "../dao/mongo/managers/mongo.product.manager.js";
-import MongoTicketManager from "../dao/mongo/managers/mongo.ticket.manager.js";
-import { cartService, productService } from "../services/index.repositories.js";
+import { cartService, productService, ticketService } from "../services/index.repositories.js";
 
-const productManager = new MongoProductManager()
-const ticketManager = new MongoTicketManager()
 
 export const checkOutProcess = async (req, res) =>{
     try {
@@ -39,7 +35,7 @@ export const checkOutProcess = async (req, res) =>{
         
         let ticket
         if (totalAmount>0) {
-            ticket = await ticketManager.createTicket(totalAmount,userEmail)        
+            ticket = await ticketService.createTicket(totalAmount,userEmail)        
         } else { ticket = "No operation, no ticket"}
         
         const cartUpdated = await cartService.updateCart(cartId, otherProducts)
