@@ -1,44 +1,23 @@
 import { Router } from "express";
 //import db from "../../db.json" assert { type: "json" };
 import { checkRegisteredUser, auth, checkAdminPermissions, checkUserPermissions } from "../middlewares/middlewares.js"
-import { cartView, productsView, checkCartSession, checkOutView } from "../controllers/views.controller.js";
-import MongoProductManager from "../dao/mongo/managers/mongo.product.manager.js";
+import { cartView, productsView, checkCartSession, checkOutView, realTimeProducts, index, chat, register, login, profile } from "../controllers/views.controller.js";
 
 
 const router = Router ()
 
 
 /* -- Session Views -- */
-
-router.get("/", checkRegisteredUser, (req,res) => {
-    res.render("login", {})
-})
-
-router.get("/register", checkRegisteredUser, (req,res) => {
-    res.render("register", {})
-})
-
-router.get("/profile", auth, (req, res) => {
-    const user = req.session.user
-    console.log(user);
-    res.render("profile", user)
-})
+router.get("/", checkRegisteredUser, login)
+router.get("/register", checkRegisteredUser, register)
+router.get("/profile", auth, profile)
 
 
 /* -- Admin CRUD -- */
-
-const productManager = new MongoProductManager()
-router.get("/realtimeproducts", /* checkAdminPermissions, */ async (req, res) => {
-    res.render("realTimeProducts", {
-        db: await productManager.getAllProducts()
-    })
-})
+router.get("/realtimeproducts", /* checkAdminPermissions, */ realTimeProducts)
 
 /* -- Chat --  */
-
-router.get("/chat", /* checkUserPermissions, */(req, res) =>{
-    res.render("chat", {})
-})
+router.get("/chat", /* checkUserPermissions, */ chat)
 
 /* -- Cart -- */
 router.get("/cart", checkCartSession)
@@ -46,14 +25,10 @@ router.get("/cart/:cid", cartView)
 
 
 /* -- Products -- */
-
 router.get("/products", productsView)
-router.get("/index", (req, res) => {
-    res.render("index")
-})
+router.get("/index", index)
 
 /* -- CheckOut -- */
-
 router.get("/checkout", checkOutView)
 
 export default router

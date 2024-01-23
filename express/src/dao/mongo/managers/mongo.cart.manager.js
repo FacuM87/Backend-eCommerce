@@ -6,7 +6,7 @@ class MongoCartManager {
         this.model=CartsModel
     }
     
-    createNewCart = async () =>{ return await CartsModel.create({products:[]}) }    
+    create/* NewCart */ = async () =>{ return await CartsModel.create({products:[]}) }    
     
     getCarts = async () =>{ return await CartsModel.find().lean().exec() } 
 

@@ -54,11 +54,42 @@ export const productsView = async (req, res)=> {
     }
 }
 
+
+export const realTimeProducts = async (req, res) => {
+    res.render("realTimeProducts", {
+        db: await productManager.getAllProducts()
+    })
+}
+
+export const index = (req, res) => {
+    res.render("index")
+}
+
+export const chat = (req, res) =>{
+    res.render("chat", {})
+}
+
+export const register = (req,res) => {
+    res.render("register", {})
+}
+
+export const login = (req,res) => {
+    res.render("login", {})
+}
+
+export const profile = (req, res) => {
+    const user = req.session.user
+    console.log(user);
+    res.render("profile", user)
+}
+
 export const checkOutView = async (req, res) => {
-   
     res.render("checkOut",{})
 }
 
+
+
+/* MOVER EL CHECKCARTSESSION DE LUGAR */
 export const checkCartSession = async (req, res) => {
 
     const cartSessionActive = req.session.user

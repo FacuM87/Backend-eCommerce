@@ -1,6 +1,7 @@
 import MongoCartManager from "../dao/mongo/managers/mongo.cart.manager.js";
 import MongoProductManager from "../dao/mongo/managers/mongo.product.manager.js";
 import MongoTicketManager from "../dao/mongo/managers/mongo.ticket.manager.js";
+import { cartService } from "../services/index.repositories.js";
 
 const cartManager = new MongoCartManager()
 const productManager = new MongoProductManager()
@@ -135,11 +136,10 @@ export const emptyCart = async (req,res) =>{
 
 export const createCart = async (req,res) => {
     try {
-        const cartCreated = await cartManager.createNewCart() 
+        const cartCreated = await cartService.createNewCart() 
         console.log(JSON.stringify(cartCreated))
 
         const carts = await cartManager.getCarts()
-        console.log(JSON.stringify(carts));
         res.send("New cart has been created")
         
     } catch (error) {
