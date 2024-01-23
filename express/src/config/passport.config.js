@@ -3,10 +3,9 @@ import local from "passport-local"
 import GitHubStrategy from "passport-github2"
 import { createHash, validatePassword } from "../utils.js"
 import config from "./config.js"
-import MongoCartManager from "../dao/mongo/managers/mongo.cart.manager.js"
 import MongoUserManager from "../dao/mongo/managers/mongo.user.manager.js"
+import { cartService, userService } from "../services/index.repositories.js"
 
-const cartManager = new MongoCartManager()
 const userManager = new MongoUserManager()
 
 const gitclientID=config.githubClientId
@@ -38,7 +37,7 @@ const initializePassport = () => {
         }
 
         try {
-            const user = await userManager.getUserByEmail(username)
+            const user = await userService.getUserByEmail(username)
             if (!user) {
                 console.log("No users registered with that email address");
                 return done(null, false)
@@ -64,7 +63,7 @@ const initializePassport = () => {
     }, async (accessToken, refreshToken, profile, done) =>{
         console.log(profile);
         try {
-            const user = await userManager.getUserByEmail(profile._json.email)  
+            const user = await userService.getUserByEmail(profile._json.email)  
             console.log(user);
             if(user){
                 console.log("User is logged in")
@@ -78,7 +77,7 @@ const initializePassport = () => {
                 password: ""
             }
 
-            const result = await userManager.createUser(newUser)
+            const result = await userService.createUser(newUser)
 
             return done(null, result)
         } catch (error) {
@@ -92,13 +91,13 @@ const initializePassport = () => {
     }, async (req, username, password, done) =>{
         const { first_name, last_name, email, age } = req.body
         try {
-            const user = await userManager.getUserByEmail(username) 
+            const user = await userService.getUserByEmail(username) 
             if(user) {
                 console.log("User is already registered");
                 return done(null, false)
             }
             
-            const newCart = await cartManager.createNewCart()
+            const newCart = await cartService.createNewCart()
             console.log(newCart)
             const newUser = {
                 first_name,
@@ -109,7 +108,7 @@ const initializePassport = () => {
                 cart: newCart._id
             }
     
-            const result = await userManager.createUser(newUser)
+            const result = await userService.createUser(newUser)
             return done(null, result)
         } catch (error) {
             done("Error: " + error)
@@ -130,7 +129,7 @@ const initializePassport = () => {
 			return done(null, false);
 		}
 
-        const user = await userManager.getUserById(id)
+        const user = await userService.getUserById(id)
         done(null, user)
     })
 }
