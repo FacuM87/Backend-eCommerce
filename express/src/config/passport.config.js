@@ -3,10 +3,8 @@ import local from "passport-local"
 import GitHubStrategy from "passport-github2"
 import { createHash, validatePassword } from "../utils.js"
 import config from "./config.js"
-import MongoUserManager from "../dao/mongo/managers/mongo.user.manager.js"
 import { cartService, userService } from "../services/index.repositories.js"
 
-const userManager = new MongoUserManager()
 
 const gitclientID=config.githubClientId
 const gitclientSecret=config.githubClientSecret
