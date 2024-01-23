@@ -3,15 +3,12 @@ import { Router } from "express";
 import { checkRegisteredUser, auth, checkAdminPermissions, checkUserPermissions } from "../middlewares/middlewares.js"
 import { cartView, productsView, checkCartSession, checkOutView, realTimeProducts, index, chat, register, login, profile } from "../controllers/views.controller.js";
 
-
 const router = Router ()
-
 
 /* -- Session Views -- */
 router.get("/", checkRegisteredUser, login)
 router.get("/register", checkRegisteredUser, register)
 router.get("/profile", auth, profile)
-
 
 /* -- Admin CRUD -- */
 router.get("/realtimeproducts", /* checkAdminPermissions, */ realTimeProducts)
@@ -22,7 +19,6 @@ router.get("/chat", /* checkUserPermissions, */ chat)
 /* -- Cart -- */
 router.get("/cart", checkCartSession)
 router.get("/cart/:cid", cartView)
-
 
 /* -- Products -- */
 router.get("/products", productsView)
