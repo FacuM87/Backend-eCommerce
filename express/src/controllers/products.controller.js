@@ -1,4 +1,5 @@
 import MongoProductManager from "../dao/mongo/managers/mongo.product.manager.js"
+import { productService } from "../services/index.repositories.js"
 
 const productManager = new MongoProductManager()
 
@@ -17,7 +18,7 @@ export const getProducts = async (req, res)=> {
             search.category= { "$regex": query, "$options": "i" }
         }
 
-        const result = await productManager.getProducts(search, limit, page, query, sortValue) 
+        const result = await productService.getProducts(search, limit, page, query, sortValue) 
 
         result.payload = result.docs
         result.query = query
@@ -38,7 +39,7 @@ export const getProductById = async (req, res) => {
     try {
         const id=req.params.pid
         //const productRequired = await juan.getProductsById(parseInt(id))
-        const productRequired = await productManager.getProductById(id)
+        const productRequired = await productService.getProductById(id)
         productRequired? res.json( { productRequired } ) : res.json("Not Found")
         
     } catch (error) {
@@ -53,7 +54,7 @@ export const createProduct = async (req,res) => {
         const { title, category, description, price, thumbnail, code, stock } = product
 
         //const productAdded = await juan.addProduct(title, category, description, price, thumbnail, code, stock)
-        const productAdded = await productManager.createProduct(title, category, description, price, thumbnail, code, stock)
+        const productAdded = await productService.createProduct(title, category, description, price, thumbnail, code, stock)
         
         /* ProductsModel.create({title, category, description, price, thumbnail, code, stock}) */
 
@@ -70,7 +71,7 @@ export const updateProduct = async (req,res) =>{
         const id = req.params.pid
         const updateRequest = req.body
 
-        const productUpdated = await updateProduct(id, updateRequest)/* ProductsModel.updateOne({ _id: id },{ $set: updateRequest }); */
+        const productUpdated = await productService.updateProduct(id, updateRequest)/* ProductsModel.updateOne({ _id: id },{ $set: updateRequest }); */
         
         res.send({productUpdated})
 
@@ -87,7 +88,7 @@ export const deleteProduct = async (req,res) => {
     try {
         const id=req.params.pid
         //const deletionMessage = await juan.deleteProduct(id)
-        await productManager.deleteProduct(id)
+        await productService.deleteProduct(id)
         /* await ProductsModel.deleteOne({ _id: id }) */;
         res.send("Product ID "+id+" has been deleted")
     } catch (error) {

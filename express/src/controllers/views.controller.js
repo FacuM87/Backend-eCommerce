@@ -1,5 +1,5 @@
 import MongoProductManager from "../dao/mongo/managers/mongo.product.manager.js";
-import { cartService } from "../services/index.repositories.js";
+import { cartService, productService } from "../services/index.repositories.js";
 
 const productManager = new MongoProductManager()
 
@@ -35,7 +35,7 @@ export const productsView = async (req, res)=> {
             ];
         }
 
-        const result = await productManager.getProducts(search, query, page, limit, sortValue)
+        const result = await productService.getProducts(search, query, page, limit, sortValue)
 
         result.payload = result.docs
         result.query = query
@@ -55,7 +55,7 @@ export const productsView = async (req, res)=> {
 
 export const realTimeProducts = async (req, res) => {
     res.render("realTimeProducts", {
-        db: await productManager.getAllProducts()
+        db: await productService.getAllProducts()
     })
 }
 

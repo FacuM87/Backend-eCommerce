@@ -1,6 +1,6 @@
 import MongoProductManager from "../dao/mongo/managers/mongo.product.manager.js";
 import MongoTicketManager from "../dao/mongo/managers/mongo.ticket.manager.js";
-import { cartService } from "../services/index.repositories.js";
+import { cartService, productService } from "../services/index.repositories.js";
 
 const productManager = new MongoProductManager()
 const ticketManager = new MongoTicketManager()
@@ -19,7 +19,7 @@ export const checkOutProcess = async (req, res) =>{
                 const productQuantity = product.quantity
                 const productId = product.product
 
-                const productInDB = await productManager.getProductById(productId)
+                const productInDB = await productService.getProductById(productId)
 
                 const productStock = productInDB.stock
                 const productPrice = productInDB.price
@@ -27,7 +27,7 @@ export const checkOutProcess = async (req, res) =>{
                 if (productQuantity<=productStock) {
                     const newProductStock = productStock-productQuantity
                     const changes = { stock: newProductStock }
-                    const updatedProduct = await productManager.updateProduct(productId, changes)
+                    const updatedProduct = await productService.updateProduct(productId, changes)
                     console.log(updatedProduct);
 
                     totalAmount+=productQuantity*productPrice
@@ -59,7 +59,7 @@ export const addProductToCart = async (req,res) => {
         const productId = req.params.pid
 
         const cart = await cartService.getCartById(cartId) 
-        const product = await productManager.getProductById(productId)
+        const product = await productService.getProductById(productId)
 
         if (!product) {
             console.log("Wrong Product ID");

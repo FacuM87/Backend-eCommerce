@@ -16,6 +16,7 @@ import passport from "passport"
 import initializePassport from "./config/passport.config.js"
 import config from "./config/config.js"
 import dotenv from "dotenv"
+import { productService } from "./services/index.repositories.js"
 
 
 /* -- Express -- */
@@ -70,7 +71,7 @@ socketServer.on("connection", async socket => {
     /* const juan = new ProductManager("./db.json") */
     
     try {
-        const products = await productManager.getAllProducts()
+        const products = await productService.getAllProducts()
         socket.emit("products", products)
     } catch (error) {
         console.log(error);
@@ -85,9 +86,9 @@ socketServer.on("connection", async socket => {
             if (message) {console.log(message)} 
             const products = await juan.getProducts()*/
     
-            const newProduct = await productManager.createProduct({title, category, description, price, code, stock}) 
+            const newProduct = await productService.createProduct({title, category, description, price, code, stock}) 
             console.log({newProduct});
-            const products = await productManager.getAllProducts()
+            const products = await productService.getAllProducts()
             socket.emit("products", products)
         } catch (error) {
             console.log(error);
@@ -100,8 +101,8 @@ socketServer.on("connection", async socket => {
             console.log(id);
     /*         const message = await juan.deleteProduct(Number(id))
             if (message) { console.log(message); } */
-            await productManager.deleteProduct(id)
-            const products = await productManager.getAllProducts()
+            await productService.deleteProduct(id)
+            const products = await productService.getAllProducts()
             socket.emit("products", products)
         } catch (error) {
             console.log(error);
