@@ -5,15 +5,13 @@ class MongoMessagesManager {
         this.model = MessagesModel()
     }
 
-    createMessage = async (user, message) => {
+    create = async (user, message) => {
         return await MessagesModel.create({user, message})
     }
 
-    getMessages = async () => {
+    get = async () => {
         return await MessagesModel.find().lean().exec()
     }
-
-
 }
 
 export default MongoMessagesManager

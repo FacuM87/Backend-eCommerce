@@ -10,13 +10,11 @@ import productsRouter from "./router/products.router.js"
 import sessionRouter from "./router/sessions.router.js"
 //import ProductManager from "./dao/fsManagers/ProductManager.js"
 import mongoose from "mongoose"
-import MongoMessagesManager from "./dao/mongo/managers/mongo.messages.manager.js"
-import MongoProductManager from "./dao/mongo/managers/mongo.product.manager.js"
 import passport from "passport"
 import initializePassport from "./config/passport.config.js"
 import config from "./config/config.js"
 import dotenv from "dotenv"
-import { productService } from "./services/index.repositories.js"
+import { chatService, productService } from "./services/index.repositories.js"
 
 
 /* -- Express -- */
@@ -60,8 +58,6 @@ app.set("view engine", "handlebars")
 
 /* -- WebSocket -- */
 
-const messagesManager = new MongoMessagesManager()
-const productManager = new MongoProductManager()
 const port = config.port || 8080
 
 const httpServer = app.listen( port, () => console.log("Listening in "+port ))
@@ -113,8 +109,8 @@ socketServer.on("connection", async socket => {
     socket.on("message", async ({user, message}) => {
         try {
             console.log({user, message});
-            await messagesManager.createMessage(user, message)
-            const logs = await messagesManager.getMessages()
+            await chatService.createMessage(user, message)
+            const logs = await chatService.getMessages()
             socketServer.emit("logs", logs)
         } catch (error) {
             console.log("Server couldnt redirect chat log to users");
