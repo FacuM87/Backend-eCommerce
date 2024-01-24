@@ -1,4 +1,4 @@
-import UserDTO from "../DTO/user.dto";
+import UserDTO from "../DTO/user.dto.js";
 
 
 export const login = async(req, res) => {

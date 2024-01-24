@@ -11,7 +11,6 @@ export const auth = (req, res, next) => {
 }
 
 export const checkAdminPermissions = (req, res, next) => {
-    console.log("validating admin role") 
     const sessionActive = req.session.user
     if (sessionActive == undefined) return res.send("Login please")
     if(req.session.user.role !== "admin") return res.status(403).send("Not allowed")
@@ -19,7 +18,6 @@ export const checkAdminPermissions = (req, res, next) => {
 }
 
 export const checkUserPermissions = (req, res, next) => {
-    console.log("validating user role")
     const sessionActive = req.session.user
     if (sessionActive == undefined) return res.send("Login please")
     if(req.session.user.role !== "user") return res.status(403).send("Not allowed")
