@@ -14,6 +14,7 @@ import passport from "passport"
 import initializePassport from "./config/passport.config.js"
 import config from "./config/config.js"
 import dotenv from "dotenv"
+import cors from 'cors'
 import { chatService, productService } from "./services/index.repositories.js"
 
 
@@ -22,6 +23,9 @@ const app = express()
 dotenv.config()
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
+
+/* -- CORS -- */
+app.use(cors())
 
 /* -- Mongo DB -- */
 
