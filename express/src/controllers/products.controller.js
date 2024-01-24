@@ -1,7 +1,5 @@
-import MongoProductManager from "../dao/mongo/managers/mongo.product.manager.js"
 import { productService } from "../services/index.repositories.js"
 
-const productManager = new MongoProductManager()
 
 export const getProducts = async (req, res)=> {
     try {
