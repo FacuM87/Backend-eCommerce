@@ -1,7 +1,4 @@
-import MongoProductManager from "../dao/mongo/managers/mongo.product.manager.js";
 import { cartService, productService } from "../services/index.repositories.js";
-
-const productManager = new MongoProductManager()
 
 export const cartView = async (req, res) => {
     try {
