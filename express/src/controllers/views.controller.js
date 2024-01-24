@@ -49,40 +49,68 @@ export const productsView = async (req, res)=> {
         res.render("products", result)
     } catch (error) {
         console.log("Error: " + error);
-        res.send(error)
+        res.status(500).send(error)
     }
 }
 
 export const realTimeProducts = async (req, res) => {
-    res.render("realTimeProducts", {
-        db: await productService.getAllProducts()
-    })
+    try {
+        res.render("realTimeProducts", {
+            db: await productService.getAllProducts()
+        })     
+    } catch (error) {
+        res.status(500).send(error)
+    }
 }
 
 export const index = (req, res) => {
-    res.render("index")
+    try {
+        res.render("index")
+    } catch (error) {
+        res.status(500).send(error) 
+    }
 }
 
 export const chat = (req, res) =>{
-    res.render("chat", {})
+    try {
+        res.render("chat", {})
+    } catch (error) {
+        res.status(500).send(error)
+    }
 }
 
 export const register = (req,res) => {
-    res.render("register", {})
+    try {
+        res.render("register", {})
+    } catch (error) {
+        res.status(500).send(error)
+    }
 }
 
 export const login = (req,res) => {
-    res.render("login", {})
+    try {
+        res.render("login", {})
+    } catch (error) {
+        res.status(500).send(error)
+    }
 }
 
 export const profile = (req, res) => {
-    const user = req.session.user
-    console.log(user);
-    res.render("profile", user)
+    try {
+        const user = req.session.user
+        console.log(user);
+        res.render("profile", user)
+    } catch (error) {
+        res.status(500).send(error)
+    }
 }
 
 export const checkOutView = async (req, res) => {
-    res.render("checkOut",{})
+    try {
+        res.render("checkOut",{})
+    } catch (error) {
+        res.status(500).send(error)
+    }
 }
 
 

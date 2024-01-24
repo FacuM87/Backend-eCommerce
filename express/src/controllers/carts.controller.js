@@ -1,54 +1,51 @@
-import {
-  cartService,
-  productService,
-  ticketService,
-} from "../services/index.repositories.js";
+import {cartService, productService, ticketService} from "../services/index.repositories.js"
 
 export const checkOutProcess = async (req, res) => {
-  try {
-    const userEmail = req.session.user.email;
-    const cartId = req.session.user.cart;
-    const cart = await cartService.getPopulatedCart(cartId);
+    try {
+        const userEmail = req.session.user.email;
+        const cartId = req.session.user.cart;
+        const cart = await cartService.getPopulatedCart(cartId);
 
-    let totalAmount = 0;
-    let productsToBuy = [];
-    let otherProducts = [];
-    for (const product of cart.products) {
-        const productQuantity = product.quantity;
-        const productId = product.product;
+        let totalAmount = 0;
+        let productsToBuy = [];
+        let otherProducts = [];
+        for (const product of cart.products) {
+            const productQuantity = product.quantity;
+            const productId = product.product;
 
-        const productInDB = await productService.getProductById(productId);
+            const productInDB = await productService.getProductById(productId);
 
-        const productStock = productInDB.stock;
-        const productPrice = productInDB.price;
+            const productStock = productInDB.stock;
+            const productPrice = productInDB.price;
 
-        if (productQuantity <= productStock) {
-            const newProductStock = productStock - productQuantity;
-            const changes = { stock: newProductStock };
-            const updatedProduct = await productService.updateProduct(productId, changes);
-            console.log(updatedProduct);
+            if (productQuantity <= productStock) {
+                const newProductStock = productStock - productQuantity;
+                const changes = { stock: newProductStock };
+                const updatedProduct = await productService.updateProduct(productId, changes);
+                console.log(updatedProduct);
 
-            totalAmount += productQuantity * productPrice;
-            productsToBuy.push(product);
-        } else {otherProducts.push(product)}
+                totalAmount += productQuantity * productPrice;
+                productsToBuy.push(product);
+            } else {otherProducts.push(product)}
+        }
+
+        let ticket;
+        if (totalAmount > 0) {
+        ticket = await ticketService.createTicket(totalAmount, userEmail);
+        } else {
+        ticket = "No operation, no ticket";
+        }
+
+        const cartUpdated = await cartService.updateCart(cartId, otherProducts);
+        console.log(cartUpdated);
+
+        const result = [productsToBuy, otherProducts, ticket];
+        console.log(result);
+        res.status(200).send(result);
+    } catch (error) { 
+        console.log(error)
+        res.status(500).send("CheckOutProcess has failed. Error message: "+error)
     }
-
-    let ticket;
-    if (totalAmount > 0) {
-      ticket = await ticketService.createTicket(totalAmount, userEmail);
-    } else {
-      ticket = "No operation, no ticket";
-    }
-
-    const cartUpdated = await cartService.updateCart(cartId, otherProducts);
-    console.log(cartUpdated);
-
-    const result = [productsToBuy, otherProducts, ticket];
-    console.log(result);
-    res.send(result);
-  } catch (error) {
-    console.log(error);
-  }
 };
 
 export const addProductToCart = async (req, res) => {
@@ -84,10 +81,10 @@ export const addProductToCart = async (req, res) => {
     }
     const result = await cart.save();
     console.log(result);
-    res.send(cart);
+    res.status(200).send(cart);
   } catch (error) {
     console.log(error);
-    res.send("Something went wrong while adding products to cart");
+    res.status(500).send("Something went wrong while adding products to cart. Error message: "+error);
   }
 };
 
@@ -108,10 +105,10 @@ export const deleteProductFromCart = async (req, res) => {
 
     const deletingDocument = await cartService.updateCart(cartId, newProducts);
 
-    res.send(deletingDocument);
+    res.status(200).send("Deletion process has been succesfully done: "+deletingDocument);
   } catch (error) {
     console.log(error);
-    res.send(error);
+    res.status(500).send("Something went wrong while deleting document. Error message: "+error);
   }
 };
 
@@ -124,10 +121,10 @@ export const emptyCart = async (req, res) => {
     const emptyingCart = await cartService.updateCart(cartId, emptyCart);
 
     console.log(emptyingCart);
-    res.send(emptyingCart);
+    res.status(200).send("Empty request was succesful: "+emptyingCart);
   } catch (error) {
     console.log(error);
-    res.send(error);
+    res.status(500).send("Couldnt empty your cart. Error message: "+error);
   }
 };
 
@@ -135,10 +132,10 @@ export const createCart = async (req, res) => {
   try {
     const cartCreated = await cartService.createNewCart();
     console.log(JSON.stringify(cartCreated));
-    res.send("New cart has been created");
+    res.status(201).send("New cart has been created");
   } catch (error) {
     console.log(error);
-    res.send("Something went wrong while creating new cart");
+    res.status(500).send("Something went wrong while creating new cart. Error message: "+error);
   }
 };
 
@@ -161,10 +158,10 @@ export const changeProductQuantityInCart = async (req, res) => {
 
     const updatingCart = await cartService.updateCart(cartId, newQuantity);
     console.log(updatingCart);
-    res.send(updatingCart);
+    res.status(200).send("Product quantity has been updated in cart: "+updatingCart);
   } catch (error) {
     console.log(error);
-    res.send(error);
+    res.status(500).send("Couldnt change product quantity. Error message: "+error);
   }
 };
 
@@ -176,9 +173,9 @@ export const insertProductsToCart = async (req, res) => {
     const updatedCart = await cartService.updateCart(cartId, newProducts);
 
     console.log(updatedCart);
-    res.send(updatedCart);
+    res.status(200).send("Products have been added to cart: "+updatedCart);
   } catch (error) {
     console.log(error);
-    res.send(error);
+    res.status(500).send("Couldnt insert products to cart"+error);
   }
 };

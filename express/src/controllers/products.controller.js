@@ -28,10 +28,10 @@ export const getProducts = async (req, res)=> {
 
         console.log(result);
 
-        res.send(result)
+        res.status(200).send(result)
     } catch (error) {
         console.log("Error: " + error);
-        res.send(error)
+        res.status(500).send(error)
     }
 }
 
@@ -44,7 +44,7 @@ export const getProductById = async (req, res) => {
         
     } catch (error) {
         console.log("Error " + error);
-        res.send(error)    
+        res.status(500).send(error)    
     }
 }
 
@@ -62,7 +62,7 @@ export const createProduct = async (req,res) => {
 
     } catch (error) {
         console.log(error);
-        res.send(error)
+        res.status(500).send(error)
     }
 }
 
@@ -73,14 +73,14 @@ export const updateProduct = async (req,res) =>{
 
         const productUpdated = await productService.updateProduct(id, updateRequest)/* ProductsModel.updateOne({ _id: id },{ $set: updateRequest }); */
         
-        res.send({productUpdated})
+        res.status(200).send({productUpdated})
 
         /*
         const updateMessage = await juan.updateProduct(parseInt(req.params.pid),keyToUpdate,newValue) 
         */
     } catch (error) {
         console.log(error);
-        res.send(error)
+        res.status(500).send(error)
     }
 }
 
@@ -90,10 +90,10 @@ export const deleteProduct = async (req,res) => {
         //const deletionMessage = await juan.deleteProduct(id)
         await productService.deleteProduct(id)
         /* await ProductsModel.deleteOne({ _id: id }) */;
-        res.send("Product ID "+id+" has been deleted")
+        res.status(200).send("Product ID "+id+" has been deleted")
     } catch (error) {
         console.log(error);
-        res.send(error)
+        res.status(500).send(error)
     }
     
 }
