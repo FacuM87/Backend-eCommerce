@@ -38,7 +38,7 @@ mongoose.connect(mongoURL, {dbName: mongoDB})
     })
     .catch(e => {
         console.log("Couldnt connect with DB, error message: "+e);
-        res.send(e)
+        res.status(500).send(e)
     })   
 
 /* -- Sessions -- */
