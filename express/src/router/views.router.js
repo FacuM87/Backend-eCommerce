@@ -11,10 +11,10 @@ router.get("/register", checkRegisteredUser, register)
 router.get("/profile", auth, profile)
 
 /* -- Admin CRUD -- */
-router.get("/realtimeproducts", /* checkAdminPermissions, */ realTimeProducts)
+router.get("/realtimeproducts", checkAdminPermissions, realTimeProducts)
 
 /* -- Chat --  */
-router.get("/chat", /* checkUserPermissions, */ chat)
+router.get("/chat", checkUserPermissions, chat)
 
 /* -- Cart -- */
 router.get("/cart", checkCartSession)

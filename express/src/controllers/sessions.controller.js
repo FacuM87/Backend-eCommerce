@@ -2,31 +2,44 @@ import UserDTO from "../DTO/user.dto.js";
 
 
 export const login = async(req, res) => {
-    if (!req.user) return res.status(401).send("Invalid Credentials")
-
-    console.log(req.user);
-
-    req.session.user = req.user
-
-    return res.redirect("/products")
+    try {
+        if (!req.user) return res.status(401).send("Invalid Credentials")
+        console.log(req.user);
+        req.session.user = req.user
+        return res.status(200).redirect("/products")
+    } catch (error) {
+        return res.status(500).send("Couldnt login. Error message: "+error)
+    }
 }
 
 export const github = (req,res) => {}
 
 export const githubCallback = (req,res) => {   
-    req.session.user = req.user
-    res.redirect("/products")
+    try {
+        req.session.user = req.user
+        res.status(200).redirect("/products")
+    } catch (error) {
+        res.status(500).send("GitHubCallback has failed. Error message: "+error)   
+    }
 }
 
-export const register = async(req, res) => {   
-    return res.redirect("/")
+export const register = async(req, res) => { 
+    try {
+        return res.status(201).redirect("/")
+    } catch (error) {
+        return res.status(500).send("Couldnt process your registe request. Error: "+error)
+    }  
 }
 
 export const logout = (req, res) => {
-    req.session.destroy(err => {
-        if(err) return res.send("Logout error")
-        return res.redirect("/")
-    }) 
+    try {
+        req.session.destroy(err => {
+            if(err) return res.send("Logout error")
+            return res.redirect("/")
+        })         
+    } catch (error) {
+        return res.status(500).send("Logout failure")
+    }
 }
 
 export const current = (req, res) =>{
@@ -35,6 +48,6 @@ export const current = (req, res) =>{
         const userDTO = new UserDTO(user)
 		return res.send(userDTO);
 	} catch (error) {
-		res.status(500).send("Error Message: "+error);
+		res.status(500).send("Couldnt get current user informatio. Error Message: "+error);
 	}
 }

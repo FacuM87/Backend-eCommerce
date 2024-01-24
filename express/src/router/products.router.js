@@ -1,6 +1,7 @@
 import { Router } from "express" 
 // import ProductManager from "../dao/fsManagers/ProductManager.js"
 import { createProduct, deleteProduct, getProductById, getProducts, updateProduct } from "../controllers/products.controller.js"
+import { checkAdminPermissions } from "../middlewares/middlewares.js"
 
 
 const router = Router()
@@ -11,10 +12,10 @@ router.get("/", getProducts)
 
 router.get("/:pid", getProductById)
 
-router.post("/", createProduct)
+router.post("/", checkAdminPermissions, createProduct)
 
-router.put("/:pid", updateProduct)
+router.put("/:pid", checkAdminPermissions, updateProduct)
 
-router.delete("/:pid", deleteProduct)
+router.delete("/:pid", checkAdminPermissions, deleteProduct)
 
 export default router
