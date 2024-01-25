@@ -113,10 +113,6 @@ const initializePassport = () => {
         }        
     }) )
 
-    passport.use("current", new LocalStrategy({}, async () =>{
-        
-    }) )
-
     passport.serializeUser((user, done) => {
         done(null, user._id)
     })
