@@ -6,14 +6,15 @@ document.querySelectorAll(".delProdIcon").forEach(icon => {
 
        document.querySelectorAll(".cartProductId").forEach(prodId => {
         const productId = prodId.value;
+        console.log(productId);
 
         fetch(`/api/carts/${cartId}/products/${productId}`, { method: "delete" })
             .then(response => {
-                return response.json();
+                return response;
             })
             .then(data => {
                 console.log(data);
-                document.location.href = `/cart/${cartId}`;
+                return document.location.href = `/cart/${cartId}`;
             })
             .catch(error => {
                 console.log("Error: " + error);
