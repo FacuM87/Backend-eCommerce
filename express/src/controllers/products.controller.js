@@ -53,8 +53,6 @@ export const createProduct = async (req,res) => {
 
         //const productAdded = await juan.addProduct(title, category, description, price, thumbnail, code, stock)
         const productAdded = await productService.createProduct(title, category, description, price, thumbnail, code, stock)
-        
-        /* ProductsModel.create({title, category, description, price, thumbnail, code, stock}) */
 
         res.json(productAdded)
 
