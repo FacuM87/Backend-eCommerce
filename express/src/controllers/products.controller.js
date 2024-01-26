@@ -21,7 +21,7 @@ export const getProducts = async (req, res)=> {
         result.payload = result.docs
         result.query = query
         result.sortOrder = sortValue
-        result.status = "succes"
+        result.status = "success"
         delete result.docs
 
         console.log(result);
