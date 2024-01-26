@@ -67,7 +67,7 @@ export const updateProduct = async (req,res) =>{
         const id = req.params.pid
         const updateRequest = req.body
 
-        const productUpdated = await productService.updateProduct(id, updateRequest)/* ProductsModel.updateOne({ _id: id },{ $set: updateRequest }); */
+        const productUpdated = await productService.updateProduct(id, updateRequest)
         
         res.status(200).send({productUpdated})
 
@@ -85,7 +85,6 @@ export const deleteProduct = async (req,res) => {
         const id=req.params.pid
         //const deletionMessage = await juan.deleteProduct(id)
         await productService.deleteProduct(id)
-        /* await ProductsModel.deleteOne({ _id: id }) */;
         res.status(200).send("Product ID "+id+" has been deleted")
     } catch (error) {
         console.log(error);
