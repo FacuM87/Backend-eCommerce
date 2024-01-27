@@ -37,18 +37,19 @@ mongoose.connect(mongoURL, {dbName: mongoDB})
         console.log("Mongo DB connected")
     })
     .catch(e => {
-        console.log("Couldnt connect with DB, error message: "+e);
+        console.log("Couldnt connect with Mongo DB, error message: "+e);
         res.status(500).send(e)
     })   
 
 /* -- Sessions -- */
+const sessionSecret=config.sessionSecret
 app.use(session({
     store: MongoStore.create({
         mongoUrl: mongoURL,
         dbName: mongoDB,
         ttl: 300
     }),    
-    secret: "secret",
+    secret: sessionSecret,
     resave: true,
     saveUninitialized: true
 }))  
