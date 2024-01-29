@@ -15,7 +15,8 @@ const productsSchema = new mongoose.Schema({
     code: String,
     stock: Number,
     status: Boolean
-})
+    },{ timestamps:true }
+)
 
 productsSchema.plugin(mongoosePaginate)
 const productsModel = mongoose.model(productsCollection, productsSchema)

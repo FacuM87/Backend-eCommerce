@@ -16,6 +16,7 @@ const UserModel = mongoose.model("users", new mongoose.Schema({
 				type: mongoose.Schema.Types.ObjectId,
 				ref: 'carts',
 			}
-}))
+    },{ timestamps:true }
+))
 
 export default UserModel

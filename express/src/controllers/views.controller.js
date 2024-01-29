@@ -3,6 +3,9 @@ import { cartService, productService } from "../services/index.repositories.js";
 export const cartView = async (req, res) => {
     try {
         const cartId = req.session.user.cart
+
+        if (!cartId) { return res.send("No cartId. Check if you are logged in, please.") }
+
         const populatedCart = await cartService.getPopulatedCart(cartId) 
 
         console.log({populatedCart});
@@ -108,18 +111,4 @@ export const checkOutView = async (req, res) => {
     } catch (error) {
         res.status(500).send(error)
     }
-}
-
-
-
-/* MOVER EL CHECKCARTSESSION DE LUGAR */
-export const checkCartSession = async (req, res) => {
-
-    const cartSessionActive = req.session.user
-    console.log(cartSessionActive);
-
-    if(cartSessionActive != undefined){
-        const cartId = req.session.user.cart
-        return res.redirect(`/cart/${cartId}`)
-    } else { return res.send("No cart has been created yet, login first!") }
 }
