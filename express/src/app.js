@@ -15,11 +15,14 @@ import initializePassport from "./config/passport.config.js"
 import config from "./config/config.js"
 import dotenv from "dotenv"
 import cors from 'cors'
+import cookieParser from "cookie-parser"
 import { chatService, productService } from "./services/index.repositories.js"
+
 
 
 /* -- Express -- */
 const app = express()
+app.use(cookieParser())
 dotenv.config()
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))

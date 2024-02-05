@@ -1,7 +1,8 @@
 import passport from "passport"
 import local from "passport-local"
 import GitHubStrategy from "passport-github2"
-import { createHash, validatePassword } from "../utils.js"
+import passportJWT from "passport-jwt"
+import { createHash, generateToken, validatePassword } from "../utils.js"
 import config from "./config.js"
 import { cartService, userService } from "../services/index.repositories.js"
 
@@ -13,6 +14,7 @@ const amdinUserName=config.amdinUserName
 const adminPassword=config.adminPassword 
 
 const LocalStrategy = local.Strategy
+const JWTStrategy = passportJWT.Strategy
 
 const initializePassport = () => {
     
@@ -31,6 +33,8 @@ const initializePassport = () => {
                 role:"admin",
                 cart:""
             };
+            const token = generateToken(user)
+            user.token = token
             return done(null, user)
         }
 
@@ -46,12 +50,23 @@ const initializePassport = () => {
                 return done(null, false)
             }
 
+            const token = generateToken(user)
+            user.token = token
+
             done(null, user)
             
         } catch (error) {
             done("Error: " + error)
         }
     }))
+
+    passport.use("jwt", new JWTStrategy({
+        jwtFromRequest: passportJWT.ExtractJwt.fromExtractors([req => req?.cookies?.jwtCookie ?? null]),
+        secretOrKey: config.jwtSign
+      }, (payload, done) => {
+        done(null, payload)
+      })
+    )
 
     passport.use("github", new GitHubStrategy({
         clientID: gitclientID,
@@ -61,10 +76,12 @@ const initializePassport = () => {
     }, async (accessToken, refreshToken, profile, done) =>{
         console.log(profile);
         try {
-            const user = await userService.getUserByEmail(profile._json.email)  
+            let user = await userService.getUserByEmail(profile._json.email)  
             console.log(user);
             if(user){
                 console.log("User is logged in")
+                const token = generateToken(user)
+                user.token = token
                 return done(null, user);
             }
 
@@ -75,9 +92,12 @@ const initializePassport = () => {
                 password: ""
             }
 
-            const result = await userService.createUser(newUser)
+            user = await userService.createUser(newUser)
 
-            return done(null, result)
+            const token = generateToken(user)
+            user.token = token
+
+            return done(null, user)
         } catch (error) {
             return done("Couldnt login with github: "+error)
         }

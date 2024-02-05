@@ -2,7 +2,7 @@ import { cartService, productService } from "../services/index.repositories.js";
 
 export const cartView = async (req, res) => {
     try {
-        const cartId = req.session.user.cart
+        const cartId = req.user.user.cart
 
         if (!cartId) { return res.send("No cartId. Check if you are logged in, please.") }
 
@@ -41,7 +41,7 @@ export const productsView = async (req, res)=> {
         result.query = query
         result.sortOrder = sortValue
         result.status = "success"
-        result.user = req.session.user
+        result.user = req.user.user
         delete result.docs
 
         console.log(result);
@@ -97,7 +97,7 @@ export const login = (req,res) => {
 
 export const profile = (req, res) => {
     try {
-        const user = req.session.user
+        const user = req.user.user
         console.log(user);
         res.render("profile", user)
     } catch (error) {
@@ -107,8 +107,18 @@ export const profile = (req, res) => {
 
 export const checkOutView = async (req, res) => {
     try {
+        const cartId = req.user.user.cart
+        fetch(`/api/carts/${cartId}/purchase`, { method: "post" })
+        .then(response => {return response.json()})
+        .then(data => {
+            console.log(data);
+        })
+        .catch(error => {
+            console.log("Error: " + error);
+        });  
         res.render("checkOut",{})
+        
     } catch (error) {
-        res.status(500).send(error)
+        res.status(500).send("Couldnt checkout. "+error)
     }
 }

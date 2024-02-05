@@ -6,7 +6,9 @@ export const login = async(req, res) => {
         if (!req.user) return res.status(401).send("Invalid Credentials")
         console.log(req.user);
         req.session.user = req.user
-        return res.status(200).redirect("/products")
+
+        const { token } = req.user
+        return res.cookie("jwtCookie", token).status(200).redirect("/products")
     } catch (error) {
         return res.status(500).send("Couldnt login. Error message: "+error)
     }
@@ -16,10 +18,11 @@ export const github = (req,res) => {}
 
 export const githubCallback = (req,res) => {   
     try {
-        req.session.user = req.user
-        res.status(200).redirect("/products")
+        /* req.session.user = req.user */
+        /*  return res.status(200).redirect("/products") */
+        return res.cookie("jwtCookie", req?.user?.token).redirect("/products")
     } catch (error) {
-        res.status(500).send("GitHubCallback has failed. Error message: "+error)   
+        return res.status(500).send("GitHubCallback has failed. Error message: "+error)   
     }
 }
 

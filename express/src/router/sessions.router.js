@@ -9,12 +9,12 @@ router.post("/login", passport.authenticate("login", {failureRedirect:"/"}) , lo
 router.get("/github", passport.authenticate("github", { scope: ["user:email"] } ), github)
 
 
-router.get("/githubcallback", passport.authenticate("github", {failureRedirect:"/login"}), githubCallback)
+router.get("/githubcallback", passport.authenticate("github", {failureRedirect:"/login", session: false}), githubCallback)
 
 router.post("/register", passport.authenticate("register", {failureRedirect:"/register"}), register)
 
 router.get("/logout", logout)
 
-router.get("/current", current)
+router.get("/current", passport.authenticate("jwt", { session: false }), current)
 
 export default router

@@ -11,6 +11,6 @@ export default {
     sessionSecret: process.env.SESSION_SECRET,
     githubClientId: process.env.GITHUB_CLIENT_ID,
     githubClientSecret: process.env.GITHUB_CLIENT_SECRET,
-    githubClientCallback: process.env.GITHUB_CLIENT_CALLBACK
-
+    githubClientCallback: process.env.GITHUB_CLIENT_CALLBACK,
+    jwtSign: process.env.JWT_SIGN
 }

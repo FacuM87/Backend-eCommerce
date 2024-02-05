@@ -2,8 +2,9 @@ import {cartService, productService, ticketService} from "../services/index.repo
 
 export const checkOutProcess = async (req, res) => {
     try {
-        const userEmail = req.session.user.email;
-        const cartId = req.session.user.cart;
+        const userEmail = req.user.email;
+        const cartId = req.user.cart;
+        console.log(userEmail, cartId);
         const cart = await cartService.getPopulatedCart(cartId);
 
         let totalAmount = 0;
@@ -39,7 +40,7 @@ export const checkOutProcess = async (req, res) => {
         const cartUpdated = await cartService.updateCart(cartId, otherProducts);
         console.log(cartUpdated);
 
-        const result = [productsToBuy, otherProducts, ticket];
+        const result = [{productsToBuy}, {otherProducts}, {ticket}];
         console.log(result);
         res.status(200).send(result);
     } catch (error) { 
@@ -50,7 +51,7 @@ export const checkOutProcess = async (req, res) => {
 
 export const addProductToCart = async (req, res) => {
   try {
-    const cartId = req.session.user.cart;
+    const cartId = req.user.user.cart;
     const productId = req.params.pid;
 
     const cart = await cartService.getCartById(cartId);
