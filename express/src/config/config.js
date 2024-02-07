@@ -12,5 +12,6 @@ export default {
     githubClientId: process.env.GITHUB_CLIENT_ID,
     githubClientSecret: process.env.GITHUB_CLIENT_SECRET,
     githubClientCallback: process.env.GITHUB_CLIENT_CALLBACK,
-    jwtSign: process.env.JWT_SIGN
+    jwtSign: process.env.JWT_SIGN,
+    environment: process.env.ENVIRONMENT
 }

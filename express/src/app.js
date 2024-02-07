@@ -8,6 +8,7 @@ import viewsRouter from "./router/views.router.js"
 import cartRouter from "./router/cart.router.js"
 import productsRouter from "./router/products.router.js"
 import sessionRouter from "./router/sessions.router.js"
+import loggerRouter from "./router/logger.router.js"
 //import ProductManager from "./dao/fsManagers/ProductManager.js"
 import mongoose from "mongoose"
 import passport from "passport"
@@ -17,11 +18,13 @@ import dotenv from "dotenv"
 import cors from 'cors'
 import cookieParser from "cookie-parser"
 import { chatService, productService } from "./services/index.repositories.js"
+import { addLogger } from "./middlewares/logger.js"
 
 
 
 /* -- Express -- */
 const app = express()
+app.use(addLogger)
 app.use(cookieParser())
 dotenv.config()
 app.use(express.json())
@@ -138,3 +141,4 @@ app.use("/", viewsRouter)
 app.use("/api/products", productsRouter)
 app.use("/api/carts", cartRouter)
 app.use("/api/session", sessionRouter)
+app.use("/loggerTest", loggerRouter)
