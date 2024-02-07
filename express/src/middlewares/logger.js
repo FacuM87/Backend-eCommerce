@@ -35,7 +35,6 @@ const logger = winston.createLogger({
             level: level,
             format: winston.format.combine(
             winston.format.colorize({
-                all: true,
                 colors: customLevelOptions.colors,
             }),
             winston.format.simple()
