@@ -28,8 +28,8 @@ export const getProducts = async (req, res)=> {
 
         res.status(200).send(result)
     } catch (error) {
-        console.log("Error: " + error);
-        res.status(500).send(error)
+        req.logger.error("Error: " + error)
+        return res.status(500).send("Internal server error. Couldnt get products")
     }
 }
 
@@ -41,8 +41,8 @@ export const getProductById = async (req, res) => {
         productRequired? res.json( { productRequired } ) : res.json("Not Found")
         
     } catch (error) {
-        console.log("Error " + error);
-        res.status(500).send(error)    
+        req.logger.error("Error: " + error)
+        return res.status(500).send("Internal server error. Couldnt get product by id")    
     }
 }
 
@@ -57,8 +57,8 @@ export const createProduct = async (req,res) => {
         res.json(productAdded)
 
     } catch (error) {
-        console.log(error);
-        res.status(500).send(error)
+        req.logger.error("Error: " + error)
+        return res.status(500).send("Internal server error. Couldnt create product")
     }
 }
 
@@ -75,8 +75,8 @@ export const updateProduct = async (req,res) =>{
         const updateMessage = await juan.updateProduct(parseInt(req.params.pid),keyToUpdate,newValue) 
         */
     } catch (error) {
-        console.log(error);
-        res.status(500).send(error)
+        req.logger.error("Error: " + error)
+        return res.status(500).send("Internal Server Error. Couldnt update product")
     }
 }
 
@@ -87,8 +87,8 @@ export const deleteProduct = async (req,res) => {
         await productService.deleteProduct(id)
         res.status(200).send("Product ID "+id+" has been deleted")
     } catch (error) {
-        console.log(error);
-        res.status(500).send(error)
+        req.logger.error("Error: " + error)
+        return res.status(500).send("Internal server error. Couldnt delete product")
     }
     
 }

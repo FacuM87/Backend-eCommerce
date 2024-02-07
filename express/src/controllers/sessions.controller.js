@@ -10,7 +10,8 @@ export const login = async(req, res) => {
         const { token } = req.user
         return res.cookie("jwtCookie", token).status(200).redirect("/products")
     } catch (error) {
-        return res.status(500).send("Couldnt login. Error message: "+error)
+        req.logger.error("Error: " + error)
+        return res.status(500).send("Internal server error. Couldnt login.")
     }
 }
 
@@ -22,7 +23,8 @@ export const githubCallback = (req,res) => {
         /*  return res.status(200).redirect("/products") */
         return res.cookie("jwtCookie", req?.user?.token).redirect("/products")
     } catch (error) {
-        return res.status(500).send("GitHubCallback has failed. Error message: "+error)   
+        req.logger.error("Error: " + error)
+        return res.status(500).send("Internal Server Error. GitHubCallback has failed")   
     }
 }
 
@@ -30,7 +32,8 @@ export const register = async(req, res) => {
     try {
         return res.status(201).redirect("/")
     } catch (error) {
-        return res.status(500).send("Couldnt process your registe request. Error: "+error)
+        req.logger.error("Error: " + error)
+        return res.status(500).send("Internal server error. Couldnt process your register request.")
     }  
 }
 
@@ -41,7 +44,8 @@ export const logout = (req, res) => {
             return res.redirect("/")
         })         
     } catch (error) {
-        return res.status(500).send("Logout failure")
+        req.logger.error("Error: " + error)
+        return res.status(500).send("Internal server error. Logout failure")
     }
 }
 
@@ -51,6 +55,7 @@ export const current = (req, res) =>{
         const userDTO = new UserDTO(user)
 		return res.send(userDTO);
 	} catch (error) {
-		res.status(500).send("Couldnt get current user informatio. Error Message: "+error);
+        req.logger.error("Error: " + error)
+		return res.status(500).send("Internal Server Error. Couldnt get current user information.");
 	}
 }

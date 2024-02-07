@@ -4,3 +4,6 @@ error: error
 fatal: fatal
 error: error
 fatal: fatal
+error: error
+fatal: fatal
+error: Error: ReferenceError: cartI is not defined

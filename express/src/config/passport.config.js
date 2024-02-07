@@ -56,7 +56,8 @@ const initializePassport = () => {
             done(null, user)
             
         } catch (error) {
-            done("Error: " + error)
+            req.logger.error("Error: " + error) 
+            return done("Error: " + error)
         }
     }))
 
@@ -99,7 +100,8 @@ const initializePassport = () => {
 
             return done(null, user)
         } catch (error) {
-            return done("Couldnt login with github: "+error)
+            req.logger.error("Error: " + error) 
+            return done("Couldnt login with github")
         }
     }))
 
@@ -129,7 +131,8 @@ const initializePassport = () => {
             const result = await userService.createUser(newUser)
             return done(null, result)
         } catch (error) {
-            done("Error: " + error)
+            req.logger.error("Error: " + error) 
+            return done("Error: " + error)
         }        
     }) )
 

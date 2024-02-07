@@ -11,8 +11,8 @@ export const cartView = async (req, res) => {
         console.log({populatedCart});
         res.render("cart",{cart: populatedCart})
     } catch (error) {
-        console.log(error);
-        res.send("Something went wrong while getting products from cart")
+        req.logger.error("Error: " + error)
+        res.status(500).send("Internal server error. Something went wrong while getting products from cart")
     }
 }
 
@@ -48,8 +48,8 @@ export const productsView = async (req, res)=> {
 
         res.render("products", result)
     } catch (error) {
-        console.log("Error: " + error);
-        res.status(500).send(error)
+        req.logger.error("Error: " + error)
+        res.status(500).send("Internal server error")
     }
 }
 
@@ -59,7 +59,8 @@ export const realTimeProducts = async (req, res) => {
             db: await productService.getAllProducts()
         })     
     } catch (error) {
-        res.status(500).send(error)
+        req.logger.error("Error: " + error)
+        res.status(500).send("Internal server error")
     }
 }
 
@@ -67,7 +68,8 @@ export const index = (req, res) => {
     try {
         res.render("index")
     } catch (error) {
-        res.status(500).send(error) 
+        req.logger.error("Error: " + error)
+        res.status(500).send("Internal server error")
     }
 }
 
@@ -75,7 +77,8 @@ export const chat = (req, res) =>{
     try {
         res.render("chat", {})
     } catch (error) {
-        res.status(500).send(error)
+        req.logger.error("Error: " + error)
+        res.status(500).send("Internal server error")
     }
 }
 
@@ -83,7 +86,8 @@ export const register = (req,res) => {
     try {
         res.render("register", {})
     } catch (error) {
-        res.status(500).send(error)
+        req.logger.error("Error: " + error)
+        res.status(500).send("Internal server error")
     }
 }
 
@@ -91,17 +95,18 @@ export const login = (req,res) => {
     try {
         res.render("login", {})
     } catch (error) {
-        res.status(500).send(error)
+        req.logger.error("Error: " + error)
+        res.status(500).send("Internal server error")
     }
 }
 
 export const profile = (req, res) => {
     try {
         const user = req.user.user
-        console.log(user);
         res.render("profile", user)
     } catch (error) {
-        res.status(500).send(error)
+        req.logger.error("Error: " + error)
+        res.status(500).send("Internal server error")
     }
 }
 
@@ -114,11 +119,12 @@ export const checkOutView = async (req, res) => {
             console.log(data);
         })
         .catch(error => {
-            console.log("Error: " + error);
+            req.logger.error("Error: " + error)
         });  
         res.render("checkOut",{})
         
     } catch (error) {
-        res.status(500).send("Couldnt checkout. "+error)
+        req.logger.error("Error: " + error)
+        res.status(500).send("Internal server error")
     }
 }

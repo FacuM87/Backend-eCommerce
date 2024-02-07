@@ -44,8 +44,8 @@ export const checkOutProcess = async (req, res) => {
         console.log(result);
         res.status(200).send(result);
     } catch (error) { 
-        console.log(error)
-        res.status(500).send("CheckOutProcess has failed. Error message: "+error)
+        req.logger.error("Error: " + error)
+        return res.status(500).send("Internal server error. CheckOutProcess has failed.")
     }
 };
 
@@ -84,8 +84,8 @@ export const addProductToCart = async (req, res) => {
     console.log(result);
     res.status(200).send(cart);
   } catch (error) {
-    console.log(error);
-    res.status(500).send("Something went wrong while adding products to cart. Error message: "+error);
+    req.logger.error("Error: " + error)
+    return res.status(500).send("Internal server error. Something went wrong while adding products to cart.");
   }
 };
 
@@ -108,8 +108,8 @@ export const deleteProductFromCart = async (req, res) => {
 
     res.status(200).send("Deletion process has been succesfully done: "+deletingDocument);
   } catch (error) {
-    console.log(error);
-    res.status(500).send("Something went wrong while deleting document. Error message: "+error);
+    req.logger.error("Error: " + error)
+    return res.status(500).send("Internal server error. Something went wrong while deleting document.");
   }
 };
 
@@ -124,8 +124,8 @@ export const emptyCart = async (req, res) => {
     console.log(emptyingCart);
     res.status(200).send("Empty request was succesful: "+emptyingCart);
   } catch (error) {
-    console.log(error);
-    res.status(500).send("Couldnt empty your cart. Error message: "+error);
+    req.logger.error("Error: " + error)
+    return res.status(500).send("Internal server error. Couldnt empty your cart.");
   }
 };
 
@@ -135,8 +135,8 @@ export const createCart = async (req, res) => {
     console.log(JSON.stringify(cartCreated));
     res.status(201).send("New cart has been created");
   } catch (error) {
-    console.log(error);
-    res.status(500).send("Something went wrong while creating new cart. Error message: "+error);
+    req.logger.error("Error: " + error)
+    return res.status(500).send("Internal server error. Something went wrong while creating new cart. Error message.");
   }
 };
 
@@ -161,8 +161,8 @@ export const changeProductQuantityInCart = async (req, res) => {
     console.log(updatingCart);
     res.status(200).send("Product quantity has been updated in cart: "+updatingCart);
   } catch (error) {
-    console.log(error);
-    res.status(500).send("Couldnt change product quantity. Error message: "+error);
+    req.logger.error("Error: " + error)
+    return res.status(500).send("Internal server error. Couldnt change product quantity");
   }
 };
 
@@ -176,7 +176,7 @@ export const insertProductsToCart = async (req, res) => {
     console.log(updatedCart);
     res.status(200).send("Products have been added to cart: "+updatedCart);
   } catch (error) {
-    console.log(error);
-    res.status(500).send("Couldnt insert products to cart"+error);
+    req.logger.error("Error: " + error)
+    return res.status(500).send("Internal server error. Couldnt insert products to cart");
   }
 };
