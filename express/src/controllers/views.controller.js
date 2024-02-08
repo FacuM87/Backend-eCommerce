@@ -8,7 +8,7 @@ export const cartView = async (req, res) => {
 
         const populatedCart = await cartService.getPopulatedCart(cartId) 
 
-        console.log({populatedCart});
+        req.logger.info(JSON.stringify(populatedCart))
         res.render("cart",{cart: populatedCart})
     } catch (error) {
         req.logger.error("Error: " + error)
@@ -44,8 +44,8 @@ export const productsView = async (req, res)=> {
         result.user = req.user.user
         delete result.docs
 
-        console.log(result);
-
+        console.log(result);  
+        req.logger.info(JSON.stringify(result))
         res.render("products", result)
     } catch (error) {
         req.logger.error("Error: " + error)

@@ -20,6 +20,6 @@ router.put("/:cid/products/:pid", changeProductQuantityInCart)
 
 router.put("/:cid", insertProductsToCart)
 
-router.post("/:cid/purchase", checkOutProcess)
+router.post("/:cid/purchase", passport.authenticate("jwt", { session: false }), checkOutProcess)
 
 export default router

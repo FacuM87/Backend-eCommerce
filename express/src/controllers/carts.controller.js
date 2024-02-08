@@ -2,9 +2,8 @@ import {cartService, productService, ticketService} from "../services/index.repo
 
 export const checkOutProcess = async (req, res) => {
     try {
-        const userEmail = req.user.email;
-        const cartId = req.user.cart;
-        console.log(userEmail, cartId);
+        const userEmail = req.user.user.email;
+        const cartId = req.user.user.cart;
         const cart = await cartService.getPopulatedCart(cartId);
 
         let totalAmount = 0;

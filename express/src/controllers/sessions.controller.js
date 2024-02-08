@@ -4,9 +4,8 @@ import UserDTO from "../DTO/user.dto.js";
 export const login = async(req, res) => {
     try {
         if (!req.user) return res.status(401).send("Invalid Credentials")
-        console.log(req.user);
         req.session.user = req.user
-
+        console.log(req.user);
         const { token } = req.user
         return res.cookie("jwtCookie", token).status(200).redirect("/products")
     } catch (error) {

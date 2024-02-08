@@ -24,8 +24,6 @@ export const getProducts = async (req, res)=> {
         result.status = "success"
         delete result.docs
 
-        console.log(result);
-
         res.status(200).send(result)
     } catch (error) {
         req.logger.error("Error: " + error)
