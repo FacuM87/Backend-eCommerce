@@ -12,7 +12,7 @@
     </head>
     <body>
         <header>
-           {{!--  {{#if user}} --}}
+            {{#if user}}
             <input class="d-none mainCartId" value={{user.cart}}>
             <nav class="d-flex justify-content-center gap-3">
                 <button class="btn btn-primary mt-2" > <a class="text-decoration-none text-light" href="/index">Index</a>  </button>
@@ -21,7 +21,7 @@
                 <button class="btn btn-primary mt-2"> <a class="text-decoration-none text-light" href="/chat">Chat</a> </button>
                 <i id="cartIcon" class="bi bi-cart2 cartIcon"></i>
             </nav>
-            {{!-- {{/if}} --}}
+            {{/if}}
         </header>
         
         {{{ body }}}

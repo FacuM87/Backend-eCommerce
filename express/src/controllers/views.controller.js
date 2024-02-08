@@ -9,7 +9,10 @@ export const cartView = async (req, res) => {
         const populatedCart = await cartService.getPopulatedCart(cartId) 
 
         req.logger.info(JSON.stringify(populatedCart))
-        res.render("cart",{cart: populatedCart})
+        res.render("cart",{
+            cart: populatedCart,
+            user: req.user.user
+        })
     } catch (error) {
         req.logger.error("Error: " + error)
         res.status(500).send("Internal server error. Something went wrong while getting products from cart")
@@ -56,7 +59,8 @@ export const productsView = async (req, res)=> {
 export const realTimeProducts = async (req, res) => {
     try {
         res.render("realTimeProducts", {
-            db: await productService.getAllProducts()
+            db: await productService.getAllProducts(),
+            user: req.user.user
         })     
     } catch (error) {
         req.logger.error("Error: " + error)
@@ -74,8 +78,8 @@ export const index = (req, res) => {
 }
 
 export const chat = (req, res) =>{
-    try {
-        res.render("chat", {})
+    try { 
+        res.render("chat", {user: req.user.user})
     } catch (error) {
         req.logger.error("Error: " + error)
         res.status(500).send("Internal server error")
