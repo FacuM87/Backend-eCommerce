@@ -17,8 +17,10 @@ import config from "./config/config.js"
 import dotenv from "dotenv"
 import cors from 'cors'
 import cookieParser from "cookie-parser"
-import { chatService, productService } from "./services/index.repositories.js"
+import { chatService, productService } from "./repositories/index.repositories.js"
 import { addLogger } from "./middlewares/logger.js"
+import SwaggerUIexpress from "swagger-ui-express"
+import swaggerJSDoc from "swagger-jsdoc"
 
 
 
@@ -47,6 +49,21 @@ mongoose.connect(mongoURL, {dbName: mongoDB})
         res.status(500).send(e)
     })   
 
+/* -- Swagger -- */
+
+const swaggerOptions = {
+    definition: {
+        openapi: "3.0.1",
+        info: {
+            title: "eCommerce Backend Documentation",
+            description: "Here you can find the backend documentation for eCommerce backend project"
+        }
+    },
+    apis: [`${__dirname}/docs/**/*.yaml`]
+  }
+const specs = swaggerJSDoc(swaggerOptions)
+app.use("/apidocs", SwaggerUIexpress.serve, SwaggerUIexpress.setup(specs))
+
 /* -- Sessions -- */
 const sessionSecret=config.sessionSecret
 app.use(session({
@@ -69,7 +86,7 @@ app.set("view engine", "handlebars")
 
 /* -- WebSocket -- */
 
-const port = config.port || 8080
+const port = config.port
 
 const httpServer = app.listen( port, () => console.log("Listening in "+port ))
 const socketServer = new Server(httpServer) 

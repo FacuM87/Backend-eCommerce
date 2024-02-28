@@ -1,4 +1,4 @@
-import { cartService, productService } from "../services/index.repositories.js";
+import { cartService, productService } from "../repositories/index.repositories.js";
 
 export const cartView = async (req, res) => {
     try {
@@ -117,15 +117,23 @@ export const profile = (req, res) => {
 export const checkOutView = async (req, res) => {
     try {
         const cartId = req.user.user.cart
-        fetch(`/api/carts/${cartId}/purchase`, { method: "post" })
+
+        const response = await fetch(`/api/carts/${cartId}/purchase`, { method: "post" })
+        const checkOutData = await response.json()
+        console.log(checkOutData);
+        /*      
         .then(response => {return response.json()})
         .then(data => {
             console.log(data);
         })
         .catch(error => {
             req.logger.error("Error: " + error)
-        });  
-        res.render("checkOut",{})
+        });   */
+
+        res.render("checkOut",{
+            user: req.user.user,
+            checkOutData: checkOutData
+        })
         
     } catch (error) {
         req.logger.error("Error: " + error)

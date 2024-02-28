@@ -4,7 +4,7 @@ import GitHubStrategy from "passport-github2"
 import passportJWT from "passport-jwt"
 import { createHash, generateToken, validatePassword } from "../utils.js"
 import config from "./config.js"
-import { cartService, userService } from "../services/index.repositories.js"
+import { cartService, userService } from "../repositories/index.repositories.js"
 
 
 const gitclientID=config.githubClientId

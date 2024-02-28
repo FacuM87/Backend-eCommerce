@@ -14,7 +14,11 @@ const productsSchema = new mongoose.Schema({
     }, 
     code: String,
     stock: Number,
-    status: Boolean
+    status: Boolean,
+    owner:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'users',
+    }
     },{ timestamps:true }
 )
 

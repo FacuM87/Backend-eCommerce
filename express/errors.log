@@ -13,3 +13,8 @@ error: Error: TypeError: Cannot read properties of null (reading 'products')
 error: Error: TypeError: Cannot read properties of null (reading 'products')
 error: Error: TypeError: Cannot read properties of null (reading 'products')
 error: Error: TypeError: Cannot read properties of null (reading 'products')
+error: Error: TypeError: Failed to parse URL from /api/carts/65af331ef1489e38520e125b/purchase
+error: Error: TypeError: Failed to parse URL from /api/carts/65b6fdc1d8715dc34acef692/purchase
+error: Error: TypeError: Failed to parse URL from /api/carts/65b6fdc1d8715dc34acef692/purchase
+error: Error: CastError: Cast to ObjectId failed for value ":cid" (type string) at path "_id" for model "carts"
+error: Error: CastError: Cast to ObjectId failed for value ":cid" (type string) at path "_id" for model "carts"

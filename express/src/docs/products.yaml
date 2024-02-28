@@ -1,0 +1,50 @@
+paths:
+  /api/products:
+    get:
+      summary: "Brings all products from DB and presents them the way the client requires"
+      tags:
+       - Products
+      responses:
+        "200":
+          description: "Products were succesfully provided"
+        "500":
+          description: "Internal server error. Couldnt get products from DB"
+    post:
+      summary: "Allowed users can add products to DB through this endpoint method"
+      tags:
+       - Products
+      responses:
+        "200":
+          description: "It returns a JSON document with the new product information"
+        "500":
+          description: "Internal server error. Couldnt create new product"
+
+  /api/products/:pid:
+    get:
+      summary: "Given an ID number, this endpoint method brings an specific product in case its found and a message if its not found."
+      tags:
+       - Products
+      responses:
+        "200":
+          description: "It returns a JSON document with the product information. Or a message in case the product is not found"
+        "500":
+          description: "Internal server error. Searching product process couldnt be done properly"
+    put:
+      summary: "Given an ID number, this endpoint method is used by allowed users to update an specific product"
+      tags:
+       - Products
+      responses:
+        "200":
+          description: "It returns a JSON document with the updated product information."
+        "500":
+          description: "Internal server error. Product couldnt been updated"
+    delete:
+      summary: "Given an ID number, this endpoint method is used by allowed users to delete an specific product"
+      tags:
+       - Products
+      responses:
+        "200":
+          description: "It returns a message indicating that the product has been deleted and its ID number"
+        "500":
+          description: "Internal server error. Product was not deleted." 
+      

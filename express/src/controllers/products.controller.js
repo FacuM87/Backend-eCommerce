@@ -1,4 +1,4 @@
-import { productService } from "../services/index.repositories.js"
+import { productService } from "../repositories/index.repositories.js"
 
 
 export const getProducts = async (req, res)=> {

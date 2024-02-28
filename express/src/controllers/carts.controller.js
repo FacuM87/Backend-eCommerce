@@ -1,4 +1,4 @@
-import {cartService, productService, ticketService} from "../services/index.repositories.js"
+import {cartService, productService, ticketService} from "../repositories/index.repositories.js"
 
 export const checkOutProcess = async (req, res) => {
     try {
@@ -6,9 +6,9 @@ export const checkOutProcess = async (req, res) => {
         const cartId = req.user.user.cart;
         const cart = await cartService.getPopulatedCart(cartId);
 
-        let totalAmount = 0;
-        let productsToBuy = [];
-        let otherProducts = [];
+        let totalAmount = 0
+        let productsToBuy = []
+        let otherProducts = []
         for (const product of cart.products) {
             const productQuantity = product.quantity;
             const productId = product.product;
@@ -173,7 +173,7 @@ export const insertProductsToCart = async (req, res) => {
     const updatedCart = await cartService.updateCart(cartId, newProducts);
 
     console.log(updatedCart);
-    res.status(200).send("Products have been added to cart: "+updatedCart);
+    res.status(200).send(updatedCart);
   } catch (error) {
     req.logger.error("Error: " + error)
     return res.status(500).send("Internal server error. Couldnt insert products to cart");

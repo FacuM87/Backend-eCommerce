@@ -8,7 +8,7 @@ const UserModel = mongoose.model("users", new mongoose.Schema({
     password: String,
     role: {
         type: String,
-        enum: ["admin", "user"],
+        enum: ["admin", "user", "premium"],
         default: "user"
     },
     cart:
