@@ -9,7 +9,7 @@ paths:
           description: "It sends a message indicating a new cart has been created"
         "500":
           description: "Internal server error. Something went wrong while creating new cart"
-  /api/carts/:cid:
+  /api/carts/{cid}:
     put:
       summary: "Insert a new set of products to the cart"
       tags:
@@ -28,7 +28,7 @@ paths:
           description: "It returns a message indicating the cart is empty along with the empty cart"
         "500":
           description: "Internal server error. Cart couldnt been empty"
-  /api/carts/:cid/product/:pid:
+  /api/carts/{cid}/product/{pid}:
     post:
       summary: "It adds a product to the cart"
       tags:
@@ -38,14 +38,20 @@ paths:
           description: "It returns the cart object which includes the new product"
         "500":
           description: "Internal server error. The process couldnt be done properly"
-  /api/carts/:cid/products/:pid:
+  /api/carts/{cid}/products/{pid}:
     delete:
       summary: "It deletes a particular product from the cart"
       tags:
        - Carts
       responses:
         "200":
-          description: "It returns a message along with the deleted document information"
+          description: "It returns a message along with the new cart excluding the deleted product"
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#components/schemas/Carts"
+
         "500":
           description: "Deleteing process has failed."
     put:
@@ -57,7 +63,7 @@ paths:
           description: "It returns a message and a cart object including the product that has been updated"
         "500":
           description: "Internal server error. The process couldnt be done properly"
-  /api/carts/:cid/purchase:
+  /api/carts/{cid}/purchase:
     post:
       summary: "This is the checkout process."
       tags:
