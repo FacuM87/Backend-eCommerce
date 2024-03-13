@@ -70,6 +70,13 @@ document.querySelectorAll(".addToCartBtn").forEach(button => {
             })
             .then(data => {
                 console.log(data);
+                const small = document.createElement("small");
+                small.textContent = "Product has been added to cart";
+                small.classList.add("text-center")
+                button.insertAdjacentElement("afterend", small)
+                setTimeout(() => {
+                    small.remove();
+                }, 2000)
             })
             .catch(error => {
                 console.log("Error: " + error);
