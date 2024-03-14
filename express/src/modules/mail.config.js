@@ -1,5 +1,5 @@
 import nodemailer from "nodemailer"
-import config from "../config/config"
+import config from "../config/config.js"
 
 export default class Mail {
     constructor(){
@@ -13,6 +13,15 @@ export default class Mail {
     })}
 
     send = async (user, subject, html) => {
-        
+        const options = {
+            from: config.mailUser,
+            to: user,
+            subject,
+            html
+          }
+      
+          const result = await this.transport.sendMail(options)
+      
+          return result
     }
 }

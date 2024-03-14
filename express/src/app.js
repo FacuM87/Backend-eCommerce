@@ -21,6 +21,7 @@ import { chatService, productService } from "./repositories/index.repositories.j
 import { addLogger } from "./middlewares/logger.js"
 import SwaggerUIexpress from "swagger-ui-express"
 import swaggerJSDoc from "swagger-jsdoc"
+import Mail from "./modules/mail.config.js"
 
 
 
@@ -159,3 +160,9 @@ app.use("/api/products", productsRouter)
 app.use("/api/carts", cartRouter)
 app.use("/api/session", sessionRouter)
 app.use("/loggerTest", loggerRouter)
+
+const mail = new Mail
+app.get("/mail", async(req,res) =>{
+    mail.send(config.mailUser,"TEST",`<h1>TEST</h1>`)
+    return res.send("check your email")
+})
