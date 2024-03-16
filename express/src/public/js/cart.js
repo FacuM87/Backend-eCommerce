@@ -56,16 +56,15 @@ document.querySelector(".finalAmount").innerHTML=`Total: $${totalAmount.toFixed(
 
 
 document.querySelector(".checkOut").onclick = () =>{
-    document.location.href=`/checkout`
 
-    /* fetch(`/api/carts/${cartId}/purchase`, { method: "post" })
+    fetch(`/api/carts/${cartId}/purchase`, { method: "post" })
     .then(response => {return response.json()})
     .then(data => {
         console.log(data);
-         /*document.location.href=`/checkout`
+        
         })
     .catch(error => {
         console.log("Error: " + error);
-    });  */
+    });  
 }
 

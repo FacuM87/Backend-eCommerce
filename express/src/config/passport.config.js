@@ -65,6 +65,7 @@ const initializePassport = () => {
         jwtFromRequest: passportJWT.ExtractJwt.fromExtractors([req => req?.cookies?.jwtCookie ?? null]),
         secretOrKey: config.jwtSign
       }, (payload, done) => {
+        console.log({jwtPayload: payload});
         done(null, payload)
       })
     )

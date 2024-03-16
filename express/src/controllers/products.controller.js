@@ -52,7 +52,7 @@ export const createProduct = async (req,res) => {
         //const productAdded = await juan.addProduct(title, category, description, price, thumbnail, code, stock)
         const productAdded = await productService.createProduct(title, category, description, price, thumbnail, code, stock)
 
-        res.json(productAdded)
+        return res.json(productAdded)
 
     } catch (error) {
         req.logger.error("Error: " + error)
@@ -67,7 +67,7 @@ export const updateProduct = async (req,res) =>{
 
         const productUpdated = await productService.updateProduct(id, updateRequest)
         
-        res.status(200).send({productUpdated})
+        return res.status(200).send({productUpdated})
 
         /*
         const updateMessage = await juan.updateProduct(parseInt(req.params.pid),keyToUpdate,newValue) 

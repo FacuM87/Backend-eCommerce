@@ -1,3 +1,4 @@
+import Mail from "../modules/mail.config.js";
 import {cartService, productService, ticketService} from "../repositories/index.repositories.js"
 
 export const checkOutProcess = async (req, res) => {
@@ -40,7 +41,14 @@ export const checkOutProcess = async (req, res) => {
         console.log(cartUpdated);
 
         const result = [{productsToBuy}, {otherProducts}, {ticket}];
-        console.log(result);
+        console.log({result});
+
+        if (ticket != "No operation, no ticket"){
+          const mailer = new Mail
+          const ticketCode = ticket.code
+          mailer.sendTicketMail(userEmail,ticketCode)
+        }
+
         res.status(200).send(result);
     } catch (error) { 
         req.logger.error("Error: " + error)

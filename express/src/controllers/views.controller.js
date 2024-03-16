@@ -1,4 +1,7 @@
+import config from "../config/config.js";
 import { cartService, productService } from "../repositories/index.repositories.js";
+import jwt from "jsonwebtoken"
+import { verifyToken } from "../utils.js";
 
 export const cartView = async (req, res) => {
     try {
@@ -138,5 +141,32 @@ export const checkOutView = async (req, res) => {
     } catch (error) {
         req.logger.error("Error: " + error)
         res.status(500).send("Internal server error")
+    }
+}
+
+export const restablishPassword = async (req, res) => {
+    try {
+        res.render("restablishPassword",{})
+    } catch (error) {
+        req.logger.error("Error: " + error)
+        res.status(500).send("Internal server error")
+    }
+}
+
+export const resetPasswordForm = (req, res) =>{
+    try {
+        const token = req.params.token
+
+        const validToken = verifyToken(token)
+        console.log(validToken);
+
+        validToken? res.render("resetPassword",{validToken, token}) : (
+            res.send("Your link has expired or its invalid, you will be redirected to login site"),
+            setTimeout(() => {
+                res.redirect("/") 
+            }, 3000)) 
+    } catch (error) {
+        req.logger.error("Error: " + error)
+        return res.status(500).send("Internal server error")
     }
 }

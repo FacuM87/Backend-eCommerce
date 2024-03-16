@@ -18,7 +18,7 @@ class MongoUserManager{
     }
 
     update = async (email, changes) => {
-        return await UserModel.updateOne({email: email}, { $set: { changes } })
+        return await UserModel.updateOne({email: email}, { $set: changes })
     }
 
     delete = async (userId) => {

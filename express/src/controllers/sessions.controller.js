@@ -1,4 +1,8 @@
 import UserDTO from "../DTO/user.dto.js";
+import config from "../config/config.js";
+import Mail from "../modules/mail.config.js";
+import { userService } from "../repositories/index.repositories.js";
+import { createHash, generateMailToken, verifyToken } from "../utils.js";
 
 
 export const login = async(req, res) => {
@@ -57,4 +61,49 @@ export const current = (req, res) =>{
         req.logger.error("Error: " + error)
 		return res.status(500).send("Internal Server Error. Couldnt get current user information.");
 	}
+}
+
+export const mailPassword = async (req, res) =>{
+    try {
+        const mail = req.body.email
+        const user = await userService.getUserByEmail(mail)
+
+        if(!user) {
+            return res.send("Invalid user")
+        }
+
+        const token = generateMailToken(user)
+        const url = `http://localhost:${config.port}/resetPassword/${token}`
+        
+        const mailer = new Mail
+        mailer.sendPasswordMail(mail, url)
+
+        return res.send("An email has been sent to your account")
+    } catch (error) {
+        req.logger.error("Error: " + error)
+		return res.status(500).send("Internal Server Error. Couldnt proceed with password reset process");
+    }
+
+}
+
+export const resetPassword = async (req, res) => {
+    try {
+        const { token, password } = req.body
+        
+        const tokenData = verifyToken(token)
+
+        const userMail = tokenData.user.email
+        const hashedPassword = createHash(password)
+        
+        const changes = {password: hashedPassword}
+
+        const updatePassword = await userService.updateUser(userMail, changes)
+        console.log(updatePassword);
+
+        return res.send("Your password has been updated")
+
+    } catch (error) {
+        req.logger.error("Error: " + error)
+		return res.status(500).redirect("/restablishPassword"); 
+    }
 }
