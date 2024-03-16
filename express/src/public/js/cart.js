@@ -52,19 +52,26 @@ document.querySelectorAll(".cartProducts").forEach(cartProduct => {
 
     cartProduct.querySelector(".totalProductAmount").innerHTML = `Total: $${partialTotal.toFixed(2)}`;
 });
-document.querySelector(".finalAmount").innerHTML=`Total: $${totalAmount.toFixed(2)}`
+
+const finalAmount = document.querySelector(".finalAmount")
+if (finalAmount) {
+    finalAmount.innerHTML=`Total: $${totalAmount.toFixed(2)}`
+}
 
 
-document.querySelector(".checkOut").onclick = () =>{
-
-    fetch(`/api/carts/${cartId}/purchase`, { method: "post" })
-    .then(response => {return response.json()})
-    .then(data => {
-        console.log(data);
-        
-        })
-    .catch(error => {
-        console.log("Error: " + error);
-    });  
+const checkout = document.querySelector(".checkOut")
+if (checkout) {
+    checkout.onclick = () =>{
+    
+        fetch(`/api/carts/${cartId}/purchase`, { method: "post" })
+        .then(response => {return response.json()})
+        .then(data => {
+            console.log(data);
+            
+            })
+        .catch(error => {
+            console.log("Error: " + error);
+        });  
+    }    
 }
 
