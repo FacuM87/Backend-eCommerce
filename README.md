@@ -3,9 +3,9 @@
 A backend ecommerce project currently in development process, build in <strong>Node JS</strong> with <strong>Express JS</strong>, using <strong>Mongo DB</strong> for data persistence management, and Handlebars (for the moment) for screen renders. 
 
 It implements:
--  Sessions with JWT and Passport library, different user roles such as admin, user or premium user.
+-  Sessions with <strong>JWT</strong> and <strong>Passport</strong> library, different user roles such as admin, user or premium user.
 -  Mail notifications system using Nodemailer.
--  Design patterns such as MVC, DAO, Factory and Repository.
+-  <strong>Design patterns</strong> such as MVC, DAO, Factory and Repository.
 -  A chat developed using <strong>Web Sockets</strong> communication protocol through "sockets.io" library.
 -  Realtime CRUD operations for products using <strong>Web Sockets</strong>, available only for admin or premium users.
 -  Products search bar
