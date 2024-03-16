@@ -54,9 +54,9 @@ export const logout = (req, res) => {
 
 export const current = (req, res) =>{
     try {
-		const user = req.session.user;
+		const { user } = req.user
         const userDTO = new UserDTO(user)
-		return res.send(userDTO);
+		return res.json(userDTO);
 	} catch (error) {
         req.logger.error("Error: " + error)
 		return res.status(500).send("Internal Server Error. Couldnt get current user information.");
