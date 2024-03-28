@@ -61,5 +61,22 @@ export default class Mail {
         }
 
         const result = await this.transport.sendMail(options)
+        return result
+    }
+
+    sendDeletionReport = async (email) => {
+        const options = {
+            from: config.mailUser,
+            to: email,
+            subject: "eCommerce - Deleted Account",
+            html: `<h1>Account Deleted</h1>
+            <br>
+            <br>
+            <h3> Your account has been deleted due to inactivity.</h3>
+            `
+        }
+
+        const result = await this.transport.sendMail(options)
+        return result
     }
 }

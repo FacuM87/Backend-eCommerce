@@ -22,3 +22,8 @@ error: Error: TypeError: Failed to parse URL from /api/carts/65f300ffa17c7fb2159
 error: Error: ReferenceError: PRIVATE_KEY is not defined
 error: Error: JsonWebTokenError: jwt must be a string
 error: Error: TypeError: Cannot read properties of null (reading 'user')
+error: Error: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+error: Error: TypeError: Cannot read properties of null (reading 'user')
+error: Error: TypeError: Cannot read properties of null (reading 'user')
+error: Error: TypeError: Cannot read properties of null (reading 'user')
+error: Error: TypeError: Cannot read properties of null (reading 'user')

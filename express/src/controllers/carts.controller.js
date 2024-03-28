@@ -49,10 +49,10 @@ export const checkOutProcess = async (req, res) => {
           mailer.sendTicketMail(userEmail,ticketCode)
         }
 
-        res.status(200).send(result);
+        return res.status(200).json({status: "success", result})
     } catch (error) { 
         req.logger.error("Error: " + error)
-        return res.status(500).send("Internal server error. CheckOutProcess has failed.")
+        return res.status(500).json({status: "failed", message: "Internal server error. CheckOutProcess has failed."})
     }
 };
 
@@ -89,7 +89,7 @@ export const addProductToCart = async (req, res) => {
     }
     const result = await cart.save();
     console.log(result);
-    res.status(200).send(cart);
+    return res.status(200).json(cart);
   } catch (error) {
     req.logger.error("Error: " + error)
     return res.status(500).send("Internal server error. Something went wrong while adding products to cart.");
@@ -113,7 +113,7 @@ export const deleteProductFromCart = async (req, res) => {
 
     const deletingDocument = await cartService.updateCart(cartId, newProducts);
 
-    res.status(200).send("Deletion process has been succesfully done: "+deletingDocument);
+    return res.status(200).json({status: "success", deletingDocument});
   } catch (error) {
     req.logger.error("Error: " + error)
     return res.status(500).send("Internal server error. Something went wrong while deleting document.");
@@ -129,7 +129,7 @@ export const emptyCart = async (req, res) => {
     const emptyingCart = await cartService.updateCart(cartId, emptyCart);
 
     console.log(emptyingCart);
-    res.status(200).send("Empty request was succesful: "+emptyingCart);
+    return res.status(200).json({status: "success", emptyingCart});
   } catch (error) {
     req.logger.error("Error: " + error)
     return res.status(500).send("Internal server error. Couldnt empty your cart.");
@@ -140,7 +140,7 @@ export const createCart = async (req, res) => {
   try {
     const cartCreated = await cartService.createNewCart();
     console.log(JSON.stringify(cartCreated));
-    res.status(201).send("New cart has been created");
+    res.status(201).json({status: "success", cartCreated});
   } catch (error) {
     req.logger.error("Error: " + error)
     return res.status(500).send("Internal server error. Something went wrong while creating new cart. Error message.");
@@ -166,7 +166,7 @@ export const changeProductQuantityInCart = async (req, res) => {
 
     const updatingCart = await cartService.updateCart(cartId, newQuantity);
     console.log(updatingCart);
-    res.status(200).send("Product quantity has been updated in cart: "+updatingCart);
+    return res.status(200).send("Product quantity has been updated in cart: "+updatingCart);
   } catch (error) {
     req.logger.error("Error: " + error)
     return res.status(500).send("Internal server error. Couldnt change product quantity");
@@ -181,7 +181,7 @@ export const insertProductsToCart = async (req, res) => {
     const updatedCart = await cartService.updateCart(cartId, newProducts);
 
     console.log(updatedCart);
-    res.status(200).send(updatedCart);
+    return res.status(200).json({status: "success", updatedCart});
   } catch (error) {
     req.logger.error("Error: " + error)
     return res.status(500).send("Internal server error. Couldnt insert products to cart");

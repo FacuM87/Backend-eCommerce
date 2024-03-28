@@ -9,6 +9,7 @@ import cartRouter from "./router/cart.router.js"
 import productsRouter from "./router/products.router.js"
 import sessionRouter from "./router/sessions.router.js"
 import loggerRouter from "./router/logger.router.js"
+import usersRouter from "./router/users.router.js"
 //import ProductManager from "./dao/fsManagers/ProductManager.js"
 import mongoose from "mongoose"
 import passport from "passport"
@@ -21,7 +22,6 @@ import { chatService, productService } from "./repositories/index.repositories.j
 import { addLogger } from "./middlewares/logger.js"
 import SwaggerUIexpress from "swagger-ui-express"
 import swaggerJSDoc from "swagger-jsdoc"
-import Mail from "./modules/mail.config.js"
 
 
 
@@ -90,7 +90,8 @@ app.set("view engine", "handlebars")
 const port = config.port
 
 const httpServer = app.listen( port, () => console.log("Listening in "+port ))
-const socketServer = new Server(httpServer) 
+const socketServer = new Server(httpServer)
+
 socketServer.on("connection", async socket => {
     console.log("Client connected")
     /* const juan = new ProductManager("./db.json") */
@@ -103,15 +104,15 @@ socketServer.on("connection", async socket => {
         res.send(error)
     }
     
-    socket.on("newProduct", async data =>{
+    socket.on("newProduct", async (data) =>{
         try {
             console.log(data);
-            const {title, category, description, price, code, stock} = data
+            const {title, category, description, price, code, stock, owner} = data
     /*         const message = await juan.addProduct(title, category, description, price, code, stock)
             if (message) {console.log(message)} 
             const products = await juan.getProducts()*/
-    
-            const newProduct = await productService.createProduct({title, category, description, price, code, stock}) 
+
+            const newProduct = await productService.createProduct({title, category, description, price, code, stock, owner}) 
             console.log({newProduct});
             const products = await productService.getAllProducts()
             socket.emit("products", products)
@@ -121,14 +122,24 @@ socketServer.on("connection", async socket => {
         }
     })
 
-    socket.on("deleteProduct", async id => {
+    /* REVISAR DELETE PRODUCT, NO FUNCIONA */
+
+    socket.on("deleteProduct", async (productId, userId) => {
         try {
-            console.log(id);
-    /*         const message = await juan.deleteProduct(Number(id))
+            console.log(productId);
+    /*         const message = await juan.deleteProduct(Number(productId))
             if (message) { console.log(message); } */
-            await productService.deleteProduct(id)
-            const products = await productService.getAllProducts()
-            socket.emit("products", products)
+            const productToDelete = await productService.getProductById(productId)
+            console.log(productToDelete);
+            const productOwner = productToDelete.owner
+            console.log(productOwner);
+            if (productOwner==userId) {
+                await productService.deleteProduct(productId)
+                const products = await productService.getAllProducts()
+                socket.emit("products", products)    
+            } else{
+                console.log("not allowed");
+            }
         } catch (error) {
             console.log(error);
             res.send(error)
@@ -159,10 +170,5 @@ app.use("/", viewsRouter)
 app.use("/api/products", productsRouter)
 app.use("/api/carts", cartRouter)
 app.use("/api/session", sessionRouter)
+app.use("/api/users", usersRouter)
 app.use("/loggerTest", loggerRouter)
-
-const mail = new Mail
-app.get("/mail", async(req,res) =>{
-    mail.send(config.mailUser,"TEST",`<h1>TEST</h1>`)
-    return res.send("check your email")
-})

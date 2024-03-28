@@ -78,7 +78,7 @@ document.querySelectorAll(".addToCartBtn").forEach(button => {
                     button.insertAdjacentElement("afterend", small)
                     setTimeout(() => {
                         small.remove();
-                    }, 2000)
+                    }, 3000)
                 })
                 .catch(error => {
                     console.log("Error: " + error);

@@ -11,11 +11,19 @@ const UserModel = mongoose.model("users", new mongoose.Schema({
         enum: ["admin", "user", "premium"],
         default: "user"
     },
+    
     cart:
-			{
-				type: mongoose.Schema.Types.ObjectId,
-				ref: 'carts',
-			}
+		{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'carts',
+		},
+    
+    last_connection:
+        {
+            type: Date,
+            default: Date.now()
+        }
+    
     },{ timestamps:true }
 ))
 
