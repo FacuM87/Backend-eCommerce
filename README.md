@@ -17,7 +17,7 @@ It implements:
 - It will be deployed in Railway App or Vercel soon.
 - Front-end will be improved and Handlebars will be replaced with React JS to add more dynamic features to the user experience.      
 
-#Example credentials
+# Example credentials
 In case you dont want to register, you can use this regular user credentials:
 - Email: example@example.com
 - Password: 123
