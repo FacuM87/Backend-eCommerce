@@ -1,13 +1,148 @@
 <main>
 
-    <h1 class="text-center">Users Crud</h1>
-
-    <form class="ms-4" id="userForm">
-        <div class="mb-3">
-            <label for="exampleInputEmail1" class="form-label">Find user by email</label>
-            <input type="email" class="form-control col-6 w-25" id="exampleInputEmail1" aria-describedby="emailHelp" name="email">
-        </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
+    <h2 class="text-center mt-5">Users Role Updater</h2>
+    <div class="d-flex justify-content-around mt-5">
+        <form class="ms-4" id="userForm">
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Find user by email</label>
+                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="email">
+            </div>
+            <button id="" type="submit" class="btn btn-primary">Submit</button>
+        </form>
+        <form id="roleForm" class="d-none"></form>
+    </div>
 
 </main>
+
+<script {{!-- src="/static/js/userCrud.js" --}}>
+    const userForm = document.getElementById("userForm")
+    userForm.addEventListener("submit", async (e)=>{
+        e.preventDefault()
+        const formData = new FormData(userForm);
+        const email = formData.get("email");
+
+        try {
+            const response = await fetch(`/api/users/user?email=${email}`, { method: "GET" }); 
+            const data = await response.json(); 
+
+            if (data.payload == null){
+                const wrongMailReport = document.createElement("small")
+                wrongMailReport.textContent = "No users found with that email address"
+                wrongMailReport.classList.add("d-block", "mt-2")
+
+                userForm.appendChild(wrongMailReport)
+                return
+
+            }
+
+            const existingWrongMailReport = userForm.querySelector("small");
+            if (existingWrongMailReport) {
+                existingWrongMailReport.remove();
+            }
+
+            const roleForm = document.getElementById("roleForm")
+            roleForm.classList.remove("d-none")
+
+            roleForm.innerHTML = ""
+
+            const p = document.createElement("p")
+            p.textContent = `Current user role: ${data.payload.role}`
+            
+            const p1 = document.createElement("p")
+            p1.textContent = `User: ${data.payload.first_name} ${data.payload.last_name}`
+
+            const p3 = document.createElement("p")
+            const userEmail = `${data.payload.email}`
+            p3.textContent = `User email: ${userEmail}`
+            p3.name = "email"
+            
+            const p2 = document.createElement("p")
+            p2.textContent = `New user role: `
+            p2.classList.add("mb-0")
+            
+            const select = document.createElement("select")
+            select.name = "userRole"
+            select.classList.add("ms-2")
+
+            const options = ["User", "Premium", "Admin"];
+            options.forEach(optionText => {
+                const option = document.createElement("option");
+                option.textContent = optionText;
+                select.appendChild(option);
+            })
+
+            const roleContainer = document.createElement("div");
+            roleContainer.classList.add("d-flex", "align-items-center");
+
+            roleContainer.appendChild(p2); 
+            roleContainer.appendChild(select);
+
+            const changeRoleBtn = document.createElement("button")
+            changeRoleBtn.type = "submit"
+            changeRoleBtn.classList.add("btn", "btn-primary", "mt-3")
+            changeRoleBtn.textContent = "Change user role!"
+
+            const deleteUserBtn = document.createElement("button")
+            deleteUserBtn.classList.add("btn", "btn-primary", "mt-3", "ms-2")
+            deleteUserBtn.type ="button"
+            deleteUserBtn.textContent = "Delete user"
+
+            const btnsContainer = document.createElement("div")
+            
+            roleForm.appendChild(p1)
+            roleForm.appendChild(p3)
+            roleForm.appendChild(p)
+            roleForm.appendChild(roleContainer)
+            roleForm.appendChild(btnsContainer)
+            btnsContainer.appendChild(changeRoleBtn)
+            btnsContainer.appendChild(deleteUserBtn)
+
+            const userId = `${data.payload._id}`
+            console.log(userId)
+            deleteUserBtn.addEventListener("click", async ()=>{
+                const response = await fetch(`/api/users/deleteUser/${userId}`, {method: "DELETE"})
+                const data = await response.json()
+
+                if(data.status == "success"){
+                    const deletionContainer = document.createElement("div"); 
+                    const deletionReport = document.createElement("small")
+                    deletionReport.textContent = "User has been deleted"
+                    deletionReport.classList.add("d-block")
+                    deletionContainer.appendChild(deleteUserBtn);
+                    deletionContainer.appendChild(deletionReport);
+                    btnsContainer.appendChild(deletionContainer)
+                    roleForm.appendChild(btnsContainer);
+                }
+            })
+
+            roleForm.addEventListener("submit", async (e) =>{
+                e.preventDefault()
+                const formData = new FormData(roleForm);
+                const newUserRole = formData.get("userRole").toLowerCase();
+
+                const response = await fetch(`/api/users/user?email=${userEmail}&role=${newUserRole}`, { method: "PUT" }); 
+                const data = await response.json();
+
+                const existingReport = roleForm.querySelector("small");
+                if (existingReport) {
+                existingReport.remove();
+                }
+
+                if(data.status == "success"){
+                    const roleUpdateContainer = document.createElement("div"); 
+                    const roleUpdateReport = document.createElement("small")
+                    roleUpdateReport.textContent = "User role has been updated"
+                    roleUpdateReport.classList.add("d-block")
+                    roleUpdateContainer.appendChild(changeRoleBtn)
+                    roleUpdateContainer.appendChild(roleUpdateReport)
+                    btnsContainer.appendChild(roleUpdateContainer)
+                    roleForm.appendChild(btnsContainer)
+                }
+            })
+
+        } catch (error) {
+            console.error("Error:", error); 
+        }
+    })
+
+</script>

@@ -1,6 +1,4 @@
-import config from "../config/config.js";
 import { cartService, productService } from "../repositories/index.repositories.js";
-import jwt from "jsonwebtoken"
 import { verifyToken } from "../utils.js";
 
 export const cartView = async (req, res) => {
@@ -111,17 +109,6 @@ export const profile = (req, res) => {
     try {
         const user = req.user.user
         return res.render("profile", {user})
-    } catch (error) {
-        req.logger.error("Error: " + error)
-        return res.status(500).send("Internal server error")
-    }
-}
-
-export const checkOutView = async (req, res) => {
-    try {
-        const { totalAmount, ticket, productsToBuy } = req.query
-
-        return res.render("checkOut", {totalAmount, ticket, productsToBuy})  
     } catch (error) {
         req.logger.error("Error: " + error)
         return res.status(500).send("Internal server error")

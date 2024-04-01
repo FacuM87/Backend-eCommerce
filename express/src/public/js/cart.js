@@ -67,7 +67,49 @@ if (checkout) {
         .then(response => {return response.json()})
         .then(data => {
             console.log(data);
+
+            const cartSection = document.getElementById("cart")
+            cartSection.classList.add("d-none")
+
+            const ticketSection = document.getElementById("ticket")
+            ticketSection.classList.remove("d-none")
             
+            const products = data.result[0].productsToBuy
+
+            const totalAmount = data.result[2].ticket.amount
+
+            const productsTicket = document.getElementById("productsTicket");
+
+            if (products.length > 0) {
+            const fragment = document.createDocumentFragment();
+            products.forEach(product => {
+                const productDiv = document.createElement("div");
+                productDiv.classList.add("product", "border", "border-black", "rounded", "mb-2", "p-2");
+
+                const productName = document.createElement("h5");
+                productName.textContent = `${product.product.title}`;
+
+                const productQuantity = document.createElement("p");
+                productQuantity.textContent = `Quantity: ${product.quantity}`;
+                
+                const productPrice = document.createElement("p");
+                productPrice.textContent = `Price: $${product.product.price}`;
+                
+                productDiv.appendChild(productName);
+                productDiv.appendChild(productQuantity);
+                productDiv.appendChild(productPrice);
+                fragment.appendChild(productDiv);
+            });
+
+            const totalAmountElement = document.createElement("h5")
+            totalAmountElement.textContent = `Total Amount: $${totalAmount}`
+
+            productsTicket.appendChild(totalAmountElement)
+            productsTicket.appendChild(fragment);
+        } else {
+            productsTicket.innerHTML = `<p>No products in the ticket</p>`;
+        }
+
             })
         .catch(error => {
             console.log("Error: " + error);
