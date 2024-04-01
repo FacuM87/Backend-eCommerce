@@ -69,15 +69,6 @@ export const realTimeProducts = async (req, res) => {
     }
 }
 
-export const index = (req, res) => {
-    try {
-        return res.render("index")
-    } catch (error) {
-        req.logger.error("Error: " + error)
-        return res.status(500).send("Internal server error")
-    }
-}
-
 export const chat = (req, res) =>{
     try { 
         return res.render("chat", {user: req.user.user})

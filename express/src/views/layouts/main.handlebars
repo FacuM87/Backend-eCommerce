@@ -16,10 +16,10 @@
             <input id="mainCartId" class="d-none mainCartId" value={{user.cart}}>
             <input id="userRole" class="d-none" value={{user.role}}>
             <nav class="d-flex justify-content-center gap-3">
-                <button class="btn btn-primary mt-2" > <a class="text-decoration-none text-light" href="/index">Index</a>  </button>
                 <button class="btn btn-primary mt-2"> <a class="text-decoration-none text-light" href="/products">Products</a> </button>
                 <button id="RTProductsBTN" class="btn btn-primary mt-2 d-none"> <a class="text-decoration-none text-light" href="/realtimeproducts">RealTimeProducts</a> </button>
                 <button class="btn btn-primary mt-2"> <a class="text-decoration-none text-light" href="/chat">Chat</a> </button>
+                <button id="usersRoleCrudBtn" class="btn btn-primary mt-2 d-none"> <a class="text-decoration-none text-light" href="/usersrolecrud">Users Role Crud</a> </button>
                 <i id="cartIcon" class="bi bi-cart2 cartIcon"></i>
             </nav>
             {{/if}}
