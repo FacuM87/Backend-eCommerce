@@ -62,9 +62,18 @@ deleteForm.addEventListener("submit", (e) => {
     e.preventDefault()
 
     const productId = document.querySelector("#productId").value
-    socket.emit("deleteProduct", (productId, userId))
+    socket.emit("deleteProduct", (productId))
+    
+    const deleteProductBtn = document.getElementById("deleteProductBtn")
+    const small = document.createElement("small");
+    small.textContent = "Product has been deleted";
+    small.classList.add("ms-2")
+    deleteProductBtn.insertAdjacentElement("afterend", small)
+    setTimeout(() => {
+        small.remove();
+    }, 3000)
     console.log("product Id number "+productId+ " has been deleted");
-
+    
     document.querySelector("#productId").value=""
 })
    

@@ -16,7 +16,7 @@ const productsSchema = new mongoose.Schema({
     stock: Number,
     status: Boolean,
     owner:{
-        type: mongoose.Schema.Types.Mixed,
+        type: String,
         default: "admin"
     }
     },{ timestamps:true }
