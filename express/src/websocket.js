@@ -4,7 +4,7 @@ import { chatService, productService } from "./repositories/index.repositories.j
 export const socketServer = (httpServer) => {
     const socketServer = new Server(httpServer)
 
-    socketServer.on("connection", async socket => {
+    socketServer.on("connection", async (socket) => {
         console.log("Client connected")
         /* const juan = new ProductManager("./db.json") */
         
