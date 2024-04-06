@@ -27,3 +27,8 @@ error: Error: TypeError: Cannot read properties of null (reading 'user')
 error: Error: TypeError: Cannot read properties of null (reading 'user')
 error: Error: TypeError: Cannot read properties of null (reading 'user')
 error: Error: TypeError: Cannot read properties of null (reading 'user')
+error: Error: CastError: Cast to ObjectId failed for value "insertOwner" (type string) at path "_id" for model "products"
+error: Error: CastError: Cast to ObjectId failed for value "insertOwnerAttibute" (type string) at path "_id" for model "products"
+error: Error: CastError: Cast to ObjectId failed for value "insertOwnerAttibute" (type string) at path "_id" for model "products"
+error: Error: CastError: Cast to ObjectId failed for value "insertOwnerAttibute" (type string) at path "_id" for model "products"
+error: Error: CastError: Cast to ObjectId failed for value "insertOwnerAttribute" (type string) at path "_id" for model "products"

@@ -1,5 +1,6 @@
 const userId = document.getElementById("userId").value
 const userRole = document.getElementById("userRole").value
+const userEmail = document.getElementById("userEmail").value
 
 const socket = io()
 socket.on("products", (products) => { 
@@ -7,18 +8,34 @@ socket.on("products", (products) => {
         table[0].innerHTML=""
         if (products.length>0 && products) {
             products.forEach(p => {
-                table[0].innerHTML+= `
-                <tr>
-                    <td>${p._id}</td>
-                    <td>${p.title}</td>
-                    <td>${p.description}</td>
-                    <td>${p.code}</td>
-                    <td>${p.price}</td>
-                    <td>${p.stock}</td>
-                    ${p.owner ? `<td class="d-none" id="productOwner">${p.owner}</td>` : ''}
-                    <td>${p.category}</td>
-                </tr>
-                `
+                if (userRole === "admin"){
+                    table[0].innerHTML+= `
+                    <tr data-product-id="${p._id}">
+                        <td>${p._id}</td>
+                        <td>${p.title}</td>
+                        <td>${p.description}</td>
+                        <td>${p.code}</td>
+                        <td>${p.price}</td>
+                        <td>${p.stock}</td>
+                        <td class="d-none" id="productOwner">${p.owner}</td>
+                        <td>${p.category}</td>
+                    </tr>
+                    `
+
+                } else if (userRole === "premium" && p.owner === userEmail){
+                    table[0].innerHTML += `
+                    <tr data-product-id="${p._id}"> 
+                        <td>${p._id}</td>
+                        <td>${p.title}</td>
+                        <td>${p.description}</td>
+                        <td>${p.code}</td>
+                        <td>${p.price}</td>
+                        <td>${p.stock}</td>
+                        <td class="d-none" id="productOwner">${p.owner}</td>
+                        <td>${p.category}</td>
+                    </tr>
+                `;
+                }
             })
         }
 })
@@ -34,7 +51,7 @@ form.addEventListener("submit", (e) => {
         description: document.querySelector("#description").value,
         price: Number(document.querySelector("#price").value),
         code: document.querySelector("#code").value,
-        owner: userId,
+        owner: userEmail,
         stock: Number(document.querySelector("#stock").value)
     }
     socket.emit("newProduct", product)
@@ -62,6 +79,25 @@ deleteForm.addEventListener("submit", (e) => {
     e.preventDefault()
 
     const productId = document.querySelector("#productId").value
+    console.log(userRole);
+    if (userRole === "premium") {
+        
+        const productIdsDisplayed = Array.from(document.querySelectorAll("tr[data-product-id]")).map(row => row.dataset.productId);
+
+        if (!productIdsDisplayed.includes(productId)) {
+            const deleteProductBtn = document.getElementById("deleteProductBtn")
+            const small = document.createElement("small");
+            small.textContent = "You can only delete your products.";
+            small.classList.add("ms-2")
+            deleteProductBtn.insertAdjacentElement("afterend", small)
+            setTimeout(() => {
+                small.remove();
+                document.querySelector("#productId").value = ""
+            }, 3500)
+            return;
+        }
+    }
+
     socket.emit("deleteProduct", (productId))
     
     const deleteProductBtn = document.getElementById("deleteProductBtn")
