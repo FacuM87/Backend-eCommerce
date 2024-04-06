@@ -1,6 +1,10 @@
 const userId = document.getElementById("userId").value
 const userRole = document.getElementById("userRole").value
-const userEmail = document.getElementById("userEmail").value
+let userEmail = document.getElementById("userEmail").value
+
+if (userRole === "admin") {
+    userEmail = userRole
+}
 
 const socket = io()
 socket.on("products", (products) => { 
