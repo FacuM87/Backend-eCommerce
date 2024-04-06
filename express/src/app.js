@@ -10,6 +10,7 @@ import productsRouter from "./router/products.router.js"
 import sessionRouter from "./router/sessions.router.js"
 import loggerRouter from "./router/logger.router.js"
 import usersRouter from "./router/users.router.js"
+import paymentsRouter from "./router/payments.router.js"
 //import ProductManager from "./dao/fsManagers/ProductManager.js"
 import mongoose from "mongoose"
 import passport from "passport"
@@ -107,3 +108,4 @@ app.use("/api/carts", cartRouter)
 app.use("/api/session", sessionRouter)
 app.use("/api/users", usersRouter)
 app.use("/loggerTest", loggerRouter)
+app.use("/api/payments", paymentsRouter)
