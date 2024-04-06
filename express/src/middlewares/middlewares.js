@@ -37,3 +37,10 @@ export const checkAdminPremiumPermissions = (req, res, next) => {
     if(req.user.user.role == "user") return res.status(403).send("Not allowed")
     next() 
 }
+
+export const checkUserPremiumPermissions = (req, res, next) => {
+    const sessionActive = req.user.user
+    if (sessionActive == undefined) return res.redirect("/")
+    if(req.user.user.role == "admin") return res.status(403).send("Not allowed")
+    next() 
+}

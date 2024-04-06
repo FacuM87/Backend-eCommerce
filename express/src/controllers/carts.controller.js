@@ -60,9 +60,19 @@ export const addProductToCart = async (req, res) => {
   try {
     const cartId = req.user.user.cart;
     const productId = req.params.pid;
+    const userRole = req.user.user.role
+    const userEmail = req.user.user.email
 
     const cart = await cartService.getCartById(cartId);
     const product = await productService.getProductById(productId);
+
+    console.log({product});
+
+    if(userRole === "premium"){
+      if (userEmail == product.owner) {
+        return res.status(403).json({status: "fail", message: "Cannot add your own product to your cart"})
+      }
+    }
 
     if (!product) {
       console.log("Wrong Product ID");

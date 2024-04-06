@@ -1,7 +1,7 @@
 import { Router } from "express";
 //import CartManager from "../dao/fsManagers/CartsManager.js";
 import { addProductToCart, changeProductQuantityInCart, createCart, deleteProductFromCart, emptyCart, insertProductsToCart, checkOutProcess } from "../controllers/carts.controller.js";
-import { checkUserPermissions } from "../middlewares/middlewares.js";
+import { checkUserPremiumPermissions } from "../middlewares/middlewares.js";
 import passport from "passport";
 
 const router = Router()
@@ -10,7 +10,7 @@ const router = Router()
 
 router.post("/", createCart)
 
-router.post("/:cid/product/:pid", passport.authenticate("jwt", { session: false }), checkUserPermissions, addProductToCart)
+router.post("/:cid/product/:pid", passport.authenticate("jwt", { session: false }), checkUserPremiumPermissions, addProductToCart)
 
 router.delete("/:cid/products/:pid", deleteProductFromCart)
 
