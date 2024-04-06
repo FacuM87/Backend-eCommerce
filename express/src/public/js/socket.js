@@ -86,12 +86,12 @@ deleteForm.addEventListener("submit", (e) => {
     console.log(userRole);
     if (userRole === "premium") {
         
-        const productIdsDisplayed = Array.from(document.querySelectorAll("tr[data-product-id]")).map(row => row.dataset.productId);
+        const userProductsIDs = Array.from(document.querySelectorAll("tr[data-product-id]")).map(row => row.dataset.productId);
 
-        if (!productIdsDisplayed.includes(productId)) {
+        if (!userProductsIDs.includes(productId)) {
             const deleteProductBtn = document.getElementById("deleteProductBtn")
             const small = document.createElement("small");
-            small.textContent = "You can only delete your products.";
+            small.textContent = "You can only delete your own products.";
             small.classList.add("ms-2")
             deleteProductBtn.insertAdjacentElement("afterend", small)
             setTimeout(() => {
