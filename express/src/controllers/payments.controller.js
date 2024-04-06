@@ -27,9 +27,9 @@ export const createOrderMP = async (req, res) => {
 				},
 			],
 			back_urls: {
-				success: "/",
-				failure: "/",
-				pending: "/"
+				success: "http://localhost:8080/products",
+				failure: "http://localhost:8080/products",
+				pending: "http://localhost:8080/products"
 			},
 		};
 
