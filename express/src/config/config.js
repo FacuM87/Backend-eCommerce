@@ -20,5 +20,5 @@ export default {
     mailPort: process.env.MAIL_PORT,
     mercadoPagoKey: process.env.MERCADO_PAGO_KEY,
     mercadoPagoToken: process.env.MERCADO_PAGO_TOKEN,
-    stripeKey: process.env.STRIPE_KEY
+    persistence: process.env.PERSISTENCE
 }
