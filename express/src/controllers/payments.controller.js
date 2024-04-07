@@ -1,44 +1,33 @@
-import { Preference } from "mercadopago"
 import config from "../config/config.js"
-import { client } from "../config/mercadoPago.config.js";
+import Stripe from "stripe"
 
-export const getPublicKey = async (req, res) => {
+const stripe = new Stripe(config.stripeKey)
+export const createSession = async (req, res) => {
 	try {
-		const publicKey = JSON.stringify(config.mercadoPagoKey);
-
-		res.status(200).send(publicKey);
-	} catch (error) {
-		req.logger.fatal("Couldnt get MercadoPago public key");
-		res.status(500).json({errorMessage: "Internal Server Error: "+error});
-	}
-};
-
-export const createOrderMP = async (req, res) => {
-	try {
-        const { totalAmount } = req.params
-		
-        const body = {
-			items: [
+		const { totalAmount } = req.params
+		const totalStripeAmount = totalAmount*100
+	
+		const stripeSession = await stripe.checkout.sessions.create({
+			line_items:[
 				{
-					title: "eCommerce Purchase",
-					quantity: 1,
-					unit_price: Number(totalAmount),
-					currency_id: 'ARS',
-				},
+					price_data:{
+						product_data:{
+							name: "eCommerce Total",
+							description: "eCommerce Bill"
+						},
+						currency: "usd",
+						unit_amount: totalStripeAmount
+					},
+					quantity: 1
+				}
 			],
-			back_urls: {
-				success: "http://localhost:8080/products",
-				failure: "http://localhost:8080/products",
-				pending: "http://localhost:8080/products"
-			},
-		};
-
-		const preference = new Preference(client);
-		const resultPreference = await preference.create({ body });
-
-		res.status(201).json({ id: resultPreference.id });
+			mode: "payment",
+			success_url: `http://localhost:${config.port}/products`,
+			cancel_url: `http://localhost:${config.port}/products`
+		})
+		return res.json(stripeSession)
+		
 	} catch (error) {
-		req.logger.fatal('It is not possible to create order.');
-		res.status(500).json({message:`Internal Server Error: ${error}`});
+		return res.status(500).json({status: "fail", message: error})		
 	}
-};
+}

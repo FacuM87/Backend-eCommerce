@@ -2,7 +2,7 @@ import UserDTO from "../DTO/user.dto.js";
 import config from "../config/config.js";
 import Mail from "../modules/mail.config.js";
 import { userService } from "../repositories/index.repositories.js";
-import { createHash, generateMailToken, verifyToken } from "../utils.js";
+import { createHash, generateMailToken, validatePassword, verifyToken } from "../utils.js";
 
 
 export const login = async(req, res) => {
@@ -91,10 +91,15 @@ export const mailPassword = async (req, res) =>{
 export const resetPassword = async (req, res) => {
     try {
         const { token, password } = req.body
-        
-        const tokenData = verifyToken(token)
+        console.log(token)
 
+        const tokenData = verifyToken(token)
         const userMail = tokenData.user.email
+
+        const validateNewPassword = validatePassword(password)
+
+        if (validateNewPassword) return res.status(400).send({ message: "Cannot use the previous password" })
+
         const hashedPassword = createHash(password)
         
         const changes = {password: hashedPassword}

@@ -118,12 +118,13 @@ export const restablishPassword = async (req, res) => {
 export const resetPasswordForm = (req, res) =>{
     try {
         const token = req.params.token
+        console.log(token);
 
         const validToken = verifyToken(token)
         console.log(validToken);
 
         validToken? res.render("resetPassword",{validToken, token}) : (
-            res.send("Your link has expired or its invalid")) 
+            res.render("resetPassword", {validToken, token})) 
     } catch (error) {
         req.logger.error("Error: " + error)
         return res.status(500).send("Internal server error")

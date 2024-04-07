@@ -98,35 +98,15 @@ if (checkout) {
             const productsTicket = document.getElementById("productsTicket");
 
             if (products.length > 0) {
-                
-                fetch("/api/payments/publicKey", {
-                    method: "GET"
+                fetch(`/api/payments/createorder/${totalAmount}`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'}
                 })
                 .then((response) => {return response.json()})
-				.then((data) => {
-					const mp = new MercadoPago(data, {
-						locale: 'es-AR',
-					});
-                    fetch(`/api/payments/createorder/${totalAmount}`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                    })
-                    .then((response) => {return response.json()})
-                    .then((data) => {
-                        const preferenceId = data.id;
-                        createCheckoutButton(mp, preferenceId)
-                    })
-                    .catch((error) => console.error("Error: "+error))
-    
-				})
-				.catch((error) =>
-					console.error(
-						"Error: " + error
-					)
-				);
-                
+                .then((data) => {
+                    window.location.replace(data.url)
+                })
+                .catch((error) => console.error("Stripe error: "+error))                
 
                 const fragment = document.createDocumentFragment();
                 products.forEach(product => {

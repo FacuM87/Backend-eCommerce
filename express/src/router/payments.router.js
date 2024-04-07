@@ -1,10 +1,8 @@
 import { Router } from 'express';
-import { createOrderMP, getPublicKey } from "../controllers/payments.controller.js";
+import { createSession } from "../controllers/payments.controller.js";
 
 const router = Router();
 
-router.post("/createorder/:totalAmount", createOrderMP)
-router.get("/publicKey", getPublicKey)
-
+router.post("/createorder/:totalAmount", createSession )
 
 export default router
