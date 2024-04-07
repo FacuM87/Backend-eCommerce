@@ -38,8 +38,8 @@ app.use(express.urlencoded({extended:true}))
 /* -- CORS -- */
 app.use(cors())
 
-/* -- Mongo DB -- */
 
+/* -- Mongo DB -- */
 const mongoURL = config.mongoUrl
 const mongoDB = config.mongoDB 
 
@@ -52,8 +52,8 @@ mongoose.connect(mongoURL, {dbName: mongoDB})
         res.status(500).send(e)
     })   
 
-/* -- Swagger -- */
 
+/* -- Swagger -- */
 const swaggerOptions = {
     definition: {
         openapi: "3.0.1",
@@ -66,6 +66,7 @@ const swaggerOptions = {
   }
 const specs = swaggerJSDoc(swaggerOptions)
 app.use("/apidocs", SwaggerUIexpress.serve, SwaggerUIexpress.setup(specs))
+
 
 /* -- Sessions -- */
 const sessionSecret=config.sessionSecret
@@ -80,6 +81,7 @@ app.use(session({
     saveUninitialized: true
 }))  
 
+
 /* -- HandleBars -- */
 app.engine('handlebars', handlebars.engine())
 app.use("/static", express.static(__dirname + "/public"))
@@ -88,11 +90,8 @@ app.set("view engine", "handlebars")
 
 
 /* -- WebSocket -- */
-
 const port = config.port
-
 const httpServer = app.listen( port, () => console.log("Listening in "+port ))
-
 socketServer(httpServer)
 
 
@@ -100,6 +99,7 @@ socketServer(httpServer)
 initializePassport()
 app.use(passport.initialize())
 app.use(passport.session()) 
+
 
 /* -- API routes -- */
 app.use("/", viewsRouter)
