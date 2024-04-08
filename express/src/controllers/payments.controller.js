@@ -22,8 +22,8 @@ export const createSession = async (req, res) => {
 				}
 			],
 			mode: "payment",
-			success_url: `https://backend-ecommerce-production-026c.up.railway.app/products`,
-			cancel_url: `https://backend-ecommerce-production-026c.up.railway.app/products`
+			success_url: `${config.url}/products`,
+			cancel_url: `${config.url}/products`
 		})
 		return res.json(stripeSession)
 		

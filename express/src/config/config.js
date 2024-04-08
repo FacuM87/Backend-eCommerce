@@ -2,7 +2,7 @@ import dotenv from "dotenv"
 
 dotenv.config()
 
-export default {
+const config = {
     port: process.env.PORT || 8080,
     amdinUserName: process.env.ADMIN_USER,
     adminPassword: process.env.ADMIN_PASSWORD,
@@ -19,5 +19,14 @@ export default {
     mailPass: process.env.MAIL_PASS,
     mailPort: process.env.MAIL_PORT,
     stripeKey: process.env.STRIPE_KEY,
-    persistence: process.env.PERSISTENCE
+    persistence: process.env.PERSISTENCE,
+    deployUrl: process.env.DEPLOY
 }
+
+if (config.environment === 'dev') {
+    config.url = `http://localhost:${config.port}`
+} else {
+    config.url = config.deployUrl;
+}
+
+export default config;

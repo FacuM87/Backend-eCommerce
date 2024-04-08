@@ -75,7 +75,7 @@ export const mailPassword = async (req, res) =>{
         }
 
         const token = generateMailToken(user)
-        const url = `http://localhost:${config.port}/resetPassword/${token}`
+        const url = `${config.url}/resetPassword/${token}`
         
         const mailer = new Mail
         mailer.sendPasswordMail(mail, url)
