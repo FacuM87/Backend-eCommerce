@@ -32,3 +32,12 @@ error: Error: CastError: Cast to ObjectId failed for value "insertOwnerAttibute"
 error: Error: CastError: Cast to ObjectId failed for value "insertOwnerAttibute" (type string) at path "_id" for model "products"
 error: Error: CastError: Cast to ObjectId failed for value "insertOwnerAttibute" (type string) at path "_id" for model "products"
 error: Error: CastError: Cast to ObjectId failed for value "insertOwnerAttribute" (type string) at path "_id" for model "products"
+error: Error: TypeError: Cannot read properties of undefined (reading 'password')
+error: Error: TypeError: Cannot read properties of undefined (reading 'password')
+error: Error: TypeError: Cannot read properties of undefined (reading 'password')
+error: Error: TypeError: Cannot read properties of undefined (reading 'password')
+error: Error: TypeError: Cannot read properties of undefined (reading 'password')
+error: Error: TypeError: Cannot read properties of undefined (reading 'password')
+error: Error: TypeError: Cannot read properties of undefined (reading 'password')
+error: Error: TypeError: Cannot read properties of undefined (reading 'password')
+error: Error: Error: data and hash arguments required

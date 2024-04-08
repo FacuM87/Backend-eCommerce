@@ -90,21 +90,19 @@ export const mailPassword = async (req, res) =>{
 
 export const resetPassword = async (req, res) => {
     try {
-        const { token, password } = req.body
-        console.log(token)
-
+        const { email, password, token } = req.body 
         const tokenData = verifyToken(token)
-        const userMail = tokenData.user.email
+        console.log(tokenData);
+        
+        const validateNewPassword = validatePassword(password, tokenData.user.password)
 
-        const validateNewPassword = validatePassword(password)
+        console.log(validateNewPassword); 
 
         if (validateNewPassword) return res.status(400).send({ message: "Cannot use the previous password" })
 
         const hashedPassword = createHash(password)
-        
         const changes = {password: hashedPassword}
-
-        const updatePassword = await userService.updateUser(userMail, changes)
+        const updatePassword = await userService.updateUser(email, changes)
         console.log(updatePassword);
 
         return res.json({status: "success", message:"Your password has been updated"})

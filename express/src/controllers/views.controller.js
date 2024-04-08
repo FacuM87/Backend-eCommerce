@@ -124,7 +124,7 @@ export const resetPasswordForm = (req, res) =>{
         console.log(validToken);
 
         validToken? res.render("resetPassword",{validToken, token}) : (
-            res.render("resetPassword", {validToken, token})) 
+            res.render("resetPassword", {validToken, expired:true})) 
     } catch (error) {
         req.logger.error("Error: " + error)
         return res.status(500).send("Internal server error")
