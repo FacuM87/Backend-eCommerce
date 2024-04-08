@@ -18,7 +18,7 @@ export const getUsers = async (req, res) =>{
 export const deleteInactives = async (req, res) =>{
     try {
         const inactiveMark = new Date()
-        inactiveMark.setHours(inactiveMark.getHours() - 1)
+        inactiveMark.setHours(inactiveMark.getHours() - 48)
 
         const inactiveAccounts = await userService.getInactiveUsers(inactiveMark)
  
