@@ -94,17 +94,13 @@ export const resetPassword = async (req, res) => {
         const tokenData = verifyToken(token)
         
         const user = tokenData.user
-        console.log(user);
         const validateNewPassword = validatePassword(password, user)
-
-        console.log(validateNewPassword); 
 
         if (validateNewPassword) return res.status(400).send({ message: "Cannot use the previous password" })
 
         const hashedPassword = createHash(password)
         const changes = {password: hashedPassword}
-        const updatePassword = await userService.updateUser(tokenData.user.email, changes)
-        console.log(updatePassword);
+        await userService.updateUser(tokenData.user.email, changes)
 
         return res.json({status: "success", message:"Your password has been updated"})
 
