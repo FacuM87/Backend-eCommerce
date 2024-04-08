@@ -22,8 +22,8 @@ export const createSession = async (req, res) => {
 				}
 			],
 			mode: "payment",
-			success_url: `http://localhost:${config.port}/products`,
-			cancel_url: `http://localhost:${config.port}/products`
+			success_url: `/products`,
+			cancel_url: `/products`
 		})
 		return res.json(stripeSession)
 		
