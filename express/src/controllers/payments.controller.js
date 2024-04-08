@@ -22,8 +22,8 @@ export const createSession = async (req, res) => {
 				}
 			],
 			mode: "payment",
-			success_url: `/products`,
-			cancel_url: `/products`
+			success_url: `https://backend-ecommerce-production-026c.up.railway.app/products`,
+			cancel_url: `https://backend-ecommerce-production-026c.up.railway.app/products`
 		})
 		return res.json(stripeSession)
 		
@@ -31,3 +31,5 @@ export const createSession = async (req, res) => {
 		return res.status(500).json({status: "fail", message: error})		
 	}
 }
+
+/* http://localhost:${config.port} */
