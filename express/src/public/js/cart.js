@@ -58,24 +58,6 @@ if (finalAmount) {
     finalAmount.innerHTML=`Total: $${totalAmount.toFixed(2)}`
 }
 
-// CREA BOTÓN MERCADO PAGO
-const createCheckoutButton = async (mp, preferenceId) => {
-    try {
-        const bricksBuilder = await mp.bricks();
-        if (window.checkoutButton) window.checkoutButton.unmount();
-        
-        await bricksBuilder.create('wallet', 'wallet_container', {
-            initialization: {
-                preferenceId: preferenceId,
-            },
-        })
-        
-    } catch (error) {
-        console.log("Error creating MercadoPago checkout button: "+error);
-    }
-}
-
-
 const checkout = document.querySelector(".checkOut")
 if (checkout) {
     checkout.onclick = () =>{
