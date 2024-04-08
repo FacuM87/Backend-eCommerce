@@ -90,11 +90,12 @@ export const mailPassword = async (req, res) =>{
 
 export const resetPassword = async (req, res) => {
     try {
-        const { email, password, token } = req.body 
+        const { password, token } = req.body 
         const tokenData = verifyToken(token)
-        console.log(tokenData);
         
-        const validateNewPassword = validatePassword(password, tokenData.user.password)
+        const user = tokenData.user
+        console.log(user);
+        const validateNewPassword = validatePassword(password, user)
 
         console.log(validateNewPassword); 
 
@@ -102,7 +103,7 @@ export const resetPassword = async (req, res) => {
 
         const hashedPassword = createHash(password)
         const changes = {password: hashedPassword}
-        const updatePassword = await userService.updateUser(email, changes)
+        const updatePassword = await userService.updateUser(tokenData.user.email, changes)
         console.log(updatePassword);
 
         return res.json({status: "success", message:"Your password has been updated"})

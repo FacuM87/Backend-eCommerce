@@ -41,3 +41,6 @@ error: Error: TypeError: Cannot read properties of undefined (reading 'password'
 error: Error: TypeError: Cannot read properties of undefined (reading 'password')
 error: Error: TypeError: Cannot read properties of undefined (reading 'password')
 error: Error: Error: data and hash arguments required
+error: Error: Error: data and hash arguments required
+error: Error: Error: data and hash arguments required
+error: Error: Error: data and hash arguments required
