@@ -79,6 +79,7 @@ if (checkout) {
 
             const productsTicket = document.getElementById("productsTicket");
 
+            let paymentUrl 
             if (products.length > 0) {
                 fetch(`/api/payments/createorder/${totalAmount}`, {
                     method: 'POST',
@@ -86,9 +87,7 @@ if (checkout) {
                 })
                 .then((response) => {return response.json()})
                 .then((data) => {
-                    setTimeout( () =>{
-                        window.location.replace(data.url)
-                    }, 4000)
+                    paymentUrl = data.url
                 })
                 .catch((error) => console.error("Stripe error: "+error))                
 
@@ -115,13 +114,16 @@ if (checkout) {
                 const totalAmountElement = document.createElement("h5")
                 totalAmountElement.textContent = `Total Amount: $${totalAmount}`
 
-                const redirectMessage = document.createElement("p")
-                redirectMessage.textContent = "Redirecting to payments platform in 5 sec"
-                redirectMessage.classList.add("text-center", "mt-2")
+                const paymentBtn = document.createElement("button")
+                paymentBtn.classList.add("mx-auto", "d-block")
+                paymentBtn.textContent = " Payment Platform "
+                paymentBtn.addEventListener("click", ()=>{
+                    window.location.replace(paymentUrl)
+                })
 
                 productsTicket.appendChild(totalAmountElement)
                 productsTicket.appendChild(fragment);
-                productsTicket.appendChild(redirectMessage)
+                productsTicket.appendChild(paymentBtn);
             } else {
             productsTicket.innerHTML = `<p>No products in the ticket</p>`;
             }
