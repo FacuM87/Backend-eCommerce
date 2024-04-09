@@ -87,11 +87,13 @@ const initializePassport = () => {
                 return done(null, user);
             }
 
+            const newCart = await cartService.createNewCart()
             const newUser = {
                 first_name: profile._json.name,
                 last_name:"",
                 email: profile._json.email,
-                password: ""
+                password: "",
+                cart: newCart._id
             }
 
             user = await userService.createUser(newUser)
