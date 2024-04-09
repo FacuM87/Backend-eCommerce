@@ -86,7 +86,9 @@ if (checkout) {
                 })
                 .then((response) => {return response.json()})
                 .then((data) => {
-                    window.location.replace(data.url)
+                    setTimeout( () =>{
+                        window.location.replace(data.url)
+                    }, 4000)
                 })
                 .catch((error) => console.error("Stripe error: "+error))                
 
@@ -113,8 +115,13 @@ if (checkout) {
                 const totalAmountElement = document.createElement("h5")
                 totalAmountElement.textContent = `Total Amount: $${totalAmount}`
 
+                const redirectMessage = document.createElement("p")
+                redirectMessage.textContent = "Redirecting to payments platform in 5 sec"
+                redirectMessage.classList.add("text-center", "mt-2")
+
                 productsTicket.appendChild(totalAmountElement)
                 productsTicket.appendChild(fragment);
+                productsTicket.appendChild(redirectMessage)
             } else {
             productsTicket.innerHTML = `<p>No products in the ticket</p>`;
             }
