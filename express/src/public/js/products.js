@@ -126,7 +126,6 @@ document.querySelectorAll(".counterContainer").forEach(counterContainer => {
     } else {
         incrementBtn.disabled = false
         decrementBtn.disabled = false
-
     }
 
     incrementBtn.addEventListener("click", () =>{
