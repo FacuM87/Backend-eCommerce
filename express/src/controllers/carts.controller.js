@@ -62,11 +62,10 @@ export const addProductToCart = async (req, res) => {
     const productId = req.params.pid;
     const userRole = req.user.user.role
     const userEmail = req.user.user.email
+    const productQuantity = req.body.counterValue
 
     const cart = await cartService.getCartById(cartId);
     const product = await productService.getProductById(productId);
-
-    console.log({product});
 
     if(userRole === "premium"){
       if (userEmail == product.owner) {
@@ -89,11 +88,11 @@ export const addProductToCart = async (req, res) => {
     );
     console.log(productIndex);
     if (productIndex !== -1) {
-      cart.products[productIndex].quantity += 1;
+      cart.products[productIndex].quantity += productQuantity;
     } else {
       const newProduct = {
         product: productId,
-        quantity: 1,
+        quantity: productQuantity,
       };
       cart.products.push(newProduct);
     }

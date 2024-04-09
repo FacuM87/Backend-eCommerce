@@ -64,6 +64,17 @@
                 </ul>
                 <input name="productId" class="productId d-none" value={{this._id}}>
                 <input name="stock" class="stock d-none" value={{this.stock}}>
+                <div class="row mb-2 justify-content-center counterContainer">
+                    <div class="col-auto">
+                        <button class="decrement"> < </button>
+                    </div>
+                    <div class="col-auto">
+                        <p class="my-auto mx-1 counter" >1</p>
+                    </div>
+                    <div class="col-auto">
+                        <button class="increment"> > </button>
+                    </div>
+                </div>
                 <button class="addToCartBtn mx-auto mt-auto w-50 cartBtn"> Add to Cart </button>
             </div>
             {{else}}

@@ -63,8 +63,17 @@ document.querySelectorAll(".addToCartBtn").forEach(button => {
     button.onclick = () => {
         const productId = button.parentElement.querySelector(".productId").value;
         const stock = button.parentElement.querySelector(".stock").value
+
+        const counterContainer = button.parentElement.querySelector(".counterContainer") 
+        const counterElement = counterContainer.querySelector(".counter")
+        const counterValue = parseInt(counterElement.textContent)
+        
         if (stock >0) {
-            fetch(`/api/carts/cartId/product/${productId}`, { method: "post" })
+            fetch(`/api/carts/cartId/product/${productId}`, { 
+                method: "post",
+                headers: { "Content-Type": "application/json"},
+                body: JSON.stringify({ counterValue: counterValue })
+            })
                 .then(response => {
                     return response.json();
                 })
@@ -100,5 +109,37 @@ document.querySelectorAll(".addToCartBtn").forEach(button => {
     };
 });
 
+document.querySelectorAll(".counterContainer").forEach(counterContainer => {
+    const counterElement = counterContainer.querySelector(".counter")
+    const incrementBtn = counterContainer.querySelector(".increment")
+    const decrementBtn = counterContainer.querySelector(".decrement")
 
+    const stock = counterContainer.parentElement.querySelector(".stock").value
+
+    currentCount = parseInt(counterElement.textContent)
+    currentStock = parseInt(stock)
+
+    if (currentStock == 0){
+        incrementBtn.disabled = true
+        decrementBtn.disabled = true
+        counterElement.textContent = "No Stock"
+    } else {
+        incrementBtn.disabled = false
+        decrementBtn.disabled = false
+
+    }
+
+    incrementBtn.addEventListener("click", () =>{
+        if (stock <= currentCount) { 
+            return }
+        currentCount++
+        counterElement.textContent = currentCount
+    })
+
+    decrementBtn.addEventListener("click", () =>{
+        if (currentCount == 1) { return }
+        currentCount--
+        counterElement.textContent = currentCount
+    })
+})
 
