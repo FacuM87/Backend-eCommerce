@@ -83,7 +83,6 @@ deleteForm.addEventListener("submit", (e) => {
     e.preventDefault()
 
     const productId = document.querySelector("#productId").value
-    console.log(userRole);
     if (userRole === "premium") {
         
         const userProductsIDs = Array.from(document.querySelectorAll("tr[data-product-id]")).map(row => row.dataset.productId);
