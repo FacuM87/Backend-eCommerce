@@ -14,6 +14,7 @@ It implements:
 
 # Future implementations
 ~~- It will add some payment gateway to complete purchase process.~~
+
 ~~- It will be deployed in Railway App or Vercel soon.~~
 - A Front-end will be made to show how this backend template can be used. Particularly, i will be building it in React JS in order to add more dynamic features to the user experience.      
 
