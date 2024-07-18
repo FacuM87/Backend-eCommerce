@@ -3,7 +3,6 @@ import handlebars from "express-handlebars"
 import session from "express-session"
 import MongoStore from "connect-mongo"
 import __dirname from "./utils.js"
-/* import { Server } from "socket.io" */
 import viewsRouter from "./router/views.router.js"
 import cartRouter from "./router/cart.router.js"
 import productsRouter from "./router/products.router.js"
@@ -19,7 +18,6 @@ import config from "./config/config.js"
 import dotenv from "dotenv"
 import cors from 'cors'
 import cookieParser from "cookie-parser"
-/* import { chatService, productService } from "./repositories/index.repositories.js" */
 import { addLogger } from "./middlewares/logger.js"
 import SwaggerUIexpress from "swagger-ui-express"
 import swaggerJSDoc from "swagger-jsdoc"
