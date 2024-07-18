@@ -1,6 +1,6 @@
 # Backend eCommerce Project
 
-A backend ecommerce project currently in development process, build in <strong>Node JS</strong> with <strong>Express JS</strong>, using <strong>Mongo DB</strong> for data persistence management, and Handlebars (for the moment) for screen renders. 
+A backend ecommerce template project, built in <strong>Node JS</strong> with <strong>Express JS</strong>, using <strong>Mongo DB</strong> for data persistence management, and Handlebars for screen renders. Ideally, this backend template contains the functionalities that an eCommerce needs and it may be used or adapted to work with any front-end design.
 
 It implements:
 -  Sessions with <strong>JWT</strong> and <strong>Passport</strong> library, different user roles such as admin, user or premium user.
@@ -13,9 +13,10 @@ It implements:
 -  Error management and error log using Winston library.
 
 # Future implementations
-- It will add some payment gateway to complete purchase process.
-- It will be deployed in Railway App or Vercel soon.
-- Front-end will be improved and Handlebars will be replaced with React JS to add more dynamic features to the user experience.      
+~~- It will add some payment gateway to complete purchase process.~~
+
+~~- It will be deployed in Railway App or Vercel soon.~~
+- A Front-end will be made to show how this backend template can be used. Particularly, i will be building it in React JS in order to add more dynamic features to the user experience.      
 
 # Example credentials
 In case you dont want to register, you can use this regular user credentials:
