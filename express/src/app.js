@@ -46,7 +46,7 @@ mongoose.connect(mongoURL, {dbName: mongoDB})
         console.log("Mongo DB connected")
     })
     .catch(e => {
-        console.log("Couldnt connect with Mongo DB, error message: "+e);
+        console.log("Couldnt connect with Mongo DB, error message:"+e);
         res.status(500).send(e)
     })   
 
