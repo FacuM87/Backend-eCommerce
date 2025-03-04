@@ -28,10 +28,10 @@ import { socketServer } from "./websocket.js"
 
 
 /* -- Express -- */
+dotenv.config()
 const app = express()
 app.use(addLogger)
 app.use(cookieParser())
-dotenv.config()
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 
